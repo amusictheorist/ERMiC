@@ -1,6 +1,8 @@
 import './App.css';
 import { useState, useEffect } from 'react';
-import Homepge from './components/HomePage';
+import Homepage from './components/HomePage';
+import Navbar from './components/Navbar';
+
 
 // const query = `{
 //   pageCollection {
@@ -41,7 +43,10 @@ function App() {
   // }
 
   return (
-    <Homepge />
+    <div>
+      <Navbar />
+      <Homepage />
+    </div>
   );
 }
 
