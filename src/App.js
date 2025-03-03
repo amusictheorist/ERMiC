@@ -1,51 +1,21 @@
 import './App.css';
 import { useState, useEffect } from 'react';
-import Homepage from './components/HomePage';
+import HomePage from './components/HomePage';
 import Navbar from './components/Navbar';
-
-
-// const query = `{
-//   pageCollection {
-//     items {
-//       title
-//       logo {
-//         url
-//       }
-//     }
-//   }
-// }`
+import MusicianPage from './components/MusicianPage';
 
 function App() {
-  // const [page, setPage] = useState(null);
+  const [query, setQuery] = useState('');
 
-  // useEffect(() => {
-  //   window
-  //     .fetch(`https://graphql.contentful.com/content/v1/spaces/lsaglqw7atjk/`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Authorization: 'Bearer JEUyOw04eq02knEmUeHpfao4_TMxCcB_48C6Pk91a7E'
-  //       },
-  //       body: JSON.stringify({ query })
-  //     })
-  //     .then((response) => response.json())
-  //     .then(({ data, errors }) => {
-  //       if (errors) {
-  //         console.error(errors);
-  //       }
-
-  //       setPage(data.pageCollection.items[0]);
-  //     });
-  // }, []);
-
-  // if (!page) {
-  //   return 'Loading...'
-  // }
+  const handleSearchSubmit = (term) => {
+    setQuery(term);
+  };
 
   return (
     <div>
       <Navbar />
-      <Homepage />
+      <HomePage onSearchSubmit={handleSearchSubmit} />
+      {query && <MusicianPage searchTerm={query} />}
     </div>
   );
 }

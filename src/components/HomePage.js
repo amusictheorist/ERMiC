@@ -1,7 +1,7 @@
 import '../styles/HomePage.css';
 import { useState } from 'react';
 
-const Homepage = () => {
+const HomePage = ({ onSearchSubmit }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearchChange = (event) => {
@@ -10,7 +10,7 @@ const Homepage = () => {
   
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-    console.log('Searching for: ', searchTerm);
+    onSearchSubmit(searchTerm);
   };
 
   return (
@@ -32,4 +32,4 @@ const Homepage = () => {
   );
 };
 
-export default Homepage;
+export default HomePage;
