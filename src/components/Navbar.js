@@ -1,4 +1,5 @@
 import '../styles/Navbar.css';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   return (
@@ -7,10 +8,10 @@ const Navbar = () => {
         European Refugee Musicians in Canada Online Biographical Dictionary
       </div>
       <div className="links">
-        <a href="#">Home</a>
-        <a href="#">Browse</a>
-        <a href="#">About</a>
-        <a href="#">Contact</a>
+        <Link to="/">Home</Link>
+        <Link to="/browse">Browse</Link>
+        <Link to="/about">About</Link>
+        <Link to="/contact">Contact</Link>
       </div>
     </nav>
   );

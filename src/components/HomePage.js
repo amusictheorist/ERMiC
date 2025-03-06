@@ -5,7 +5,7 @@ const HomePage = ({ onSearchSubmit }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearchChange = (event) => {
-  setSearchTerm(event.target.value);
+    setSearchTerm(event.target.value);
   };
   
   const handleSearchSubmit = (event) => {
@@ -18,15 +18,15 @@ const HomePage = ({ onSearchSubmit }) => {
       <h1>Welcome to the European Refugee Musicians in Canada Online Biographical Dictionary</h1>
       <p>Search by name or keyword, or browse the entries.</p>
 
-      <form onSubmit={handleSearchSubmit} className='search-form'>
+      <form onSubmit={handleSearchSubmit} className="search-form">
         <input
-          type='text'
-          placeholder='Enter name or keyword...'
+          type="text"
+          placeholder="Enter name or keyword..."
           value={searchTerm}
           onChange={handleSearchChange}
-          className='search-input'
+          className="search-input"
         />
-        <button type='submit' className='search-button'>Search</button>
+        <button type="submit" className="search-button">Search</button>
       </form>
     </div>
   );

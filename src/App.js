@@ -1,22 +1,26 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { DataProvider } from "./components/DataContext";
+import Navbar from "./components/Navbar";
+import HomePage from "./components/HomePage";
+import Browse from "./components/Browse";
+import MusicianPage from "./components/MusicianPage";
 import './App.css';
-import { useState, useEffect } from 'react';
-import HomePage from './components/HomePage';
-import Navbar from './components/Navbar';
-import MusicianPage from './components/MusicianPage';
 
 function App() {
-  const [query, setQuery] = useState('');
-
-  const handleSearchSubmit = (term) => {
-    setQuery(term);
-  };
 
   return (
-    <div>
-      <Navbar />
-      <HomePage onSearchSubmit={handleSearchSubmit} />
-      {query && <MusicianPage searchTerm={query} />}
-    </div>
+    <DataProvider>
+      <Router>
+        <div className="body">
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/browse" element={<Browse />} />
+            <Route path="/musician/:slug" element={<MusicianPage />} />
+          </Routes>
+        </div>
+      </Router>
+    </DataProvider>
   );
 }
 

@@ -1,56 +1,29 @@
-import useCMSData from '../hooks/useCMSData';
+import { useParams } from "react-router-dom";
+import { useData } from "./DataContext";
+import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
+import '../styles/MusicianPage.css'
 
-const query = `
-{
-  musicianCollection {
-    items {
-      firstName
-      surname
-      birthdate
-      deathdate
-      biography {
-        json
-        }
-        bibliography {
-          json
-          }
-          }
-          }
-          }
-          `;
-          
-const MusicianPage = (query) => {
-  const { data, loading, error } = useCMSData(query);
+const MusicianPage = () => {
+  const { slug } = useParams();
+  const data = useData();
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  if (!data) return <p>Loading...</p>;
+
+  const musician = data.musicianCollection.items.find((m) => m.slug === slug);
+
+  if (!musician) return <p>Musician not found.</p>;
 
   return (
     <div>
-      {data?.musicianCollection?.items?.length === 0 ? (
-        <div>No musicians found matching the search term.</div>
-      ) : (
-        data.musicianCollection.items.map((musician) => (
-          <div key={musician.firstName + musician.surname}>
-            <h2>{musician.firstName} {musician.surname}</h2>
-            <p><strong>Born:</strong> {musician.birthdate}</p>
-            <p><strong>Deceased:</strong> {musician.deathdate || 'N/A'}</p>
+      <h1>{musician.firstName} {musician.surname}</h1>
+      <p>Born: {musician.birthdate} in {musician.birthPlace}</p>
+      <p>Died: {musician.deathdate} in {musician.deathPlace}</p>
+      
+      <h2>Biography</h2>
+      {musician.biography?.json && documentToReactComponents(musician.biography.json)}
 
-            <h3>Biography</h3>
-            <div>
-              {/* Display biography, assuming it's a structured JSON object */}
-              {/* You might need to process this JSON depending on the format */}
-              <div dangerouslySetInnerHTML={{ __html: musician.biography.json }} />
-            </div>
-
-            <h3>Bibliography</h3>
-            <div>
-              {/* Similarly handle bibliography */}
-              <div dangerouslySetInnerHTML={{ __html: musician.bibliography.json }} />
-            </div>
-          </div>
-        ))
-      )}
+      <h2>Bibliography</h2>
+      {musician.bibliography?.json && documentToReactComponents(musician.bibliography.json)}
     </div>
   );
 };
