@@ -8,10 +8,10 @@ const Browse = () => {
   if (!data) return <p>Loading...</p>;
 
   return (
-    <div>
-      <h2>Musicians</h2>
+    <div className="browse-page">
+      <h2>Browse the Biographies</h2>
       {data.musicianCollection.items.map((musician) => (
-        <Link key={musician.slug} to={`/musician/${musician.slug}`}>
+        <Link className="musician-link" key={musician.slug} to={`/musician/${musician.slug}`}>
           <p>{musician.firstName} {musician.surname}</p>
         </Link>
       ))}
