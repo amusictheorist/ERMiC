@@ -14,12 +14,10 @@ const MusicianPage = () => {
 
   const portraitUrl = musician.photosCollection?.items?.[0]?.url;
 
-  // Filter works authored by this musician
   const works = data.workCollection?.items?.filter(
     (work) => work.musician?.slug === slug
   ) || [];
 
-  // Filter writings authored by this musician
   const writings = data.writingCollection?.items?.filter(
     (writing) => writing.musician?.slug === slug
   ) || [];
@@ -45,7 +43,6 @@ const MusicianPage = () => {
         {musician.biography?.json && documentToReactComponents(musician.biography.json)}
       </div>
 
-      {/* Works Section */}
       {works.length > 0 && (
         <>
           <h2>Works</h2>
@@ -67,7 +64,6 @@ const MusicianPage = () => {
         </>
       )}
 
-      {/* Writings Section */}
       {writings.length > 0 && (
         <>
           <h2>Writings</h2>

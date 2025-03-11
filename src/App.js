@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import HomePage from "./components/HomePage";
 import Browse from "./components/Browse";
 import MusicianPage from "./components/MusicianPage";
+import SearchResultsPage from "./components/SearchResultsPage";
 import './App.css';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/browse" element={<Browse />} />
             <Route path="/musician/:slug" element={<MusicianPage />} />
+            <Route path="/search-results" element={<SearchResultsPage />} />
           </Routes>
         </div>
       </Router>

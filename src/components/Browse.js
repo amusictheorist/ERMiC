@@ -4,6 +4,8 @@ import '../styles/Browse.css';
 
 const Browse = () => {
   const data = useData();
+  console.log('data: ', data);
+  console.log('type: ', typeof(data));
 
   if (!data) return <p>Loading...</p>;
 
