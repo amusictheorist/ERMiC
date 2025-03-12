@@ -1,6 +1,7 @@
-import '../styles/SearchBar.css';
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import DropdownItem from './DropdownItem';
+import '../styles/SearchBar.css';
 
 const SearchBar = ({
   searchTerm,
@@ -17,15 +18,15 @@ const SearchBar = ({
   const dropdownRef = useRef(null);
   const itemRefs = useRef([]);
   const navigate = useNavigate();
-  
-  const handleKeyDown = (e) => {
-    const totalResults = [
-      ...filteredMusicians,
-      ...filteredOccupations,
-      ...filteredWorks,
-      ...filteredWritings
-    ];
 
+  const totalResults = [
+    ...filteredMusicians,
+    ...filteredOccupations,
+    ...filteredWorks,
+    ...filteredWritings
+  ];
+
+  const handleKeyDown = (e) => {
     if (!showDropdown || totalResults.length === 0) return;
 
     if (e.key === 'ArrowDown') {
@@ -37,51 +38,49 @@ const SearchBar = ({
         prevIndex > 0 ? prevIndex - 1 : totalResults.length - 1
       );
     } else if (e.key === 'Enter' && selectedIndex >= 0) {
-      const selectedItem = totalResults[selectedIndex];
+      handleSelect(totalResults[selectedIndex]);
+    }
+  };
 
-      if (filteredOccupations.includes(selectedItem)) {
-        handleSelectOccupation(selectedItem);
-      } else if (filteredMusicians.includes(selectedItem)) {
-        handleSelectMusician(selectedItem);
-      } else if (filteredWorks.includes(selectedItem)) {
-        handleSelectWork(selectedItem);
-      } else if (filteredWritings.includes(selectedItem)) {
-        handleSelectWriting(selectedItem);
+  const handleSelect = (item) => {
+    if (filteredOccupations.includes(item)) {
+      navigate(`/search-results?occupation=${item}`);
+    } else if (filteredMusicians.includes(item)) {
+      navigate(`/musician/${item.slug}`);
+    } else if ((filteredWorks.includes(item) || filteredWritings.includes(item)) && item.musician) {
+      navigate(`/musician/${item.musician.slug}`);
+    }
+
+    setSearchTerm('');
+    setShowDropdown(false);
+    setSelectedIndex(-1);
+  };
+
+  useEffect(() => {
+    if (itemRefs.current[selectedIndex]) {
+      itemRefs.current[selectedIndex].scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+      });
+    }
+  }, [selectedIndex]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target) &&
+        !event.target.closest('.search-container')
+      ) {
+        setShowDropdown(false);
       }
-    }
-  };
+    };
 
-  const handleSelectMusician = (musician) => {
-    navigate(`/musician/${musician.slug}`);
-    setSearchTerm('');
-    setShowDropdown(false);
-    setSelectedIndex(-1);
-  };
-
-  const handleSelectOccupation = (occupation) => {
-    navigate(`/search-results?occupation=${occupation}`);
-    setSearchTerm('');
-    setShowDropdown(false);
-    setSelectedIndex(-1);
-  };
-
-  const handleSelectWork = (work) => {
-    if (work.musician) {
-      navigate(`/musician/${work.musician.slug}`);
-    }
-    setSearchTerm('');
-    setShowDropdown(false);
-    setSelectedIndex(-1);
-  };
-
-  const handleSelectWriting = (writing) => {
-    if (writing.musician) {
-      navigate(`/musician/${writing.musician.slug}`);
-    }
-    setSearchTerm('');
-    setShowDropdown(false);
-    setSelectedIndex(-1);
-  };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [setShowDropdown]);
 
   return (
     <div className="search-container">
@@ -93,68 +92,22 @@ const SearchBar = ({
         onChange={(e) => setSearchTerm(e.target.value)}
         onKeyDown={handleKeyDown}
       />
-      
+
       {showDropdown && (
         <div className="dropdown" ref={dropdownRef}>
-          {filteredMusicians.length === 0 &&
-            filteredWorks.length === 0 &&
-            filteredWritings.length === 0 &&
-            filteredOccupations.length === 0 ? (
+          {totalResults.length === 0 ? (
             <p className="dropdown-no-results">No results found</p>
           ) : (
             <ul className="dropdown-list">
-              {filteredMusicians.map((musician, index) => (
-                <li
-                  key={musician.slug}
-                  ref={(el) => (itemRefs.current[index] = el)}
-                  onClick={() => handleSelectMusician(musician)}
-                  className={`dropdown-item ${selectedIndex === index ? "selected" : ""}`}
-                >
-                  {musician.firstName} {musician.surname}
-                </li>
-              ))}
-
-              {filteredOccupations.map((occupation, index) => (
-                <li
-                  key={occupation}
-                  ref={(el) =>
-                    (itemRefs.current[index + filteredMusicians.length] = el)
-                  }
-                  onClick={() => handleSelectOccupation(occupation)}
-                  className={`dropdown-item ${selectedIndex === index + filteredMusicians.length ? "selected" : ""}`}
-                >
-                  {occupation}
-                </li>
-              ))}
-
-              {filteredWorks.map((work, index) => (
-                <li
-                  key={work.title}
-                  ref={(el) =>
-                    (itemRefs.current[
-                      index + filteredMusicians.length + filteredOccupations.length
-                    ] = el)
-                  }
-                  onClick={() => handleSelectWork(work)}
-                  className={`dropdown-item ${selectedIndex === index + filteredMusicians.length + filteredOccupations.length ? "selected" : ""}`}
-                >
-                  {work.title}
-                </li>
-              ))}
-
-              {filteredWritings.map((writing, index) => (
-                <li
-                  key={writing.title}
-                  ref={(el) =>
-                    (itemRefs.current[
-                      index + filteredMusicians.length + filteredOccupations.length + filteredWorks.length
-                    ] = el)
-                  }
-                  onClick={() => handleSelectWriting(writing)}
-                  className={`dropdown-item ${selectedIndex === index + filteredMusicians.length + filteredOccupations.length + filteredWorks.length ? "selected" : ""}`}
-                >
-                  {writing.title}
-                </li>
+              {totalResults.map((item, index) => (
+                <DropdownItem
+                  key={item.slug || item.title || item}
+                  item={item}
+                  index={index}
+                  selectedIndex={selectedIndex}
+                  itemRef={(el) => (itemRefs.current[index] = el)}
+                  onClick={handleSelect}
+                />
               ))}
             </ul>
           )}
