@@ -1,11 +1,16 @@
 import '../styles/Navbar.css';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = ({ searchTerm, setSearchTerm }) => {
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
+
   return (
     <nav className="navbar">
       <div className="logo">
-        European Refugee Musicians in Canada Online Biographical Dictionary
+        {isHomePage
+          ? 'European Refugee Musicians in Canada Online Biographical Dictionary'
+          : 'ERMiC'}
       </div>
       <div className="links">
         <Link to="/">Home</Link>
@@ -13,6 +18,17 @@ const Navbar = () => {
         <Link to="/about">About</Link>
         <Link to="/contact">Contact</Link>
       </div>
+
+      {!isHomePage && (
+        <div className='search-container'>
+          <input
+            type='text'
+            placeholder='Enter name or keyword...'
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+      )}
     </nav>
   );
 };

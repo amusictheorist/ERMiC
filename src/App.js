@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { DataProvider } from "./components/DataContext";
+import { useState } from "react";
 import Navbar from "./components/Navbar";
 import HomePage from "./components/HomePage";
 import Browse from "./components/Browse";
@@ -8,14 +9,15 @@ import SearchResultsPage from "./components/SearchResultsPage";
 import './App.css';
 
 function App() {
+  const [searchTerm, setSearchTerm] = useState('');
 
   return (
     <DataProvider>
       <Router>
         <div className="body">
-          <Navbar />
+          <Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<HomePage searchTerm={searchTerm} setSearchTerm={setSearchTerm} />} />
             <Route path="/browse" element={<Browse />} />
             <Route path="/musician/:slug" element={<MusicianPage />} />
             <Route path="/search-results" element={<SearchResultsPage />} />
