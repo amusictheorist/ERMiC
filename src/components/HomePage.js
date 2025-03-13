@@ -63,7 +63,7 @@ const HomePage = ({ searchTerm, setSearchTerm }) => {
   return (
     <div className="homepage">
       <h1>Welcome to the European Refugee Musicians in Canada Online Biographical Dictionary</h1>
-      <p>Search by name or keyword, or browse the entries.</p>
+      <p>Search by name or keyword and select an entry.</p>
 
       <SearchBar
         searchTerm={searchTerm}

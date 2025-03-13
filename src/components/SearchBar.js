@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DropdownItem from './DropdownItem';
 import '../styles/SearchBar.css';
@@ -15,6 +15,7 @@ const SearchBar = ({
   selectedIndex,
   setSelectedIndex
 }) => {
+  const [noResults, setNoResults] = useState(false);
   const dropdownRef = useRef(null);
   const itemRefs = useRef([]);
   const navigate = useNavigate();
@@ -25,6 +26,18 @@ const SearchBar = ({
     ...filteredWorks,
     ...filteredWritings
   ];
+
+  useEffect(() => {
+    setNoResults(totalResults.length === 0 && searchTerm.length > 0);
+  }, [totalResults, searchTerm]);
+
+  const handleSearchSubmit = () => {
+    if (totalResults.length === 0) {
+      console.log("No results to show for:", searchTerm);
+    } else {
+      console.log("Running search for:", searchTerm);
+    }
+  };
 
   const handleKeyDown = (e) => {
     if (!showDropdown || totalResults.length === 0) return;
@@ -37,8 +50,12 @@ const SearchBar = ({
       setSelectedIndex((prevIndex) =>
         prevIndex > 0 ? prevIndex - 1 : totalResults.length - 1
       );
-    } else if (e.key === 'Enter' && selectedIndex >= 0) {
-      handleSelect(totalResults[selectedIndex]);
+    } else if (e.key === 'Enter') {
+      if (selectedIndex >= 0) {
+        handleSelect(totalResults[selectedIndex]);
+      } else {
+        handleSearchSubmit();
+      }
     }
   };
 
@@ -95,24 +112,28 @@ const SearchBar = ({
 
       {showDropdown && (
         <div className="dropdown" ref={dropdownRef}>
-          {totalResults.length === 0 ? (
-            <p className="dropdown-no-results">No results found</p>
-          ) : (
-            <ul className="dropdown-list">
-              {totalResults.map((item, index) => (
-                <DropdownItem
-                  key={item.slug || item.title || item}
-                  item={item}
-                  index={index}
-                  selectedIndex={selectedIndex}
-                  itemRef={(el) => (itemRefs.current[index] = el)}
-                  onClick={handleSelect}
-                />
-              ))}
-            </ul>
-          )}
+          <ul className="dropdown-list">
+            {totalResults.map((item, index) => (
+              <DropdownItem
+                key={item.slug || item.title || item}
+                item={item}
+                index={index}
+                selectedIndex={selectedIndex}
+                itemRef={(el) => (itemRefs.current[index] = el)}
+                onClick={handleSelect}
+              />
+            ))}
+          </ul>
         </div>
       )}
+
+      {noResults && (
+        <div className="no-results-warning">
+          <p>No matches found for your search. Please try a different name or keyword.</p>
+        </div>
+      )}
+
+      <button className="search-button" onClick={handleSearchSubmit}>Search</button>
     </div>
   );
 };
