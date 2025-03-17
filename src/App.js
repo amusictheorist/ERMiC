@@ -6,6 +6,7 @@ import HomePage from "./components/HomePage";
 import Browse from "./components/Browse";
 import MusicianPage from "./components/MusicianPage";
 import SearchResultsPage from "./components/SearchResultsPage";
+import Footer from "./components/Footer";
 import './App.css';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Route path="/search-results" element={<SearchResultsPage />} />
           </Routes>
         </div>
+        <Footer />
       </Router>
     </DataProvider>
   );
