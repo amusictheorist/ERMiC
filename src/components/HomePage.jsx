@@ -1,6 +1,5 @@
 import "../styles/HomePage.css";
-import { useState, useEffect } from "react";
-import { useData } from "./DataContext";
+import { useState } from "react";
 import SearchBar from "./SearchBar";
 import useSearchFilters from "../hooks/useSearchFilters";
 
