@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import DropdownItem from './DropdownItem';
 import '../styles/SearchBar.css';
 
+// this component handles all searches of the CMS data
 const SearchBar = ({
   searchTerm,
   setSearchTerm,
@@ -20,6 +21,7 @@ const SearchBar = ({
   const itemRefs = useRef([]);
   const navigate = useNavigate();
 
+  // all filtered results are gathered into an array so dropdwon results can be rendered
   const totalResults = [
     ...filteredMusicians,
     ...filteredOccupations,
@@ -31,14 +33,17 @@ const SearchBar = ({
     setNoResults(totalResults.length === 0 && searchTerm.length > 0);
   }, [totalResults, searchTerm]);
 
+  // handles search submissions
   const handleSearchSubmit = () => {
     if (totalResults.length === 0) {
+      // TODO: replace console log for actual error handling message
       console.log("No results to show for:", searchTerm);
     } else {
       console.log("Running search for:", searchTerm);
     }
   };
 
+  // this function allows navigation through dropdown results with keyboard
   const handleKeyDown = (e) => {
     if (!showDropdown || totalResults.length === 0) return;
 
@@ -59,6 +64,7 @@ const SearchBar = ({
     }
   };
 
+  // this function finds the proper link to redirect to the requested site
   const handleSelect = (item) => {
     if (filteredOccupations.includes(item)) {
       navigate(`/search-results?occupation=${item}`);
@@ -73,6 +79,7 @@ const SearchBar = ({
     setSelectedIndex(-1);
   };
 
+  // this hook allows to scroll through dropdown list
   useEffect(() => {
     if (itemRefs.current[selectedIndex]) {
       itemRefs.current[selectedIndex].scrollIntoView({
@@ -82,6 +89,7 @@ const SearchBar = ({
     }
   }, [selectedIndex]);
 
+  // this hook closes dropdown results if user navigates outside search bar
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -99,6 +107,7 @@ const SearchBar = ({
     };
   }, [setShowDropdown]);
 
+  // actual render block
   return (
     <div className="search-container">
       <input

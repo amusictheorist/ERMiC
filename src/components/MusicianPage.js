@@ -3,25 +3,33 @@ import { useData } from "./DataContext";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import '../styles/MusicianPage.css';
 
+// this component handles and renders a template musican page for every musician in the CMS
 const MusicianPage = () => {
+  // slug is the main musician identifier
   const { slug } = useParams();
+  // fetching data from DataContext
   const data = useData();
 
   if (!data) return <p>Loading...</p>;
 
+  // if a url is broken or or a musician is not yet in the CMS, not found message will be rendered
   const musician = data.musicianCollection.items.find((m) => m.slug === slug);
   if (!musician) return <p>Musician not found.</p>;
 
+  // renders a portrait from CMS if available
   const portraitUrl = musician.photosCollection?.items?.[0]?.url;
 
+  // renders list of works (compositions) from CMS if available
   const works = data.workCollection?.items?.filter(
     (work) => work.musician?.slug === slug
   ) || [];
 
+  // redners list of writings from CMS if available
   const writings = data.writingCollection?.items?.filter(
     (writing) => writing.musician?.slug === slug
   ) || [];
 
+  // actual rendering block
   return (
     <div className="musician-page">
       <h1>{musician.firstName} {musician.surname}</h1>

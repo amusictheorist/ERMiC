@@ -2,23 +2,27 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useData } from "./DataContext";
 import '../styles/SearchResults.css';
 
+// this component renders a page listing results from a search if no specific musician, writing, or work is selected. if an occupation is selected, the page will return a list of musicians in the CMS who performed that occupation
 const SearchResultsPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const data = useData();
 
-  // Extract the 'occupation' query parameter from the URL
   const searchParams = new URLSearchParams(location.search);
   const occupation = searchParams.get('occupation');
 
-  // Handle loading and absence of data or occupation
   if (!occupation || !data) return <p>Loading...</p>;
 
-  // Filter musicians based on the occupation
-  const filteredMusicians = data.musicianCollection.items.filter(musician =>
-    musician.occupation.includes(occupation)
-  );
+  // filters musicians for chosen occupation and sorts them in alphabetical order
+  const filteredMusicians = data.musicianCollection.items
+    .filter(musician => musician.occupation.includes(occupation))
+    .sort((a, b) => {
+      const nameA = `${a.surname} ${a.firstName}`.toLowerCase();
+      const nameB = `${b.surname} ${b.firstName}`.toLowerCase();
+      return nameA.localeCompare(nameB);
+    });
 
+  // actual render block
   return (
     <div className="search-results">
       <h1>Search results for: {occupation}</h1>

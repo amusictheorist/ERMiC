@@ -1,9 +1,14 @@
 import { createContext, useContext, useState, useEffect } from "react";
 
+// this is what provides data for all the app components
 const DataContext = createContext();
 
+// these are the secrets from Contentful CMS
 const spaceID = process.env.REACT_APP_SPACE_ID;
 const accessToken = process.env.REACT_APP_ACCESS_TOKEN;
+
+/* IMPORTANT: this GraphQL API query fetches all the structured data from the CMS upon mounting the ERMiC website. Do not change anything about this query or about the content types in the ERMiC Contentful space without corroborating changes between the two or the site will break. If changes need to be made, visit Contentful's GraphQL documentation here: https://www.contentful.com/developers/docs/references/graphql/. You'll need the spaceID and accessToken from the ERMiC site and authorization from the project managers to obtain them.
+*/
 const query = `
 {
   musicianCollection {
@@ -59,9 +64,11 @@ const query = `
 }
 `;
 
+// the actual component
 export const DataProvider = ({ children }) => {
   const [data, setData] = useState(null);
 
+  // fetch call to CMS
   useEffect(() => {
     fetch(`https://graphql.contentful.com/content/v1/spaces/${spaceID}/`, {
       method: "POST",

@@ -1,6 +1,7 @@
 import '../styles/Navbar.css';
 import { Link, useLocation } from 'react-router-dom';
 
+// this component handles navigation links across the website
 const Navbar = ({ searchTerm, setSearchTerm }) => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
