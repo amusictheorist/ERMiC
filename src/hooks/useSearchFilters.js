@@ -62,7 +62,6 @@ const useSearchFilters = (searchTerm) => {
     );
   }, [searchTerm, data]);
 
-  // render block
   return {
     filteredMusicians,
     filteredWorks,
