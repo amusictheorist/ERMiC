@@ -17,6 +17,7 @@ function App() {
       <Router>
         <div className="body">
           <Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+          <div className="page-content">
           <Routes>
             <Route path="/" element={<HomePage searchTerm={searchTerm} setSearchTerm={setSearchTerm} />} />
             <Route path="/browse" element={<Browse />} />
@@ -25,6 +26,7 @@ function App() {
           </Routes>
         </div>
         <Footer />
+          </div>
       </Router>
     </DataProvider>
   );

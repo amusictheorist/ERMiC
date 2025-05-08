@@ -1,8 +1,22 @@
-body {
-  font-family: Arial, sans-serif;
+html, body, #root {
+  height: 100%;
   margin: 0;
   padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
   background-color: #f0f0f0;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.page-content {
+  flex: 1;
 }
 
 .footer {
@@ -10,7 +24,4 @@ body {
   padding: 0.1rem;
   background: #3182ce;
   color: white;
-  position: relative;
-  bottom: 0;
-  width: 100%;
 }
