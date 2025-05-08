@@ -1,10 +1,10 @@
-import { useRef, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRef, useEffect } from 'react';
 import DropdownItem from './DropdownItem';
-import '../styles/SearchBar.css';
 import useDropdownNavigation from '../hooks/useDropdownNavigation';
 import useClickOutside from '../hooks/useClickOutside';
 import useSearchResults from '../hooks/useSearchResults';
+import useSearchNavigation from '../hooks/useSearchNavigation';
+import '../styles/SearchBar.css';
 
 // this component handles all searches of the CMS data
 const SearchBar = ({
@@ -21,7 +21,6 @@ const SearchBar = ({
 }) => {
   const dropdownRef = useRef(null);
   const itemRefs = useRef([]);
-  const navigate = useNavigate();
   const { totalResults, noResults } = useSearchResults({
     filteredMusicians,
     filteredWorks,
@@ -41,19 +40,15 @@ const SearchBar = ({
   };
   
   // this function finds the proper link to redirect to the requested site
-  const handleSelect = (item) => {
-    if (filteredOccupations.includes(item)) {
-      navigate(`/search-results?occupation=${item}`);
-    } else if (filteredMusicians.includes(item)) {
-      navigate(`/musician/${item.slug}`);
-    } else if ((filteredWorks.includes(item) || filteredWritings.includes(item)) && item.musician) {
-      navigate(`/musician/${item.musician.slug}`);
-    }
-    
-    setSearchTerm('');
-    setShowDropdown(false);
-    setSelectedIndex(-1);
-  };
+  const handleSelect = useSearchNavigation({
+    filteredMusicians,
+    filteredWorks,
+    filteredWritings,
+    filteredOccupations,
+    setSearchTerm,
+    setShowDropdown,
+    setSelectedIndex
+  });
   
   // this function allows navigation through dropdown results with keyboard
   const handleKeyDown = useDropdownNavigation({
@@ -113,7 +108,13 @@ const SearchBar = ({
         </div>
       )}
 
-      <button className="search-button" onClick={handleSearchSubmit}>Search</button>
+      <button
+        className="search-button"
+        onClick={handleSearchSubmit}
+        disabled={searchTerm.length === 0}
+      >
+        Search
+      </button>
     </div>
   );
 };
