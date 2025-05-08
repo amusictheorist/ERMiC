@@ -3,27 +3,67 @@
   border-bottom: 1px solid #e2e8f0;
   padding: 0.5rem 1rem;
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
-.navbar .logo {
+/* Homepage layout */
+.navbar.home {
+  justify-content: space-between;
+}
+
+.navbar.home .logo-full {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #3182ce;
+  flex: 2;
+}
+
+.navbar.home .links-right {
+  display: flex;
+  gap: 1rem;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+/* Internal page layout */
+.navbar.internal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.navbar.internal .logo-short,
+.navbar.internal .search-container {
+  flex: 1;
+}
+
+.navbar.internal .links-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1rem;
+}
+
+.navbar.internal .logo-short {
   font-size: 1rem;
   font-weight: 600;
   color: #3182ce;
 }
 
-@media (max-width: 768px) {
-  .navbar.logo {
-    font-size: 0.875rem;
-  }
-}
-
-.navbar .links {
+.navbar.internal .search-container {
   display: flex;
-  gap: 1rem;
+  justify-content: flex-start;
 }
 
+.search-container input {
+  padding: 0.4rem;
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+/* Link styles (shared) */
 .navbar .links a {
   color: #4a5568;
   text-decoration: none;
@@ -31,4 +71,24 @@
 
 .navbar .links a:hover {
   color: #3182ce;
+}
+
+/* Mobile tweaks */
+@media (max-width: 768px) {
+  .navbar .logo-full,
+  .navbar .logo-short {
+    font-size: 0.875rem;
+  }
+
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar .links,
+  .search-container {
+    width: 100%;
+    justify-content: flex-start;
+    margin-top: 0.5rem;
+  }
 }
