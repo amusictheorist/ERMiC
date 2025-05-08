@@ -2,6 +2,9 @@ import { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DropdownItem from './DropdownItem';
 import '../styles/SearchBar.css';
+import useDropdownNavigation from '../hooks/useDropdownNavigation';
+import useClickOutside from '../hooks/useClickOutside';
+import useSearchResults from '../hooks/useSearchResults';
 
 // this component handles all searches of the CMS data
 const SearchBar = ({
@@ -16,22 +19,16 @@ const SearchBar = ({
   selectedIndex,
   setSelectedIndex
 }) => {
-  const [noResults, setNoResults] = useState(false);
   const dropdownRef = useRef(null);
   const itemRefs = useRef([]);
   const navigate = useNavigate();
-
-  // all filtered results are gathered into an array so dropdwon results can be rendered
-  const totalResults = [
-    ...filteredMusicians,
-    ...filteredOccupations,
-    ...filteredWorks,
-    ...filteredWritings
-  ];
-
-  useEffect(() => {
-    setNoResults(totalResults.length === 0 && searchTerm.length > 0);
-  }, [totalResults, searchTerm]);
+  const { totalResults, noResults } = useSearchResults({
+    filteredMusicians,
+    filteredWorks,
+    filteredWritings,
+    filteredOccupations,
+    searchTerm
+  });
 
   // handles search submissions
   const handleSearchSubmit = () => {
@@ -42,28 +39,7 @@ const SearchBar = ({
       console.log("Running search for:", searchTerm);
     }
   };
-
-  // this function allows navigation through dropdown results with keyboard
-  const handleKeyDown = (e) => {
-    if (!showDropdown || totalResults.length === 0) return;
-
-    if (e.key === 'ArrowDown') {
-      setSelectedIndex((prevIndex) =>
-        prevIndex < totalResults.length - 1 ? prevIndex + 1 : 0
-      );
-    } else if (e.key === 'ArrowUp') {
-      setSelectedIndex((prevIndex) =>
-        prevIndex > 0 ? prevIndex - 1 : totalResults.length - 1
-      );
-    } else if (e.key === 'Enter') {
-      if (selectedIndex >= 0) {
-        handleSelect(totalResults[selectedIndex]);
-      } else {
-        handleSearchSubmit();
-      }
-    }
-  };
-
+  
   // this function finds the proper link to redirect to the requested site
   const handleSelect = (item) => {
     if (filteredOccupations.includes(item)) {
@@ -73,13 +49,23 @@ const SearchBar = ({
     } else if ((filteredWorks.includes(item) || filteredWritings.includes(item)) && item.musician) {
       navigate(`/musician/${item.musician.slug}`);
     }
-
+    
     setSearchTerm('');
     setShowDropdown(false);
     setSelectedIndex(-1);
   };
+  
+  // this function allows navigation through dropdown results with keyboard
+  const handleKeyDown = useDropdownNavigation({
+    totalResults,
+    selectedIndex,
+    setSelectedIndex,
+    handleSelect,
+    showDropdown,
+    itemRefs
+  });
 
-  // this hook allows to scroll through dropdown list
+  // this hook allows scrolling through dropdown list
   useEffect(() => {
     if (itemRefs.current[selectedIndex]) {
       itemRefs.current[selectedIndex].scrollIntoView({
@@ -90,22 +76,7 @@ const SearchBar = ({
   }, [selectedIndex]);
 
   // this hook closes dropdown results if user navigates outside search bar
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target) &&
-        !event.target.closest('.search-container')
-      ) {
-        setShowDropdown(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [setShowDropdown]);
+  useClickOutside(dropdownRef, () => setShowDropdown(false), '.search-container');
 
   // actual render block
   return (
