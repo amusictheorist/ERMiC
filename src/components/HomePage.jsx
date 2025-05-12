@@ -3,11 +3,14 @@ import { useState } from "react";
 import SearchBar from "./SearchBar";
 
 // landing page for the site, where main search functionality is implemented
-const HomePage = ({ searchTerm, setSearchTerm }) => {
-  const [selectedIndex, setSelectedIndex] = useState(-1);
-  const [showDropdown, setShowDropdown] = useState(false);
-  
-  // render block
+const HomePage = ({
+  searchTerm,
+  setSearchTerm,
+  showDropdown,
+  setShowDropdown,
+  selectedIndex,
+  setSelectedIndex
+}) => {
   return (
     <div className="homepage">
       <h1>Welcome to the European Refugee Musicians in Canada Online Biographical Dictionary</h1>

@@ -14,40 +14,30 @@ function App() {
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
 
+  const searchState = {
+    searchTerm,
+    setSearchTerm,
+    showDropdown,
+    setShowDropdown,
+    selectedIndex,
+    setSelectedIndex
+  };
+
   return (
     <DataProvider>
       <Router>
         <div className="body">
-          <Navbar
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            showDropdown={showDropdown}
-            setShowDropdown={setShowDropdown}
-            selectedIndex={selectedIndex}
-            setSelectedIndex={setSelectedIndex}
-          />
+          <Navbar {...searchState} />
           <div className="page-content">
           <Routes>
-              <Route
-                path="/"
-                element={
-                  <HomePage
-                    searchTerm={searchTerm}
-                    setSearchTerm={setSearchTerm}
-                    showDropdown={showDropdown}
-                    setShowDropdown={setShowDropdown}
-                    selectedIndex={selectedIndex}
-                    setSelectedIndex={setSelectedIndex}
-                  />
-                }
-              />
-            <Route path="/browse" element={<Browse />} />
-            <Route path="/musician/:slug" element={<MusicianPage />} />
-            <Route path="/search-results" element={<SearchResultsPage />} />
-          </Routes>
-        </div>
-        <Footer />
+              <Route path="/" element={<HomePage {...searchState} />} />
+              <Route path="/browse" element={<Browse />} />
+              <Route path="/musician/:slug" element={<MusicianPage />} />
+              <Route path="/search-results" element={<SearchResultsPage />} />
+            </Routes>
           </div>
+          <Footer />
+        </div>
       </Router>
     </DataProvider>
   );

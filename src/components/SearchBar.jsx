@@ -14,7 +14,8 @@ const SearchBar = ({
   showDropdown,
   setShowDropdown,
   selectedIndex,
-  setSelectedIndex
+  setSelectedIndex,
+  compact = false
 }) => {
   const dropdownRef = useRef(null);
   const itemRefs = useRef([]);
@@ -79,7 +80,7 @@ const SearchBar = ({
 
   // actual render block
   return (
-    <div className="search-container">
+    <div className={`search-container ${compact ? 'compact' : ''}`}>
       <input
         className="search-input"
         type="text"

@@ -11,7 +11,7 @@ const Navbar = ({
   selectedIndex,
   setSelectedIndex
 }) => {
-  
+
   const location = useLocation();
   const isHomePage = location.pathname === '/';
 
@@ -32,12 +32,13 @@ const Navbar = ({
       
       {!isHomePage && (
         <SearchBar
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        showDropdown={showDropdown}
-        setShowDropdown={setShowDropdown}
-        selectedIndex={selectedIndex}
-        setSelectedIndex={setSelectedIndex}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          showDropdown={showDropdown}
+          setShowDropdown={setShowDropdown}
+          selectedIndex={selectedIndex}
+          setSelectedIndex={setSelectedIndex}
+          compact={true}
       />
       )}
     </nav>
