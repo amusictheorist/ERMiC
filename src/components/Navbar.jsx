@@ -1,8 +1,17 @@
 import '../styles/Navbar.css';
 import { Link, useLocation } from 'react-router-dom';
+import SearchBar from './SearchBar';
 
 // this component handles navigation links across the website
-const Navbar = ({ searchTerm, setSearchTerm }) => {
+const Navbar = ({
+  searchTerm,
+  setSearchTerm,
+  showDropdown,
+  setShowDropdown,
+  selectedIndex,
+  setSelectedIndex
+}) => {
+  
   const location = useLocation();
   const isHomePage = location.pathname === '/';
 
@@ -22,14 +31,14 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
       </div>
       
       {!isHomePage && (
-        <div className="search-container">
-          <input
-            type="text"
-            placeholder="Enter name or keyword..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
+        <SearchBar
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        showDropdown={showDropdown}
+        setShowDropdown={setShowDropdown}
+        selectedIndex={selectedIndex}
+        setSelectedIndex={setSelectedIndex}
+      />
       )}
     </nav>
   );

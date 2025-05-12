@@ -5,15 +5,12 @@ import useClickOutside from '../hooks/useClickOutside';
 import useSearchResults from '../hooks/useSearchResults';
 import useSearchNavigation from '../hooks/useSearchNavigation';
 import '../styles/SearchBar.css';
+import useSearchFilters from '../hooks/useSearchFilters';
 
 // this component handles all searches of the CMS data
 const SearchBar = ({
   searchTerm,
   setSearchTerm,
-  filteredMusicians,
-  filteredWorks,
-  filteredWritings,
-  filteredOccupations,
   showDropdown,
   setShowDropdown,
   selectedIndex,
@@ -21,6 +18,13 @@ const SearchBar = ({
 }) => {
   const dropdownRef = useRef(null);
   const itemRefs = useRef([]);
+  const {
+    filteredMusicians,
+    filteredWorks,
+    filteredWritings,
+    filteredOccupations
+  } = useSearchFilters(searchTerm);
+
   const { totalResults, noResults } = useSearchResults({
     filteredMusicians,
     filteredWorks,
@@ -81,7 +85,10 @@ const SearchBar = ({
         type="text"
         placeholder="Enter name or keyword..."
         value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+        onChange={(e) => {
+          setSearchTerm(e.target.value);
+          setShowDropdown(true);
+        }}
         onKeyDown={handleKeyDown}
       />
 

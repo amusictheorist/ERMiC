@@ -43,7 +43,7 @@ const MusicianPage = () => {
         alt={`${musician.firstName} ${musician.surname}`}
       />
       <h2>Biography</h2>
-      <RichTextRenderer document={musician.bibliography?.json} />
+      <RichTextRenderer document={musician.biography?.json} />
       <WorkList works={works} />
       <WritingList writings={writings} />
       <h2>Bibliography</h2>

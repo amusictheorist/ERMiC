@@ -11,15 +11,36 @@ import './App.css';
 
 function App() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
 
   return (
     <DataProvider>
       <Router>
         <div className="body">
-          <Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+          <Navbar
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            showDropdown={showDropdown}
+            setShowDropdown={setShowDropdown}
+            selectedIndex={selectedIndex}
+            setSelectedIndex={setSelectedIndex}
+          />
           <div className="page-content">
           <Routes>
-            <Route path="/" element={<HomePage searchTerm={searchTerm} setSearchTerm={setSearchTerm} />} />
+              <Route
+                path="/"
+                element={
+                  <HomePage
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                    showDropdown={showDropdown}
+                    setShowDropdown={setShowDropdown}
+                    selectedIndex={selectedIndex}
+                    setSelectedIndex={setSelectedIndex}
+                  />
+                }
+              />
             <Route path="/browse" element={<Browse />} />
             <Route path="/musician/:slug" element={<MusicianPage />} />
             <Route path="/search-results" element={<SearchResultsPage />} />
