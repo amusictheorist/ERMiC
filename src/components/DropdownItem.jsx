@@ -4,7 +4,6 @@ const DropdownItem = ({ item, index, selectedIndex, onClick, itemRef }) => {
 
   return (
     <li
-      key={item.slug || item.title}
       ref={itemRef}
       onClick={() => onClick(item)}
       className={`dropdown-item ${isSelected ? 'selected' : ''}`}

@@ -1,5 +1,4 @@
 import "../styles/HomePage.css";
-import { useState } from "react";
 import SearchBar from "./SearchBar";
 
 // landing page for the site, where main search functionality is implemented

@@ -11,11 +11,12 @@ const SearchResultsPage = () => {
   const searchParams = new URLSearchParams(location.search);
   const occupation = searchParams.get('occupation');
 
-  if (!occupation || !data) return <p>Loading...</p>;
+  if (!data) return <p>Loading...</p>;
+  if (!occupation) return <p>No occupation specified.</p>;
 
   // filters musicians for chosen occupation and sorts them in alphabetical order
   const filteredMusicians = data.musicianCollection.items
-    .filter(musician => musician.occupation.includes(occupation))
+    .filter(musician => musician.occupation?.includes(occupation))
     .sort((a, b) => {
       const nameA = `${a.surname} ${a.firstName}`.toLowerCase();
       const nameB = `${b.surname} ${b.firstName}`.toLowerCase();

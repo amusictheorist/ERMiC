@@ -98,7 +98,7 @@ const SearchBar = ({
           <ul className="dropdown-list">
             {totalResults.map((item, index) => (
               <DropdownItem
-                key={item.slug || item.title || item}
+                key={`${item.sys?.id || index}-${item.title || item.name || item}`}
                 item={item}
                 index={index}
                 selectedIndex={selectedIndex}

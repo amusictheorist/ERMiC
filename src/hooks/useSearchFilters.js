@@ -42,9 +42,9 @@ const useSearchFilters = (searchTerm) => {
     const occupationResults = Array.from(
       new Set(
         data.musicianCollection.items.flatMap((musician) =>
-          musician.occupation.filter((occ) =>
+          musician.occupation?.filter((occ) =>
             occ.toLowerCase().includes(searchTerm.toLowerCase())
-          )
+          ) ?? []
         )
       )
     );
