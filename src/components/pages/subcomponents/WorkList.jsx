@@ -1,3 +1,5 @@
+import React from 'react';
+
 const WorkList = ({ works }) => {
   if (!works || works.length === 0) return null;
 

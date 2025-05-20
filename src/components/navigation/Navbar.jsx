@@ -1,3 +1,4 @@
+import React from 'react';
 import '../../styles/Navbar.css';
 import { Link, useLocation } from 'react-router-dom';
 import SearchBar from '../searchBar/SearchBar';

@@ -1,3 +1,4 @@
+import React from 'react';
 import { useParams } from "react-router-dom";
 import { useData } from "../DataContext";
 import '../../styles/MusicianPage.css';

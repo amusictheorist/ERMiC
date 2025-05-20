@@ -1,6 +1,12 @@
+import React from 'react';
+
 // this component redners the list of dropdown items when typing into the search bar
 const DropdownItem = ({ item, index, selectedIndex, onClick, itemRef }) => {
   const isSelected = selectedIndex === index;
+
+  const displayName = item.firstName
+    ? `${item.firstName}${item.surname ? ` ${item.surname}` : ''}`
+    : item.name || item.title || 'unknown';
 
   return (
     <li
@@ -8,7 +14,7 @@ const DropdownItem = ({ item, index, selectedIndex, onClick, itemRef }) => {
       onClick={() => onClick(item)}
       className={`dropdown-item ${isSelected ? 'selected' : ''}`}
     >
-      {item.firstName ? `${item.firstName} ${item.surname}` : item.title || item}
+      {displayName}
     </li>
   );
 };

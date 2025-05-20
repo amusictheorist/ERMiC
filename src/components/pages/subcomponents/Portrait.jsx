@@ -1,3 +1,5 @@
+import React from 'react';
+
 const Portrait = ({ url, alt }) => {
   if (!url) return null;
 

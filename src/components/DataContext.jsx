@@ -1,3 +1,4 @@
+import React from 'react';
 import { createContext, useContext, useState, useEffect } from "react";
 
 // this is what provides data for all the app components
