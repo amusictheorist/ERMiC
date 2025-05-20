@@ -33,7 +33,7 @@ const useDropdownNavigation = ({
         block: 'nearest',
       });
     }
-  }, [selectedIndex]);
+  }, [selectedIndex, itemRefs]);
 
   return handleKeyDown;
 };

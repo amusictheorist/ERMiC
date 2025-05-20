@@ -1,5 +1,5 @@
-import { useCallback } from "react";
-import { useNavigate } from "react-router-dom"
+import { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const useSearchNavigation = ({
   filteredMusicians,
@@ -12,18 +12,48 @@ const useSearchNavigation = ({
 }) => {
   const navigate = useNavigate();
 
+  
   const handleSelect = useCallback((item) => {
-    if (filteredOccupations.includes(item)) {
-      navigate(`/search-results?occupation=${item}`);
-    } else if (filteredMusicians.includes(item)) {
-      navigate(`/musician/${item.slug}`);
-    } else if ((filteredWorks.includes(item) || filteredWritings.includes(item)) && item.musician) {
-      navigate(`/musician/${item.musician.slug}`);
-    }
+    const clearSearchUI = () => {
+      setSearchTerm('');
+      setShowDropdown(false);
+      setSelectedIndex(-1);
+    };
 
-    setSearchTerm('');
-    setShowDropdown(false);
-    setSelectedIndex(-1);
+    try {
+      if (!item) throw new Error('No item provided for navigation');
+
+      if (filteredOccupations.includes(item)) {
+        navigate(`/search-results?occupation=${item}`);
+        clearSearchUI();
+        return;
+      }
+
+      if (filteredMusicians.includes(item)) {
+        if (!item.slug) throw new Error('Musician missing slug');
+        navigate(`/musician/${item.slug}`);
+        clearSearchUI();
+        return;
+      }
+
+      if (filteredWorks.includes(item)) {
+        if (!item.musician?.slug) throw new Error('Work missing musician slug');
+        navigate(`/musician/${item.musician.slug}`);
+        clearSearchUI();
+        return;
+      }
+
+      if (filteredWritings.includes(item)) {
+        if (!item.musician?.slug) throw new Error('Writing missing musician slug');
+        navigate(`/musician/${item.musician.slug}`);
+        clearSearchUI();
+        return;
+      }
+
+      throw new Error('Item does not match any known category');
+    } catch (error) {
+      console.error('Navigation error:', error.message);
+    }
   }, [
     filteredMusicians,
     filteredWorks,
@@ -34,7 +64,7 @@ const useSearchNavigation = ({
     setShowDropdown,
     setSelectedIndex
   ]);
-  
+
   return handleSelect;
 };
 
