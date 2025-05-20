@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useData } from "./DataContext";
+import { useData } from "../DataContext";
 import '../styles/Browse.css';
 
 // this component renders the browse page, which lists all musicians that are entered into the databse

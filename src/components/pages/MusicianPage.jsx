@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
-import { useData } from "./DataContext";
+import { useData } from "../DataContext";
 import '../styles/MusicianPage.css';
-import Portrait from "./Portrait";
-import WorkList from "./WorkList";
-import WritingList from "./WritingList";
-import RichTextRenderer from "./RichTextRenderer";
+import Portrait from "./subcomponents/Portrait";
+import WorkList from "./subcomponents/WorkList";
+import WritingList from "./subcomponents/WritingList";
+import RichTextRenderer from "./subcomponents/RichTextRenderer";
 
 // this component handles and renders a template musican page for every musician in the CMS
 const MusicianPage = () => {
@@ -27,7 +27,7 @@ const MusicianPage = () => {
     (work) => work.musician?.slug === slug
   ) || [];
 
-  // redners list of writings from CMS if available
+  // renders list of writings from CMS if available
   const writings = data.writingCollection?.items?.filter(
     (writing) => writing.musician?.slug === slug
   ) || [];
