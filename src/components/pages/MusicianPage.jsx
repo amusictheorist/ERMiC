@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useData } from "../DataContext";
-import '../styles/MusicianPage.css';
+import '../../styles/MusicianPage.css';
 import Portrait from "./subcomponents/Portrait";
 import WorkList from "./subcomponents/WorkList";
 import WritingList from "./subcomponents/WritingList";

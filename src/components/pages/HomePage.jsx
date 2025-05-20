@@ -1,5 +1,5 @@
-import "../styles/HomePage.css";
-import SearchBar from "./SearchBar";
+import "../../styles/HomePage.css";
+import SearchBar from "../searchBar/SearchBar";
 
 // landing page for the site, where main search functionality is implemented
 const HomePage = ({

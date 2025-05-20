@@ -1,6 +1,6 @@
-import '../styles/Navbar.css';
+import '../../styles/Navbar.css';
 import { Link, useLocation } from 'react-router-dom';
-import SearchBar from './SearchBar';
+import SearchBar from '../searchBar/SearchBar';
 
 // this component handles navigation links across the website
 const Navbar = ({

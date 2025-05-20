@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useData } from "../DataContext";
-import '../styles/SearchResults.css';
+import '../../styles/SearchResults.css';
 
 // this component renders a page listing results from a search if no specific musician, writing, or work is selected. if an occupation is selected, the page will return a list of musicians in the CMS who performed that occupation
 const SearchResultsPage = () => {

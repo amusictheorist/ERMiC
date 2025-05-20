@@ -4,7 +4,7 @@ import useDropdownNavigation from '../../hooks/useDropdownNavigation';
 import useClickOutside from '../../hooks/useClickOutside';
 import useSearchResults from '../../hooks/useSearchResults';
 import useSearchNavigation from '../../hooks/useSearchNavigation';
-import '../styles/SearchBar.css';
+import '../../styles/SearchBar.css';
 import useSearchFilters from '../../hooks/useSearchFilters';
 
 // this component handles all searches of the CMS data

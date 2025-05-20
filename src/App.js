@@ -1,12 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { DataProvider } from "./components/DataContext";
 import { useState } from "react";
-import Navbar from "./components/Navbar";
-import HomePage from "./components/HomePage";
-import Browse from "./components/Browse";
-import MusicianPage from "./components/MusicianPage";
-import SearchResultsPage from "./components/SearchResultsPage";
-import Footer from "./components/Footer";
+import Navbar from "./components/navigation/Navbar";
+import Footer from "./components/navigation/Footer";
+import HomePage from "./components/pages/HomePage";
+import Browse from "./components/browse/Browse";
+import MusicianPage from "./components/pages/MusicianPage";
+import SearchResultsPage from "./components/pages/SearchResultsPage";
 import './App.css';
 
 function App() {
