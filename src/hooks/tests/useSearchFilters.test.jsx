@@ -2,7 +2,6 @@ import { renderHook, waitFor } from '@testing-library/react';
 import * as DataContext from '../../components/DataContext';
 import useSearchFilters from '../useSearchFilters';
 
-// Mock module at the top level
 jest.mock('../../components/DataContext', () => ({
   useData: jest.fn(),
 }));
@@ -28,10 +27,16 @@ const mockData = {
   },
 };
 
+const makeMockReturn = (data, loading = false, error = null) => ({
+  data,
+  loading,
+  error,
+});
+
 describe('useSearchFilters with full data', () => {
   beforeEach(() => {
     DataContext.useData.mockReset();
-    DataContext.useData.mockImplementation(() => mockData);
+    DataContext.useData.mockImplementation(() => makeMockReturn(mockData));
   });
 
   it('returns empty results and hides dropdown when searchTerm is empty', () => {
@@ -105,7 +110,7 @@ describe('useSearchFilters error handling and edge cases', () => {
   });
 
   it('returns empty results and hides dropdown if data is null', async () => {
-    DataContext.useData.mockReturnValueOnce(null);
+    DataContext.useData.mockReturnValueOnce(makeMockReturn(null));
 
     const { result } = renderHook(() => useSearchFilters('anything'));
 
@@ -119,11 +124,11 @@ describe('useSearchFilters error handling and edge cases', () => {
   });
 
   it('handles missing collections gracefully', async () => {
-    DataContext.useData.mockReturnValueOnce({
+    DataContext.useData.mockReturnValueOnce(makeMockReturn({
       musicianCollection: {},
       workCollection: null,
       writingCollection: { items: null },
-    });
+    }));
 
     const { result } = renderHook(() => useSearchFilters('a'));
 
@@ -152,7 +157,7 @@ describe('useSearchFilters error handling and edge cases', () => {
       workCollection: { items: [] },
       writingCollection: { items: [] },
     };
-    DataContext.useData.mockReturnValueOnce(badData);
+    DataContext.useData.mockReturnValueOnce(makeMockReturn(badData));
 
     const { result } = renderHook(() => useSearchFilters('fail'));
 
@@ -171,11 +176,11 @@ describe('useSearchFilters error handling and edge cases', () => {
   });
 
   it('handles empty arrays in collections', async () => {
-    DataContext.useData.mockReturnValueOnce({
+    DataContext.useData.mockReturnValueOnce(makeMockReturn({
       musicianCollection: { items: [] },
       workCollection: { items: [] },
-      writingCollection: { items: [] }
-    });
+      writingCollection: { items: [] },
+    }));
 
     const { result } = renderHook(() => useSearchFilters('a'));
 
@@ -189,16 +194,17 @@ describe('useSearchFilters error handling and edge cases', () => {
   });
 
   it('handles musicians missing occupation or partial data', async () => {
-    let mockData = null;
-    jest.spyOn(DataContext, 'useData').mockImplementation(() => mockData);
-  
+    let currentMockData = null;
+
+    jest.spyOn(DataContext, 'useData').mockImplementation(() => makeMockReturn(currentMockData));
+
     const { result, rerender } = renderHook(({ term }) => useSearchFilters(term), {
-      initialProps: { term: 'john' }
+      initialProps: { term: 'john' },
     });
-  
+
     expect(result.current.filteredMusicians).toHaveLength(0);
 
-    mockData = {
+    currentMockData = {
       musicianCollection: {
         items: [
           { firstName: 'John', surname: 'Doe' },
@@ -222,9 +228,9 @@ describe('useSearchFilters error handling and edge cases', () => {
     const { result } = renderHook(() => useSearchFilters('    '));
 
     expect(result.current.filteredMusicians).toEqual([]);
-      expect(result.current.filteredOccupations).toEqual([]);
-      expect(result.current.filteredWorks).toEqual([]);
-      expect(result.current.filteredWritings).toEqual([]);
-      expect(result.current.showDropdown).toBe(false);
+    expect(result.current.filteredOccupations).toEqual([]);
+    expect(result.current.filteredWorks).toEqual([]);
+    expect(result.current.filteredWritings).toEqual([]);
+    expect(result.current.showDropdown).toBe(false);
   });
 });

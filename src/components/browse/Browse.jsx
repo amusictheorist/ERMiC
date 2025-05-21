@@ -7,8 +7,9 @@ import '../../styles/Browse.css';
 const Browse = () => {
 
   // fetches data from DataContext component
-  const data = useData();
-  if (!data) return <p>Loading...</p>;
+  const { data, loading, error } = useData();
+  if (loading) return <p>Loading data...</p>
+  if (error && !data) return <p>Failed to load data. Please Try again later.</p>
 
   // sort fetched data into alphabetical order
   const sortedMusicians = [...data.musicianCollection.items].sort((a, b) => {

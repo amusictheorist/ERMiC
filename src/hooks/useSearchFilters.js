@@ -3,7 +3,7 @@ import { useData } from "../components/DataContext";
 
  // this custom hook handles the filtered search function
 const useSearchFilters = (searchTerm) => {
-  const data = useData();
+  const { data, loading, error } = useData() || {};
   const [filteredMusicians, setFilteredMusicians] = useState([]);
   const [filteredWritings, setFilteredWritings] = useState([]);
   const [filteredWorks, setFilteredWorks] = useState([]);
@@ -12,7 +12,7 @@ const useSearchFilters = (searchTerm) => {
 
   useEffect(() => {
   // if no data has been received or nothing is typed in yet, set everything to empty
-    if (!data || searchTerm.trim() === '') {
+    if (loading || error || searchTerm.trim() === '') {
       setFilteredMusicians([]);
       setFilteredWorks([]);
       setFilteredWritings([]);

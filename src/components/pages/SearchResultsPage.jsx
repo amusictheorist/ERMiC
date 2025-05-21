@@ -7,12 +7,13 @@ import '../../styles/SearchResults.css';
 const SearchResultsPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const data = useData();
+  const { data, loading, error } = useData();
 
   const searchParams = new URLSearchParams(location.search);
   const occupation = searchParams.get('occupation');
 
-  if (!data) return <p>Loading...</p>;
+  if (loading) return <p>Loading data...</p>
+  if (error && !data) return <p>Failed to load data. Please Try again later.</p>
   if (!occupation) return <p>No occupation specified.</p>;
 
   // filters musicians for chosen occupation and sorts them in alphabetical order

@@ -53,6 +53,8 @@ const useSearchNavigation = ({
       throw new Error('Item does not match any known category');
     } catch (error) {
       console.error('Navigation error:', error.message);
+    } finally {
+      clearSearchUI();
     }
   }, [
     filteredMusicians,

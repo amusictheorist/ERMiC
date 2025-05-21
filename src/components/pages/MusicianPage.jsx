@@ -12,9 +12,10 @@ const MusicianPage = () => {
   // slug is the main musician identifier
   const { slug } = useParams();
   // fetching data from DataContext
-  const data = useData();
+  const { data, loading, error } = useData();
 
-  if (!data) return <p>Loading...</p>;
+  if (loading) return <p>Loading data...</p>
+  if (error && !data) return <p>Failed to load data. Please Try again later.</p>
 
   // if a url is broken or or a musician is not yet in the CMS, not found message will be rendered
   const musician = data.musicianCollection.items.find((m) => m.slug === slug);

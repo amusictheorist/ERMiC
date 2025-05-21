@@ -1,5 +1,4 @@
-import React from 'react';
-import { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 // this is what provides data for all the app components
 const DataContext = createContext();
@@ -68,28 +67,47 @@ const query = `
 // the actual component
 export const DataProvider = ({ children }) => {
   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // fetch call to CMS
   useEffect(() => {
-    fetch(`https://graphql.contentful.com/content/v1/spaces/${spaceID}/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({ query }),
-    })
-      .then((response) => response.json())
-      .then(({ data, errors }) => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`https://graphql.contentful.com/content/v1/spaces/${spaceID}/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({ query }),
+        });
+      
+        const { data, errors } = await response.json();
+      
         if (errors) {
-          console.error(errors);
+          console.warn('GraphQL Errors:', errors);
         }
+
+        if (!data) {
+          throw new Error('No data received from CMS.');
+        }
+
         setData(data);
-      });
+        console.log('data:', data);
+      } catch (err) {
+        console.error('Network error:', err);
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (
-    <DataContext.Provider value={data}>
+    <DataContext.Provider value={{ data, loading, error }}>
       {children}
     </DataContext.Provider>
   );
