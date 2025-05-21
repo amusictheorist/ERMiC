@@ -60,4 +60,18 @@ describe('useClickOutside', () => {
     expect(callback).not.toHaveBeenCalled();
     expect(getByTestId('status')).toHaveTextContent('Waiting');
   });
-})
+
+  it('catches and logs errors thrown by the callback', () => {
+    const error = new Error('Callback failed');
+    const callback = jest.fn(() => { throw error; });
+    console.error = jest.fn();
+
+    const { getByTestId } = render(<TestComponent callback={callback} />);
+
+    fireEvent.mouseDown(getByTestId('outside'));
+
+    expect(callback).toHaveBeenCalledTimes(1);
+    expect(console.error).toHaveBeenCalledWith('Error in useClickOutside callback', error);
+    expect(getByTestId('status')).toHaveTextContent('Clicked outside');
+  });
+});

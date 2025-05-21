@@ -8,7 +8,11 @@ const useClickOutside = (ref, callback, containerSelector = null) => {
         : null;
       
       if (ref.current && !ref.current.contains(event.target) && !container) {
-        callback();
+        try {
+          callback();
+        } catch (err) {
+          console.error('Error in useClickOutside callback', err);
+        }
       }
     };
 

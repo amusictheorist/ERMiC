@@ -10,15 +10,19 @@ const useSearchResults = ({
 }) => {
   const [noResults, setNoResults] = useState(false);
 
-  const totalResults = useMemo(() => [
-    ...filteredMusicians,
-    ...filteredOccupations,
-    ...filteredWorks,
-    ...filteredWritings
-  ], [filteredMusicians, filteredOccupations, filteredWorks, filteredWritings]);
+  const totalResults = useMemo(() => {
+    // fall back to guard against empty arrays if any props are undefined or null
+    const musicians = filteredMusicians || [];
+    const works = filteredWorks || [];
+    const writings = filteredWritings || [];
+    const occupations = filteredOccupations || [];
+
+    return [...musicians, ...occupations, ...works, ...writings];
+  }, [filteredMusicians, filteredOccupations, filteredWorks, filteredWritings]);
 
   useEffect(() => {
-    setNoResults(totalResults.length === 0 && searchTerm.length > 0);
+    const safeSearch = typeof searchTerm === 'string' ? searchTerm : '';
+    setNoResults(totalResults.length === 0 && safeSearch.trim().length > 0);
   }, [totalResults, searchTerm]);
 
   return { totalResults, noResults };
