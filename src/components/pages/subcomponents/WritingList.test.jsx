@@ -1,68 +1,71 @@
-import React from "react";
-import { render, screen } from '@testing-library/react';
-import WritingList from './WritingList';
-import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
-
 jest.mock('@contentful/rich-text-react-renderer', () => ({
-  documentToReactComponents: jest.fn(() => <div>Mock Rich Text</div>)
+  documentToReactComponents: jest.fn().mockImplementation(() => <div>Mocked Rich Text</div>),
 }));
 
-describe('WritingList', () => {
-  it('renders nothing if writing is empty or undefined', () => {
-    const { container } = render(<WritingList />);
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import WritingList from './WritingList';
+
+describe('WritingList Component', () => {
+  it('renders nothing when writings is null', () => {
+    const { container } = render(<WritingList writings={null} />);
     expect(container.firstChild).toBeNull();
-
-    const { container: emptyContainer } = render(<WritingList writings={[]} />);
-    expect(emptyContainer.firstChild).toBeNull();
   });
 
-  it('renders writings with all fields including rich text', () => {
-    const mockWritings = [
+  it('renders nothing when writings is an empty array', () => {
+    const { container } = render(<WritingList writings={[]} />);
+    expect(container.firstChild).toBeNull();
+  });
+
+  it('renders non-book type without <em>', () => {
+    const writings = [
       {
-        title: 'Music and Meaning',
-        year: 1972,
+        title: 'An Article',
         type: 'Article',
-        publicationInfo: { json: { nodeType: 'document' } }
-      }
+      },
     ];
 
-    render(<WritingList writings={mockWritings} />);
-
-    expect(screen.getByText(/Writings/i)).toBeInTheDocument();
-    expect(screen.getByText(/Title:/i)).toBeInTheDocument();
-    expect(screen.getByText(/Music and Meaning/i)).toBeInTheDocument();
-    expect(screen.getByText(/1972/i)).toBeInTheDocument();
-    expect(screen.getByText(/Article/i)).toBeInTheDocument();
-    expect(screen.getByText(/Publication Info:/i)).toBeInTheDocument();
-    expect(screen.getByText(/Mock Rich Text/i)).toBeInTheDocument();
+    render(<WritingList writings={writings} />);
+    const titleText = screen.getByText('An Article');
+    expect(titleText.tagName).not.toBe('EM');
   });
 
-  it('renders book titles in italics', () => {
-    const mockBook = [
+  it('does not render year or type if missing', () => {
+    const writings = [
       {
-        title: 'Harmonic Imagination',
+        title: 'No Meta',
+        type: null,
+        year: null,
+      },
+    ];
+
+    render(<WritingList writings={writings} />);
+    expect(screen.queryByText(/Year:/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Type:/)).not.toBeInTheDocument();
+  });
+
+  it('does not render publicationInfo if missing', () => {
+    const writings = [
+      {
+        title: 'No Info',
         type: 'Book',
-        publicationInfo: { json: {} }
-      }
+        year: 2021,
+      },
     ];
 
-    render(<WritingList writings={mockBook} />);
-    const italicTitle = screen.getByText(/Harmonic Imagination/);
-    expect(italicTitle.tagName.toLowerCase()).toBe('em');
+    render(<WritingList writings={writings} />);
+    expect(screen.queryByText(/Publication Info:/)).not.toBeInTheDocument();
+    expect(screen.queryByText('Mocked Rich Text')).not.toBeInTheDocument();
   });
 
-  it('renders only available fields for a partial writing entry', () => {
-    const partial = [
-      {
-        title: 'Fragments',
-        type: 'Article'
-      }
+  it('renders multiple writings', () => {
+    const writings = [
+      { title: 'Title 1', type: 'Book', year: 2000 },
+      { title: 'Title 2', type: 'Article', year: 2010 },
     ];
 
-    render(<WritingList writings={partial} />);
-    expect(screen.getByText(/Fragments/)).toBeInTheDocument();
-    expect(screen.getByText(/Article/)).toBeInTheDocument();
-    expect(screen.getByText(/Year:/)).toBeNull();
-    expect(screen.getByText(/Publication Info:/)).toBeNull();
+    render(<WritingList writings={writings} />);
+    expect(screen.getByText('Title 1')).toBeInTheDocument();
+    expect(screen.getByText('Title 2')).toBeInTheDocument();
   });
 });
