@@ -158,7 +158,7 @@ describe('useSearchNavigation', () => {
 
   it('logs error if musician is missing slug', () => {
     const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    const musician = { name: 'John Doe' }; // no slug
+    const musician = { name: 'John Doe' };
 
     const { result } = renderHook(() =>
       useSearchNavigation({
@@ -182,7 +182,7 @@ describe('useSearchNavigation', () => {
 
   it('logs error if work is missing musician slug', () => {
     const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    const work = { title: 'Symphony', musician: {} }; // musician.slug missing
+    const work = { title: 'Symphony', musician: {} };
 
     const { result } = renderHook(() =>
       useSearchNavigation({

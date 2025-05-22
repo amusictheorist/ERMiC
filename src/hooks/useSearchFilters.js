@@ -20,7 +20,7 @@ const useSearchFilters = (searchTerm) => {
       setShowDropdown(false);
       return;
     }
-    
+
     try {
     // guard against missing or malformed collections
       const musicianItems = Array.isArray(data.musicianCollection?.items) ? data.musicianCollection.items : [];
@@ -74,7 +74,7 @@ const useSearchFilters = (searchTerm) => {
       setFilteredOccupations([]);
       setShowDropdown(false);
     }
-  }, [searchTerm, data]);
+  }, [searchTerm, data, loading, error]);
   
   return {
     filteredMusicians,

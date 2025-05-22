@@ -94,7 +94,6 @@ export const DataProvider = ({ children }) => {
         }
 
         setData(data);
-        console.log('data:', data);
       } catch (err) {
         console.error('Network error:', err);
         setError(err);
