@@ -27,7 +27,7 @@ describe('WorkList', () => {
     expect(screen.getByText(/Works/i)).toBeInTheDocument();
     expect(screen.getByText(/Title:/i)).toBeInTheDocument();
     expect(screen.getByText(/Trio/i)).toBeInTheDocument();
-    expect(screen.getByText(/1990/)).toBeInTheDocument();
+    expect(screen.getByText(/1960/)).toBeInTheDocument();
     expect(screen.getByText(/Orchestral/)).toBeInTheDocument();
     expect(screen.getByText(/Violin, Cello, Flute/)).toBeInTheDocument();
     expect(screen.getByText(/XYZ Press/)).toBeInTheDocument();

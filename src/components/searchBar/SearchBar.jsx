@@ -1,12 +1,11 @@
-import React from 'react';
-import { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import DropdownItem from './DropdownItem';
 import useDropdownNavigation from '../../hooks/useDropdownNavigation';
 import useClickOutside from '../../hooks/useClickOutside';
 import useSearchResults from '../../hooks/useSearchResults';
 import useSearchNavigation from '../../hooks/useSearchNavigation';
-import '../../styles/SearchBar.css';
 import useSearchFilters from '../../hooks/useSearchFilters';
+import '../../styles/SearchBar.css';
 
 // this component handles all searches of the CMS data
 const SearchBar = ({
@@ -20,14 +19,16 @@ const SearchBar = ({
 }) => {
   const dropdownRef = useRef(null);
   const itemRefs = useRef([]);
+  const [errorMessage, setErrorMessage] = useState('');
+
   const {
-    filteredMusicians,
-    filteredWorks,
-    filteredWritings,
-    filteredOccupations
+    filteredMusicians = [],
+    filteredWorks = [],
+    filteredWritings = [],
+    filteredOccupations = []
   } = useSearchFilters(searchTerm);
 
-  const { totalResults, noResults } = useSearchResults({
+  const { totalResults = [], noResults = false } = useSearchResults({
     filteredMusicians,
     filteredWorks,
     filteredWritings,
@@ -35,16 +36,6 @@ const SearchBar = ({
     searchTerm
   });
 
-  // handles search submissions
-  const handleSearchSubmit = () => {
-    if (totalResults.length === 0) {
-      // TODO: replace console log for actual error handling message
-      console.log("No results to show for:", searchTerm);
-    } else {
-      console.log("Running search for:", searchTerm);
-    }
-  };
-  
   // this function finds the proper link to redirect to the requested site
   const handleSelect = useSearchNavigation({
     filteredMusicians,
@@ -55,6 +46,16 @@ const SearchBar = ({
     setShowDropdown,
     setSelectedIndex
   });
+  
+  // handles search submissions
+  const handleSearchSubmit = () => {
+    if (totalResults.length === 0) {
+      setErrorMessage(`No results to show for "${searchTerm}"`)
+    } else {
+      setErrorMessage('');
+      handleSelect(totalResults[selectedIndex] || totalResults[0]);
+    }
+  };
   
   // this function allows navigation through dropdown results with keyboard
   const handleKeyDown = useDropdownNavigation({
@@ -114,6 +115,12 @@ const SearchBar = ({
       {noResults && (
         <div className="no-results-warning">
           <p>No matches found for your search. Please try a different name or keyword.</p>
+        </div>
+      )}
+
+      {errorMessage && (
+        <div className='error-message'>
+          <p>{errorMessage}</p>
         </div>
       )}
 

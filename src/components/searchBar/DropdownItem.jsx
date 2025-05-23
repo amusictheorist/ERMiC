@@ -1,4 +1,4 @@
-// this component redners the list of dropdown items when typing into the search bar
+// this component rendnrs the list of dropdown items when typing into the search bar
 const DropdownItem = ({ item, index, selectedIndex, onClick, itemRef }) => {
   const isSelected = selectedIndex === index;
 

@@ -104,3 +104,14 @@
 .search-container.compact .search-button {
   margin-top: 0;
 }
+
+.error-message {
+  color: #e53e3e;
+  background-color: #fff5f5;
+  border: 1px solid #feb2b2;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 14px;
+  margin-top: 10px;
+  text-align: center;
+}
