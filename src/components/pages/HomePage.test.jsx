@@ -26,7 +26,7 @@ describe('HomePage', () => {
     render(<HomePage {...defaultProps} />);
 
     expect(
-      screen.getByText(/Welcome to the European Refugee Musicians in Canada/i)
+      screen.getByText(/Welcome to the European Refugee Musicians in Canada Online Biographical Dictionary/i)
     ).toBeInTheDocument();
 
     expect(
