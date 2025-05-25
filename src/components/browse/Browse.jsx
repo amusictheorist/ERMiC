@@ -30,15 +30,19 @@ const Browse = () => {
   });
 
   return (
-    <div className="browse-page">
-      <h2>Browse the Biographies</h2>
+    <div className="p-6 max-w-3xl m-auto text-center">
+      <h2 className='text-3xl font-bold my-6'>Browse the Biographies</h2>
       {error && (
-        <p className="non-blocking-error">Some data may be missing: {error}</p>
+        <p className="text-sm text-yellow-800 bg-yellow-100 border border-yellow-300 rounded px-4 py-2 mb-4">
+        Some data may be missing: {error}
+      </p>
       )}
       {sortedMusicians.map((musician) => (
-        <Link className="musician-link" key={musician.slug} to={`/musician/${musician.slug}`}>
-          <p>{musician.firstName} {musician.surname}</p>
-        </Link>
+        <Link className="block px-4 py-2 bg-slate-100 text-gray-700 rounded mb-4 transition-colors duration-300 ease-in-out hover:bg-blue-600 hover:text-white" key={musician.slug} to={`/musician/${musician.slug}`} >
+        <p className="text-lg md:text-base">
+          {musician.firstName} {musician.surname}
+        </p>
+      </Link>
       ))}
     </div>
   );
