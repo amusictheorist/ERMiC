@@ -11,7 +11,7 @@ const HomePage = ({
   setSelectedIndex
 }) => {
   return (
-    <div className="p-6 max-w-3xl m-auto text-center">
+    <div className="p-6 max-w-4xl m-auto text-center">
       <h1 className='text-4xl font-bold'>Welcome to the European Refugee Musicians in Canada Online Biographical Dictionary</h1>
       <p className='text-lg my-4 text-gray-700'>Search by name or keyword and select an entry.</p>
 

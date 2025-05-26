@@ -1,4 +1,6 @@
 import React from 'react';
+import RichTextRenderer from './RichTextRenderer';
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 
 const WorkList = ({ works }) => {
   if (!works || works.length === 0) return null;
@@ -14,8 +16,13 @@ const WorkList = ({ works }) => {
             {work.instrumentation?.length > 0 && (
               <p className='text-blue-500'><strong>Instrumentation:</strong> {work.instrumentation.join(', ')}</p>
             )}
-            {work.publicationInfo && (
-              <p className='text-blue-500'><strong>Publication Info:</strong> {work.publicationInfo}</p>
+            {work.publicationInfo?.json && (
+              <div>
+                <p className='text-blue-500'><strong>Publication Info:</strong></p>
+                <div className='text-left m-4 text-base text-gray-800 leading-relaxed p-4 rounded bg-slate-50'>
+                  {documentToReactComponents(work.publicationInfo.json)}
+                </div>
+              </div>
             )}
           </div>
         ))}
