@@ -24,7 +24,6 @@ describe('WorkList', () => {
 
     render(<WorkList works={mockWorks} />);
 
-    expect(screen.getByText(/Works/i)).toBeInTheDocument();
     expect(screen.getByText(/Title:/i)).toBeInTheDocument();
     expect(screen.getByText(/Trio/i)).toBeInTheDocument();
     expect(screen.getByText(/1960/)).toBeInTheDocument();

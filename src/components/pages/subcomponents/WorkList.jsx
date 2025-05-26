@@ -7,8 +7,7 @@ const WorkList = ({ works }) => {
     <>
       <div className="my-6 text-left">
         {works.map((work, index) => (
-          <div key={index} className="p-3 my-4 bg-slate-50 rounded border border-gray-300
-">
+          <div key={index} className="p-3 my-4 bg-slate-50 rounded border border-gray-300">
             <p className='text-blue-500'><strong>Title:</strong> <em>{work.title}</em></p>
             {work.year && <p className='text-blue-500'><strong>Year:</strong> {work.year}</p>}
             {work.type && <p className='text-blue-500'><strong>Type:</strong> {work.type}</p>}

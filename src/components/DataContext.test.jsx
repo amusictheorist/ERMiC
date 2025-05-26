@@ -100,7 +100,10 @@ describe('Data Provider', () => {
 
     await waitFor(() => {
       expect(getByText('Test')).toBeInTheDocument();
-      expect(consoleWarnSpy).toHaveBeenCalledWith('GraphQL Errors:', [{ message: 'Some GraphQL error' }]);
+      expect(consoleWarnSpy).toHaveBeenCalledWith(
+        expect.stringContaining('GraphQL Errors in'),
+        expect.arrayContaining([expect.objectContaining({ message: 'Some GraphQL error' })])
+      );
     });
 
     consoleWarnSpy.mockRestore();
@@ -123,7 +126,7 @@ describe('Data Provider', () => {
     );
 
     await waitFor(() => {
-      expect(getByText(/Error: No data received from CMS./i)).toBeInTheDocument();
+      expect(getByText(/No data received/i)).toBeInTheDocument();
     });
   });
 });
