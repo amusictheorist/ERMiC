@@ -6,7 +6,6 @@ const WritingList = ({ writings }) => {
 
   return (
     <>
-      <h2 className='text-3xl font-semibold my-8'>Writings</h2>
       <div className="flex flex-col gap-4 my-4">
         {writings.map((writing, index) => (
           <div key={index} className="p-4 rounded bg-white text-left border border-gray-300

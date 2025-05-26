@@ -5,7 +5,6 @@ const WorkList = ({ works }) => {
 
   return (
     <>
-      <h2>Works</h2>
       <div className="my-6 text-left">
         {works.map((work, index) => (
           <div key={index} className="p-3 my-4 bg-slate-50 rounded border border-gray-300
