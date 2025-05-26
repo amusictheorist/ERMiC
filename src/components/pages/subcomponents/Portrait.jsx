@@ -4,8 +4,8 @@ const Portrait = ({ url, alt }) => {
   if (!url) return null;
 
   return (
-    <div className="portrait-container">
-      <img src={url} alt={alt} className="portrait-image" />
+    <div className="flex justify-center m-8">
+      <img src={url} alt={alt} className="max-w-full max-h-80 rounded-lg object-contain shadow-md" />
     </div>
   );
 };

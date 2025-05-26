@@ -1,5 +1,4 @@
 import React from 'react';
-import "../../styles/HomePage.css";
 import SearchBar from "../searchBar/SearchBar";
 
 // landing page for the site, where main search functionality is implemented
@@ -12,9 +11,9 @@ const HomePage = ({
   setSelectedIndex
 }) => {
   return (
-    <div className="homepage">
-      <h1>Welcome to the European Refugee Musicians in Canada Online Biographical Dictionary</h1>
-      <p>Search by name or keyword and select an entry.</p>
+    <div className="p-6 max-w-3xl m-auto text-center">
+      <h1 className='text-4xl font-bold'>Welcome to the European Refugee Musicians in Canada Online Biographical Dictionary</h1>
+      <p className='text-lg my-4 text-gray-700'>Search by name or keyword and select an entry.</p>
 
       <SearchBar
         searchTerm={searchTerm}

@@ -5,7 +5,7 @@ const RichTextRenderer = ({ document }) => {
   if (!document) return null;
 
   return (
-    <div className="text-content">
+    <div className="text-left m-4 text-base text-gray-800 leading-relaxed p-4 rounded bg-slate-50">
       {documentToReactComponents(document)}
     </div>
   );

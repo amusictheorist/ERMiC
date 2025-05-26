@@ -8,7 +8,6 @@ import HomePage from "./components/pages/HomePage";
 import Browse from "./components/browse/Browse";
 import MusicianPage from "./components/pages/MusicianPage";
 import SearchResultsPage from "./components/pages/SearchResultsPage";
-import './App.css';
 
 function App() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -27,9 +26,9 @@ function App() {
   return (
     <DataProvider>
       <Router>
-        <div className="body">
+        <div className="flex flex-col min-h-screen">
           <Navbar {...searchState} />
-          <div className="page-content">
+          <div className="flex-1">
           <Routes>
               <Route path="/" element={<HomePage {...searchState} />} />
               <Route path="/browse" element={<Browse />} />

@@ -6,17 +6,18 @@ const WorkList = ({ works }) => {
   return (
     <>
       <h2>Works</h2>
-      <div className="works-list">
+      <div className="my-6 text-left">
         {works.map((work, index) => (
-          <div key={index} className="work-item">
-            <p><strong>Title:</strong> <em>{work.title}</em></p>
-            {work.year && <p><strong>Year:</strong> {work.year}</p>}
-            {work.type && <p><strong>Type:</strong> {work.type}</p>}
+          <div key={index} className="p-3 my-4 bg-slate-50 rounded border border-gray-300
+">
+            <p className='text-blue-500'><strong>Title:</strong> <em>{work.title}</em></p>
+            {work.year && <p className='text-blue-500'><strong>Year:</strong> {work.year}</p>}
+            {work.type && <p className='text-blue-500'><strong>Type:</strong> {work.type}</p>}
             {work.instrumentation?.length > 0 && (
-              <p><strong>Instrumentation:</strong> {work.instrumentation.join(', ')}</p>
+              <p className='text-blue-500'><strong>Instrumentation:</strong> {work.instrumentation.join(', ')}</p>
             )}
             {work.publicationInfo && (
-              <p><strong>Publication Info:</strong> {work.publicationInfo}</p>
+              <p className='text-blue-500'><strong>Publication Info:</strong> {work.publicationInfo}</p>
             )}
           </div>
         ))}

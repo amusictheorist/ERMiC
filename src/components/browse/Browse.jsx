@@ -1,21 +1,20 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import { useData } from '../DataContext';
-import '../../styles/Browse.css';
 
 const Browse = () => {
   const { data, loading, error } = useData();
 
-  if (loading) return <p>Loading data...</p>;
+  if (loading) return <p className='text-center mt-6 text-lg'>Loading data...</p>;
 
   const musicians = data?.musicianCollection?.items || [];
 
   if (error && musicians.length === 0) {
-    return <p>Failed to load data. Please Try again later.</p>;
+    return <p className='text-center mt-6 text-lg text-red-600'>Failed to load data. Please Try again later.</p>;
   }
 
   if (musicians.length === 0) {
-    return <p>No musicians found.</p>;
+    return <p className='text-center mt-6 text-lg text-gray-700'>No musicians found.</p>;
   }
 
   const sortedMusicians = [...musicians].sort((a, b) => {

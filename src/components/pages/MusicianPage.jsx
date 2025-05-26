@@ -1,7 +1,6 @@
 import React from 'react';
 import { useParams } from "react-router-dom";
 import { useData } from "../DataContext";
-import '../../styles/MusicianPage.css';
 import Portrait from "./subcomponents/Portrait";
 import WorkList from "./subcomponents/WorkList";
 import WritingList from "./subcomponents/WritingList";
@@ -14,12 +13,12 @@ const MusicianPage = () => {
   // fetching data from DataContext
   const { data, loading, error } = useData();
 
-  if (loading) return <p>Loading data...</p>
-  if (error && !data) return <p>Failed to load data. Please Try again later.</p>
+  if (loading) return <p className='text-center mt-6 text-lg'>Loading data...</p>;
+  if (error && !data) return <p className='text-center mt-6 text-lg text-red-600'>Failed to load data. Please Try again later.</p>;
 
   // if a url is broken or or a musician is not yet in the CMS, not found message will be rendered
   const musician = data.musicianCollection.items.find((m) => m.slug === slug);
-  if (!musician) return <p>Musician not found.</p>;
+  if (!musician) return <p className='text-center mt-6 text-lg text-gray-700'>Musician not found.</p>;
 
   // renders a portrait from CMS if available
   const portraitUrl = musician.photosCollection?.items?.[0]?.url;
@@ -36,19 +35,19 @@ const MusicianPage = () => {
 
   // actual rendering block
   return (
-    <div className="musician-page">
-      <h1>{musician.firstName} {musician.surname}</h1>
-      <p>Born: {musician.birthdate} in {musician.birthPlace}</p>
-      <p>Died: {musician.deathdate} in {musician.deathPlace}</p>
+    <div className="p-6 max-w-3xl m-auto text-center">
+      <h1 className='text-4xl font-bold my-4'>{musician.firstName} {musician.surname}</h1>
+      <p className='my-2 text-lg text-gray-700'>Born: {musician.birthdate} in {musician.birthPlace}</p>
+      <p className='my-2 text-lg text-gray-700'>Died: {musician.deathdate} in {musician.deathPlace}</p>
       <Portrait
         url={portraitUrl}
         alt={`${musician.firstName} ${musician.surname}`}
       />
-      <h2>Biography</h2>
+      <h2 className='text-3xl font-semibold my-8'>Biography</h2>
       <RichTextRenderer document={musician.biography?.json} />
       <WorkList works={works} />
       <WritingList writings={writings} />
-      <h2>Bibliography</h2>
+      <h2 className='text-3xl font-semibold my-8'>Bibliography</h2>
       <RichTextRenderer document={musician.bibliography?.json} />
     </div>
   );
