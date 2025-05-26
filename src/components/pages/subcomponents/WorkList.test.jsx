@@ -12,14 +12,35 @@ describe('WorkList', () => {
   });
 
   it('renders work items with all fields', () => {
+    const publicationInfoRichText = {
+      nodeType: "document",
+      data: {},
+      content: [
+        {
+          nodeType: "paragraph",
+          data: {},
+          content: [
+            {
+              nodeType: "text",
+              value: "XYZ Press",
+              marks: [],
+              data: {}
+            }
+          ]
+        }
+      ]
+    };
+    
     const mockWorks = [
       {
         title: 'Trio',
         year: 1960,
-        type: 'Orchestral',
+        type: 'Chamber',
         instrumentation: ['Violin', 'Cello', 'Flute'],
-        publicationInfo: 'Published by XYZ Press',
-      },
+        publicationInfo: {
+          json: publicationInfoRichText
+        }
+      }
     ];
 
     render(<WorkList works={mockWorks} />);
@@ -27,7 +48,7 @@ describe('WorkList', () => {
     expect(screen.getByText(/Title:/i)).toBeInTheDocument();
     expect(screen.getByText(/Trio/i)).toBeInTheDocument();
     expect(screen.getByText(/1960/)).toBeInTheDocument();
-    expect(screen.getByText(/Orchestral/)).toBeInTheDocument();
+    expect(screen.getByText(/Chamber/)).toBeInTheDocument();
     expect(screen.getByText(/Violin, Cello, Flute/)).toBeInTheDocument();
     expect(screen.getByText(/XYZ Press/)).toBeInTheDocument();
   });
