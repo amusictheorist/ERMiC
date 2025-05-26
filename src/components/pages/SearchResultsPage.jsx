@@ -36,7 +36,6 @@ const SearchResultsPage = () => {
             <li
               key={musician.slug}
               onClick={() => navigate(`/musician/${musician.slug}`)}
-              tabIndex={0}
               className='p-3 mb-4 bg-gray-100 border border-gray-300 rounded cursor-pointer transition-colors hover:bg-blue-600 hover:text-white focus:outline-none focus:bg-blue-600 focus:text-white active:bg-blue-800'
             >
               {musician.firstName} {musician.surname}

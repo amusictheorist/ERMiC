@@ -51,22 +51,26 @@ const MusicianPage = () => {
       <h2 className='text-3xl font-semibold my-8'>Biography</h2>
       <RichTextRenderer document={musician.biography?.json} />
 
-      <CollapsibleSection
-        title='Works'
-        isOpen={showWorks}
-        setIsOpen={setShowWorks}
-      >
-        <WorkList works={works} />
-      </CollapsibleSection>
+      {works.length > 0 && (
+        <CollapsibleSection
+          title='Works'
+          isOpen={showWorks}
+          setIsOpen={setShowWorks}
+        >
+          <WorkList works={works} />
+        </CollapsibleSection>
+      )}
       
-      <CollapsibleSection
-        title='Writings'
-        isOpen={showWritings}
-        setIsOpen={setShowWritings}
-      >
-        <WritingList writings={writings} />
-      </CollapsibleSection>
-
+      {writings.length > 0 && (
+        <CollapsibleSection
+          title='Writings'
+          isOpen={showWritings}
+          setIsOpen={setShowWritings}
+        >
+          <WritingList writings={writings} />
+        </CollapsibleSection>
+      )}      
+      
       <CollapsibleSection
         title='Bibliography'
         isOpen={showBibliography}
