@@ -22,7 +22,9 @@ const MusicianPage = () => {
   if (error && !data) return <p className='text-center mt-6 text-lg text-red-600'>Failed to load data. Please Try again later.</p>;
 
   // if a url is broken or or a musician is not yet in the CMS, not found message will be rendered
-  const musician = data.musicianCollection.items.find((m) => m.slug === slug);
+  const musician = data.musicianCollection.items.find(
+    (m) => m.slug?.trim() === slug?.trim()
+  );
   if (!musician) return <p className='text-center mt-6 text-lg text-gray-700'>Musician not found.</p>;
 
   // renders a portrait from CMS if available
