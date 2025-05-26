@@ -9,9 +9,12 @@ const accessToken = process.env.REACT_APP_ACCESS_TOKEN;
 
 /* IMPORTANT: this GraphQL API query fetches all the structured data from the CMS upon mounting the ERMiC website. Do not change anything about this query or about the content types in the ERMiC Contentful space without corroborating changes between the two or the site will break. If changes need to be made, visit Contentful's GraphQL documentation here: https://www.contentful.com/developers/docs/references/graphql/. You'll need the spaceID and accessToken from the ERMiC site and authorization from the project managers to obtain them.
 */
-const query = `
+
+// limit cannot exceed 100
+// TO DO: put photograph fetch back in query
+const musicianQuery = `
 {
-  musicianCollection {
+  musicianCollection(limit: 100) {
     items {
       slug
       firstName
@@ -24,17 +27,17 @@ const query = `
       biography {
         json
       }
-      photosCollection {
-        items {
-          url
-        }
-      }
       bibliography {
         json
       }
     }
   }
-  workCollection {
+}
+`;
+
+const workQuery = `
+{
+  workCollection(limit: 1000) {
     items {
       musician {
         slug
@@ -48,7 +51,12 @@ const query = `
       }
     }
   }
-  writingCollection {
+}
+`;
+
+const writingQuery = `
+{
+  writingCollection(limit: 1000) {
     items {
       musician {
         slug
@@ -70,32 +78,52 @@ export const DataProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // fetch call to CMS
+  // helper function makes fetch calls to CMS
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchSection = async (query, label) => {
       try {
         const response = await fetch(`https://graphql.contentful.com/content/v1/spaces/${spaceID}/`, {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`
           },
           body: JSON.stringify({ query }),
         });
-      
+
         const { data, errors } = await response.json();
-      
+
         if (errors) {
-          console.warn('GraphQL Errors:', errors);
+          console.warn(`GraphQL Errors in ${label}:`, errors);
+          throw new Error(`Error fetching ${label}`);
         }
 
         if (!data) {
-          throw new Error('No data received from CMS.');
+          throw new Error(`No data received for ${label}`);
         }
 
-        setData(data);
+        return data;
       } catch (err) {
-        console.error('Network error:', err);
+        throw err;
+      }
+    };
+
+    // this function combines the split collections into one array
+    const fetchData = async () => {
+      try {
+        const [musicianData, workData, writingData] = await Promise.all([
+          fetchSection(musicianQuery, 'musicians'),
+          fetchSection(workQuery, 'works'),
+          fetchSection(writingQuery, 'writings')
+        ]);
+
+        setData({
+          musicianCollection: musicianData.musicianCollection,
+          workCollection: workData.workCollection,
+          writingCollection: writingData.writingCollection
+        });
+      } catch (err) {
+        console.error('Data fetch failed:', err);
         setError(err);
       } finally {
         setLoading(false);
