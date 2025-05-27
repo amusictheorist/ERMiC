@@ -18,14 +18,14 @@ const MusicianPage = () => {
   const [showWritings, setShowWritings] = useState(false);
   const [showBibliography, setShowBibliography] = useState(false);
 
-  if (loading) return <p className='text-center mt-6 text-lg'>Loading data...</p>;
-  if (error && !data) return <p className='text-center mt-6 text-lg text-red-600'>Failed to load data. Please Try again later.</p>;
+  if (loading) return <p className='text-center mt-8 text-lg'>Loading data...</p>;
+  if (error && !data) return <p className='text-center mt-8 text-lg text-red-600'>Failed to load data. Please Try again later.</p>;
 
   // if a url is broken or or a musician is not yet in the CMS, not found message will be rendered
   const musician = data.musicianCollection.items.find(
     (m) => m.slug?.trim() === slug?.trim()
   );
-  if (!musician) return <p className='text-center mt-6 text-lg text-gray-700'>Musician not found.</p>;
+  if (!musician) return <p className='text-center mt-8 text-lg text-gray-700'>Musician not found.</p>;
 
   // renders a portrait from CMS if available
   const portraitUrl = musician.photosCollection?.items?.[0]?.url;
@@ -42,10 +42,18 @@ const MusicianPage = () => {
 
   // actual rendering block
   return (
-    <div className="p-6 max-w-3xl m-auto text-center">
-      <h1 className='text-4xl font-bold my-4'>{musician.firstName} {musician.surname}</h1>
-      <p className='my-2 text-lg text-gray-700'>Born: {musician.birthdate} in {musician.birthPlace}</p>
-      <p className='my-2 text-lg text-gray-700'>Died: {musician.deathdate} in {musician.deathPlace}</p>
+    <div className="px-4 py-8 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center">
+      <h1 className='text-2xl sm:text-3xl md:text-4xl font-bold mb-4'>
+        {musician.firstName} {musician.surname}
+      </h1>
+
+      <p className='text-sm sm:text-base md:text-lg text-gray-700 mb-1'>
+        Born: {musician.birthdate} in {musician.birthPlace}
+      </p>
+      <p className='text-sm sm:text-base md:text-lg text-gray-700 mb-6'>
+        Died: {musician.deathdate} in {musician.deathPlace}
+      </p>
+      
       <Portrait
         url={portraitUrl}
         alt={`${musician.firstName} ${musician.surname}`}

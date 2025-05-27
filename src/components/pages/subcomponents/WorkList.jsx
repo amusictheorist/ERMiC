@@ -5,20 +5,19 @@ const WorkList = ({ works }) => {
   if (!works || works.length === 0) return null;
 
   return (
-    <>
-      <div className="my-6 text-left">
+      <div className="flex flex-col gap-4 my-6 text-left">
         {works.map((work, index) => (
-          <div key={index} className="p-3 my-4 bg-slate-50 rounded border border-gray-300">
-            <p className='text-blue-500'><strong>Title:</strong> <em>{work.title}</em></p>
-            {work.year && <p className='text-blue-500'><strong>Year:</strong> {work.year}</p>}
-            {work.type && <p className='text-blue-500'><strong>Type:</strong> {work.type}</p>}
+          <div key={index} className="p-4 rounded bg-white border border-gray-200 shadow-sm">
+            <p><strong>Title:</strong> <em>{work.title}</em></p>
+            {work.year && <p><strong>Year:</strong> {work.year}</p>}
+            {work.type && <p><strong>Type:</strong> {work.type}</p>}
             {work.instrumentation?.length > 0 && (
-              <p className='text-blue-500'><strong>Instrumentation:</strong> {work.instrumentation.join(', ')}</p>
+              <p><strong>Instrumentation:</strong> {work.instrumentation.join(', ')}</p>
             )}
             {work.publicationInfo?.json && (
-              <div>
-                <p className='text-blue-500'><strong>Publication Info:</strong></p>
-                <div className='text-left m-4 text-base text-gray-800 leading-relaxed p-4 rounded bg-slate-50'>
+              <div className='mt-2'>
+                <p><strong>Publication Info:</strong></p>
+                <div className='text-base text-gray-800 leading-relaxed bg-slate-50 rounded p-3 mt-1'>
                   {documentToReactComponents(work.publicationInfo.json)}
                 </div>
               </div>
@@ -26,7 +25,6 @@ const WorkList = ({ works }) => {
           </div>
         ))}
       </div>
-    </>
   );
 };
 

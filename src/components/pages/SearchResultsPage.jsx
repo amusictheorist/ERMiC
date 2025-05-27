@@ -11,9 +11,9 @@ const SearchResultsPage = () => {
   const searchParams = new URLSearchParams(location.search);
   const occupation = searchParams.get('occupation');
 
-  if (loading) return <p className='text-center mt-6 text-lg'>Loading data...</p>;
-  if (error && !data) return <p className='text-center mt-6 text-lg text-red-600'>Failed to load data. Please Try again later.</p>;
-  if (!occupation) return <p className='text-center mt-6 text-lg text-gray-700'>No occupation specified.</p>;
+  if (loading) return <p className="text-center mt-8 text-lg">Loading data...</p>;
+  if (error && !data) return <p className="text-center mt-8 text-lg text-red-600">Failed to load data. Please try again later.</p>;
+  if (!occupation) return <p className="text-center mt-8 text-lg text-gray-700">No occupation specified.</p>;
 
   // filters musicians for chosen occupation and sorts them in alphabetical order
   const filteredMusicians = data.musicianCollection.items
@@ -26,17 +26,20 @@ const SearchResultsPage = () => {
 
   // actual render block
   return (
-    <div className="p-6 max-w-3xl m-auto text-center">
-      <h1 className='text-4xl font-bold mb-6 sm:text-3xl'>Search results for: {occupation}</h1>
+    <div className="px-4 sm:px-6 md:px-8 lg:px-12 py-8 max-w-5xl mx-auto text-center">
+      <h1 className='text-2xlsm:text-3xl font-bold mb-6'>
+        Search results for: <span className='italic'>{occupation}</span>
+      </h1>
+
       {filteredMusicians.length === 0 ? (
-        <p className='my-4 text-lg text-gray-700'>No musicians found for this occupation.</p>
+        <p className='text-lg text-gray-700'>No musicians found for this occupation.</p>
       ) : (
-        <ul className='list-none p-0 m-0'>
+        <ul className='grid gap-4 text-center'>
           {filteredMusicians.map(musician => (
             <li
               key={musician.slug}
               onClick={() => navigate(`/musician/${musician.slug}`)}
-              className='p-3 mb-4 bg-gray-100 border border-gray-300 rounded cursor-pointer transition-colors hover:bg-blue-600 hover:text-white focus:outline-none focus:bg-blue-600 focus:text-white active:bg-blue-800'
+              className='cursor-pointer px-4 py-3 rounded bg-slate-100 border border-gray-300 transition hover:bg-blue-600 hover:text-white'
             >
               {musician.firstName} {musician.surname}
             </li>

@@ -16,15 +16,18 @@ const CollapsibleSection = ({ title, isOpen, setIsOpen, children }) => {
     <div className="border-b border-gray-300 py-4 text-left">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex justify-between items-center text-left text-2xl font-semibold text-gray-800"
+        className="w-full flex justify-between items-center text-left text-lg sm:text-xl md:text-2xl font-semibold text-gray-800"
+        aria-expanded={isOpen}
+        aria-controls={`collapsible-${title.replace(/\s+/g, '-')}`}
       >
-        {title}
+        <span>{title}</span>
         <ChevronDown
-          className={`h-6 w-6 transform transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
+          className={`h-5 w-5 sm:h-6 sm:w-6 transform transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
         />
       </button>
       <div
         ref={contentRef}
+        id={`collapsible-${title.replace(/\s+/g, '-')}`}
         style={{
           maxHeight: height,
           transition: 'max-height 0.4s ease, opacity 0.4s ease',
@@ -32,7 +35,7 @@ const CollapsibleSection = ({ title, isOpen, setIsOpen, children }) => {
           opacity: isOpen ? 1 : 0
         }}
       >
-        <div className="pt-4">
+        <div className="pt-4 text-sm sm:text-base md:text-lg text-gray-700">
           {children}
         </div>
       </div>

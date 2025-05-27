@@ -5,11 +5,9 @@ const WritingList = ({ writings }) => {
   if (!writings || writings.length === 0) return null;
 
   return (
-    <>
-      <div className="flex flex-col gap-4 my-4">
+      <div className="flex flex-col gap-4 my-6 text-left">
         {writings.map((writing, index) => (
-          <div key={index} className="p-4 rounded bg-white text-left border border-gray-300
- shadow-sm">
+          <div key={index} className="p-4 rounded bg-white border border-gray-300 shadow-sm">
             <p>
               <strong>Title:</strong>
               {writing.type === 'Book' ? (
@@ -23,7 +21,7 @@ const WritingList = ({ writings }) => {
             {writing.publicationInfo?.json && (
               <div>
                 <p><strong>Publication Info:</strong></p>
-                <div className="text-left m-4 text-base text-gray-800 leading-relaxed p-4 rounded bg-slate-50">
+                <div className="text-base text-gray-800 leading-relaxed bg-slate-50 rounded p-3 mt-1">
                   {documentToReactComponents(writing.publicationInfo.json)}
                 </div>
               </div>
@@ -31,7 +29,6 @@ const WritingList = ({ writings }) => {
           </div>
         ))}
       </div>
-    </>
   );
 };
 

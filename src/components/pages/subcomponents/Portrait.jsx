@@ -5,7 +5,12 @@ const Portrait = ({ url, alt }) => {
 
   return (
     <div className="flex justify-center m-8">
-      <img src={url} alt={alt} className="max-w-full max-h-80 rounded-lg object-contain shadow-md" />
+      <img
+        src={url}
+        alt={alt || 'Portrait'}
+        className="-w-full max-w-xs sm:max-w-sm md:max-w-md max-h-80 rounded-lg object-contain shadow-md"
+        loading='lazy'
+      />
     </div>
   );
 };
