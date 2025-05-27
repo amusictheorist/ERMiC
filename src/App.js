@@ -28,7 +28,7 @@ function App() {
       <Router>
         <div className="flex flex-col min-h-screen">
           <Navbar {...searchState} />
-          <div className="flex-1">
+          <div className="flex-1 pt-16 px-4">
           <Routes>
               <Route path="/" element={<HomePage {...searchState} />} />
               <Route path="/browse" element={<Browse />} />

@@ -39,7 +39,7 @@ const HomePage = ({
 
       {!loading && !error && (
         <div className='mt-6 text-sm sm:text-base text-gray-600 italic'>
-          Database currently includes {counts.musicians} musicians, {counts.works} works, {counts.writings} writings, and continues growing!
+          Database currently includes {counts.musicians} musicians, {counts.works} works, {counts.writings} writings, and continues to grow!
         </div>
       )}
     </div>

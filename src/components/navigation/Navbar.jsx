@@ -19,20 +19,20 @@ const Navbar = ({
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-slate-100 border-b border-slate-200 px-4 py2">
+    <nav className="fixed top-0 left-0 w-full z-50 bg-slate-100 border-b border-slate-200 px-4 py-2">
       {isHomePage ? (
         <div className="flex items-center justify-between py-2">
           <div className="text-blue-600 font-semibold text-sm sm:text-base md:text-lg flex-[2]">
             European Refugee Musicians in Canada Online Biographical Dictionary
           </div>
-
+  
           <div className="hidden sm:flex gap-4 flex-1 justify-end">
             <Link to="/">Home</Link>
             <Link to="/browse">Browse</Link>
             <Link to="/about">About</Link>
             <Link to="/contact">Contact</Link>
           </div>
-
+  
           <button
             className="sm:hidden ml-auto"
             onClick={() => setMenuOpen(!menuOpen)}
@@ -42,19 +42,19 @@ const Navbar = ({
           </button>
         </div>
       ) : (
-        <div className="relative flex items-center justify-between py-2">
+        <div className="flex items-center justify-between py-2 space-x-4">
           <div className="text-blue-600 font-semibold text-sm sm:text-base md:text-lg flex-shrink-0">
             ERMiC
           </div>
-
-          <div className="absolute left-1/2 transform -translate-x-1/2 hidden sm:flex gap-4">
+  
+          <div className="hidden sm:flex gap-4 flex-shrink-0">
             <Link to="/">Home</Link>
             <Link to="/browse">Browse</Link>
             <Link to="/about">About</Link>
             <Link to="/contact">Contact</Link>
           </div>
-
-          <div className="hidden sm:block flex-shrink-0">
+  
+          <div className="flex-1 min-w-0">
             <SearchBar
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
@@ -65,7 +65,7 @@ const Navbar = ({
               compact={true}
             />
           </div>
-
+  
           <button
             className="sm:hidden ml-auto"
             onClick={() => setMenuOpen(!menuOpen)}
@@ -73,6 +73,14 @@ const Navbar = ({
           >
             <Menu size={20} />
           </button>
+        </div>
+      )}
+      {menuOpen && (
+        <div className="sm:hidden mt-2 flex flex-col gap-2">
+          <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
+          <Link to="/browse" onClick={() => setMenuOpen(false)}>Browse</Link>
+          <Link to="/about" onClick={() => setMenuOpen(false)}>About</Link>
+          <Link to="/contact" onClick={() => setMenuOpen(false)}>Contact</Link>
         </div>
       )}
     </nav>
