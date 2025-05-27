@@ -1,5 +1,4 @@
 import React from 'react';
-import RichTextRenderer from './RichTextRenderer';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 
 const WorkList = ({ works }) => {
