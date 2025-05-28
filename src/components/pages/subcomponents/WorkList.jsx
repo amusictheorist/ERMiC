@@ -5,7 +5,7 @@ const WorkList = ({ works }) => {
   if (!works || works.length === 0) return null;
 
   return (
-      <div className="flex flex-col gap-4 my-6 text-left">
+      <div className="font-serif flex flex-col gap-4 my-6 text-left">
         {works.map((work, index) => (
           <div key={index} className="p-4 rounded bg-white border border-gray-200 shadow-sm">
             <p><strong>Title:</strong> <em>{work.title}</em></p>

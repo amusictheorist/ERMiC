@@ -43,14 +43,14 @@ const MusicianPage = () => {
   // actual rendering block
   return (
     <div className="px-4 py-8 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center">
-      <h1 className='text-2xl sm:text-3xl md:text-4xl font-bold mb-4'>
+      <h1 className='font-serif text-2xl sm:text-3xl md:text-4xl font-bold mb-4'>
         {musician.firstName} {musician.surname}
       </h1>
 
-      <p className='text-sm sm:text-base md:text-lg text-gray-700 mb-1'>
+      <p className='font-serif text-sm sm:text-base md:text-lg text-gray-700 mb-1'>
         Born: {musician.birthdate} in {musician.birthPlace}
       </p>
-      <p className='text-sm sm:text-base md:text-lg text-gray-700 mb-6'>
+      <p className='font-serif text-sm sm:text-base md:text-lg text-gray-700 mb-6'>
         Died: {musician.deathdate} in {musician.deathPlace}
       </p>
       
@@ -58,7 +58,7 @@ const MusicianPage = () => {
         url={portraitUrl}
         alt={`${musician.firstName} ${musician.surname}`}
       />
-      <h2 className='text-3xl font-semibold my-8'>Biography</h2>
+      <h2 className='font-serif text-3xl font-semibold my-8'>Biography</h2>
       <RichTextRenderer document={musician.biography?.json} />
 
       {works.length > 0 && (

@@ -22,11 +22,11 @@ const Navbar = ({
     <nav className="fixed top-0 left-0 w-full z-50 bg-slate-100 border-b border-slate-200 px-4 py-2">
       {isHomePage ? (
         <div className="flex items-center justify-between py-2">
-          <div className="text-blue-600 font-semibold text-sm sm:text-base md:text-lg flex-[2]">
+          <div className="font-sans text-blue-600 font-semibold text-xs sm:text-sm md:text-base flex-[2]">
             European Refugee Musicians in Canada Online Biographical Dictionary
           </div>
   
-          <div className="hidden sm:flex gap-4 flex-1 justify-end">
+          <div className="font-sans hidden sm:flex gap-4 flex-1 justify-end">
             <Link to="/">Home</Link>
             <Link to="/browse">Browse</Link>
             <Link to="/about">About</Link>
@@ -43,11 +43,11 @@ const Navbar = ({
         </div>
       ) : (
         <div className="flex items-center justify-between py-2 space-x-4">
-          <div className="text-blue-600 font-semibold text-sm sm:text-base md:text-lg flex-shrink-0">
+          <div className="font-sans text-blue-600 font-semibold text-sm sm:text-base md:text-lg flex-shrink-0">
             ERMiC
           </div>
   
-          <div className="hidden sm:flex gap-4 flex-shrink-0">
+          <div className="font-sans hidden sm:flex gap-4 flex-shrink-0">
             <Link to="/">Home</Link>
             <Link to="/browse">Browse</Link>
             <Link to="/about">About</Link>
@@ -76,7 +76,7 @@ const Navbar = ({
         </div>
       )}
       {menuOpen && (
-        <div className="sm:hidden mt-2 flex flex-col gap-2">
+        <div className="font-sans sm:hidden mt-2 flex flex-col gap-2">
           <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
           <Link to="/browse" onClick={() => setMenuOpen(false)}>Browse</Link>
           <Link to="/about" onClick={() => setMenuOpen(false)}>About</Link>

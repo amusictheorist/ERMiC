@@ -8,7 +8,7 @@ const RichTextRenderer = ({ document }) => {
   const options = {
     renderNode: {
       [BLOCKS.PARAGRAPH]: (node, children) => (
-        <p className='mb-4 text-base text-gray-800'>{children}</p>
+        <p className='font-serif mb-4 text-base text-gray-800'>{children}</p>
       )
     }
   };

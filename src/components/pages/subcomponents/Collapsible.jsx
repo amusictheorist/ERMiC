@@ -20,7 +20,7 @@ const CollapsibleSection = ({ title, isOpen, setIsOpen, children }) => {
         aria-expanded={isOpen}
         aria-controls={`collapsible-${title.replace(/\s+/g, '-')}`}
       >
-        <span>{title}</span>
+        <span className="font-serif">{title}</span>
         <ChevronDown
           className={`h-5 w-5 sm:h-6 sm:w-6 transform transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
         />

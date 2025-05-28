@@ -27,19 +27,19 @@ const SearchResultsPage = () => {
   // actual render block
   return (
     <div className="px-4 sm:px-6 md:px-8 lg:px-12 py-8 max-w-5xl mx-auto text-center">
-      <h1 className='text-2xlsm:text-3xl font-bold mb-6'>
-        Search results for: <span className='italic'>{occupation}</span>
+      <h1 className='font-serif text-2xlsm:text-3xl font-bold mb-6'>
+        Search results for: "{occupation}"
       </h1>
 
       {filteredMusicians.length === 0 ? (
-        <p className='text-lg text-gray-700'>No musicians found for this occupation.</p>
+        <p className='font-serif text-lg text-gray-700'>No musicians found for this occupation.</p>
       ) : (
         <ul className='grid gap-4 text-center'>
           {filteredMusicians.map(musician => (
             <li
               key={musician.slug}
               onClick={() => navigate(`/musician/${musician.slug}`)}
-              className='cursor-pointer px-4 py-3 rounded bg-slate-100 border border-gray-300 transition hover:bg-blue-600 hover:text-white'
+              className='font-serif cursor-pointer px-4 py-3 rounded bg-slate-100 border border-gray-300 transition hover:bg-blue-600 hover:text-white'
             >
               {musician.firstName} {musician.surname}
             </li>

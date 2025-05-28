@@ -5,7 +5,7 @@ const WritingList = ({ writings }) => {
   if (!writings || writings.length === 0) return null;
 
   return (
-      <div className="flex flex-col gap-4 my-6 text-left">
+      <div className="font-serif flex flex-col gap-4 my-6 text-left">
         {writings.map((writing, index) => (
           <div key={index} className="p-4 rounded bg-white border border-gray-300 shadow-sm">
             <p>

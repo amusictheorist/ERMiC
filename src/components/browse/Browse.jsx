@@ -30,7 +30,7 @@ const Browse = () => {
 
   return (
     <div className="px-4 sm:px-6 md:px-8 lg:px-12 py-8 max-w-5xl mx-auto text-center">
-      <h2 className='text-2xl sm:text-3xl font-bold mb-6'>Browse the Biographies</h2>
+      <h2 className='font-serif text-2xl sm:text-3xl font-bold mb-6'>Browse the Biographies</h2>
 
       {error && (
         <p className="text-sm text-yellow-800 bg-yellow-100 border border-yellow-300 rounded px-4 py-2 mb-4">
@@ -45,7 +45,7 @@ const Browse = () => {
             to={`/musician/${musician.slug}`}
             className="block w-full px-4 py-3 bg-slate-100 text-gray-700 rounded transition hover:bg-blue-600 hover:text-white text-base sm:text-lg"
           >
-            <p className="text-lg md:text-base">
+            <p className="font-serif text-lg md:text-base">
               {musician.firstName} {musician.surname}
             </p>
           </Link>
