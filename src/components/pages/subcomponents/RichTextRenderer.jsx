@@ -1,6 +1,6 @@
 import React from 'react';
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
-import {BLOCKS} from '@contentful/rich-text-types';
+import { BLOCKS, INLINES } from '@contentful/rich-text-types';
 
 const RichTextRenderer = ({ document }) => {
   if (!document) return null;
@@ -9,7 +9,20 @@ const RichTextRenderer = ({ document }) => {
     renderNode: {
       [BLOCKS.PARAGRAPH]: (node, children) => (
         <p className='font-serif mb-4 text-base text-gray-800'>{children}</p>
-      )
+      ),
+      [INLINES.HYPERLINK]: (node, children) => {
+        const url = node.data.uri;
+        return (
+          <a
+            href={url}
+            target='_blank'
+            rel='noopener noreferrer'
+            className='text-blue-600 underline hover:text-blue-800'
+          >
+            {children}
+          </a>
+        );
+      }
     }
   };
 

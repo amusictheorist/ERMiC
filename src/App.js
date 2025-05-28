@@ -8,6 +8,7 @@ import HomePage from "./components/pages/HomePage";
 import Browse from "./components/browse/Browse";
 import MusicianPage from "./components/pages/MusicianPage";
 import SearchResultsPage from "./components/pages/SearchResultsPage";
+import ScrollToTop from './components/navigation/ScrollToTop';
 
 function App() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -28,6 +29,7 @@ function App() {
       <Router>
         <div className="flex flex-col min-h-screen">
           <Navbar {...searchState} />
+          <ScrollToTop />
           <div className="flex-1 pt-16 px-4">
           <Routes>
               <Route path="/" element={<HomePage {...searchState} />} />
