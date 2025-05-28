@@ -66,7 +66,7 @@ describe('SearchResultsPage', () => {
       error: null
     });
     renderWithRouter();
-    expect(screen.getByText(/Search results for: Pianist/i)).toBeInTheDocument();
+    expect(screen.getByText(/Search results for: "Pianist"/i)).toBeInTheDocument();
 
     const listItems = screen.getAllByRole('listitem');
     expect(listItems).toHaveLength(2);

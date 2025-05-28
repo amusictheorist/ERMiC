@@ -12,6 +12,18 @@ jest.mock('../searchBar/SearchBar', () => {
   };
 });
 
+jest.mock('../../components/DataContext', () => ({
+  useData: () => ({
+    data: {
+      musicianCollection: { items: [] },
+      workCollection: { items: [] },
+      writingCollection: { items: [] }
+    },
+    loading: false,
+    error: null
+  })
+}));
+
 describe('HomePage', () => {
   const defaultProps = {
     searchTerm: 'test',
