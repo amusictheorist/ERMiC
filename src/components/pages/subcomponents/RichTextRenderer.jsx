@@ -2,7 +2,7 @@ import React from 'react';
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { BLOCKS, INLINES } from '@contentful/rich-text-types';
 
-const RichTextRenderer = ({ document }) => {
+const RichTextRenderer = ({ document, footer = null }) => {
   if (!document) return null;
 
   const options = {
@@ -29,6 +29,7 @@ const RichTextRenderer = ({ document }) => {
   return (
     <div className="text-left m-4 text-base leading-relaxed p-4 rounded bg-slate-50">
       {documentToReactComponents(document, options)}
+      {footer && <div className='mt-6'>{footer}</div>}
     </div>
   );
 };

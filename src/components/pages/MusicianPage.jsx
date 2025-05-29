@@ -42,7 +42,7 @@ const MusicianPage = () => {
 
   // actual rendering block
   return (
-    <div className="px-4 py-8 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center">
+    <div className="px-4 py-8 sm:px-8 lg:px-16 xl:px-24 max-w-7xl mx-auto text-center">
       <h1 className='font-serif text-2xl sm:text-3xl md:text-4xl font-bold mb-4'>
         {musician.firstName} {musician.surname}
       </h1>
@@ -59,7 +59,16 @@ const MusicianPage = () => {
         alt={`${musician.firstName} ${musician.surname}`}
       />
       <h2 className='font-serif text-3xl font-semibold my-8'>Biography</h2>
-      <RichTextRenderer document={musician.biography?.json} />
+      <RichTextRenderer
+        document={musician.biography?.json}
+        footer={
+          musician.author && (
+            <p className='font-serif mt-4 italic text-right text-gray-600'>
+              - {musician.author}
+            </p>
+          )
+        }
+      />
 
       {works.length > 0 && (
         <CollapsibleSection
@@ -79,7 +88,7 @@ const MusicianPage = () => {
         >
           <WritingList writings={writings} />
         </CollapsibleSection>
-      )}      
+      )}
       
       <CollapsibleSection
         title='Bibliography'
