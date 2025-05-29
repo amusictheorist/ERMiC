@@ -27,6 +27,7 @@ const musicianQuery = `
       biography {
         json
       }
+      author
       bibliography {
         json
       }
@@ -62,8 +63,27 @@ const writingQuery = `
         slug
       }
       title
-      year
       type
+      year
+      dateRange
+      publicationInfo {
+        json
+      }
+    }
+  }
+}
+`;
+
+const performanceQuery = `
+{
+  performanceAndMediaCollection {
+    items {
+      musician {
+        slug
+      }
+      title
+      type
+      year
       publicationInfo {
         json
       }
@@ -110,16 +130,18 @@ export const DataProvider = ({ children }) => {
     // this function combines the split collections into one array
     const fetchData = async () => {
       try {
-        const [musicianData, workData, writingData] = await Promise.all([
+        const [musicianData, workData, writingData, performanceData] = await Promise.all([
           fetchSection(musicianQuery, 'musicians'),
           fetchSection(workQuery, 'works'),
-          fetchSection(writingQuery, 'writings')
+          fetchSection(writingQuery, 'writings'),
+          fetchSection(performanceQuery, 'performances')
         ]);
 
         setData({
           musicianCollection: musicianData.musicianCollection,
           workCollection: workData.workCollection,
-          writingCollection: writingData.writingCollection
+          writingCollection: writingData.writingCollection,
+          performanceCollection: performanceData.performanceCollection
         });
       } catch (err) {
         console.error('Data fetch failed:', err);
