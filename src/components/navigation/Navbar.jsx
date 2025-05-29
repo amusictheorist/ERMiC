@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import SearchBar from '../searchBar/SearchBar';
 import { Menu } from 'lucide-react';
+import longLogo from '../../assets/longLogo.png';
+import shortLogo from '../../assets/shortLogo.png';
 
 // this component handles navigation links across the website
 const Navbar = ({
@@ -22,9 +24,11 @@ const Navbar = ({
     <nav className="fixed top-0 left-0 w-full z-50 bg-slate-100 border-b border-slate-200 px-4 py-2">
       {isHomePage ? (
         <div className="flex items-center justify-between py-2">
-          <div className="font-sans text-blue-600 font-semibold text-xs sm:text-sm md:text-base flex-[2]">
-            European Refugee Musicians in Canada Online Biographical Dictionary
-          </div>
+          <img
+            src={longLogo}
+            alt='European Refugee Musicians in Canada logo'
+            className='h-8 sm:h-12 md:h-16 object-contain flex-shrink-0'
+          />
   
           <div className="font-sans hidden sm:flex gap-4 flex-1 justify-end">
             <Link to="/">Home</Link>
@@ -42,10 +46,12 @@ const Navbar = ({
           </button>
         </div>
       ) : (
-        <div className="flex items-center justify-between py-2 space-x-4">
-          <div className="font-sans text-blue-600 font-semibold text-sm sm:text-base md:text-lg flex-shrink-0">
-            ERMiC
-          </div>
+          <div className="flex items-center justify-between py-2 space-x-4">
+            <img
+              src={shortLogo}
+              alt='ERMiC logo'
+              className='h-6 sm:h-8 md:h-10 object-contain flex-shrink-0'
+            />
   
           <div className="font-sans hidden sm:flex gap-4 flex-shrink-0">
             <Link to="/">Home</Link>
