@@ -19,8 +19,9 @@ const HomePage = () => {
   const counts = data ? {
     musicians: data.musicianCollection?.items?.length || 0,
     works: data.workCollection?.items?.length || 0,
-    writings: data.writingCollection?.items?.length || 0
-  } : { musicians: 0, works: 0, writings: 0 };
+    writings: data.writingCollection?.items?.length || 0,
+    performances: data.performanceCollection?.items?.length || 0
+  } : { musicians: 0, works: 0, writings: 0, performances: 0 };
 
   return (
     <div className="w-full max-w-[90%] sm:max-w-3xl mx-auto px-4py6 mt-36 text-center">
@@ -42,7 +43,7 @@ const HomePage = () => {
 
       {!loading && !error && (
         <div className='font-sans mt-6 text-sm sm:text-base text-gray-600 italic'>
-          Database currently includes {counts.musicians} musicians, {counts.works} works, {counts.writings} writings, and continues to grow!
+          Database currently includes {counts.musicians} musicians, {counts.works} works, {counts.writings} writings, {counts.performances} performances and media works, and continues to grow!
         </div>
       )}
     </div>

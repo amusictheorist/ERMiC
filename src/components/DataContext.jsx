@@ -137,11 +137,13 @@ export const DataProvider = ({ children }) => {
           fetchSection(performanceQuery, 'performances')
         ]);
 
+        // console.log('performances in DataContext:', performanceData);
+
         setData({
           musicianCollection: musicianData.musicianCollection,
           workCollection: workData.workCollection,
           writingCollection: writingData.writingCollection,
-          performanceCollection: performanceData.performanceCollection
+          performanceCollection: performanceData.performanceAndMediaCollection
         });
       } catch (err) {
         console.error('Data fetch failed:', err);
