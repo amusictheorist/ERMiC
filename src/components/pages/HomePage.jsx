@@ -15,12 +15,13 @@ const HomePage = () => {
   } = useOutletContext();
 
   const { data, loading, error } = useData();
-  
+
+  // counts update on the front page the status of the database
   const counts = data ? {
     musicians: data.musicianCollection?.items?.length || 0,
     works: data.workCollection?.items?.length || 0,
     writings: data.writingCollection?.items?.length || 0,
-    performances: data.performanceCollection?.items?.length || 0
+    performances: data.performanceAndMediaCollection?.items?.length || 0
   } : { musicians: 0, works: 0, writings: 0, performances: 0 };
 
   return (

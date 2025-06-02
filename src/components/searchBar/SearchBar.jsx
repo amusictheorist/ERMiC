@@ -19,28 +19,31 @@ const SearchBar = ({
   const dropdownRef = useRef(null);
   const itemRefs = useRef([]);
   const [errorMessage, setErrorMessage] = useState('');
-
+  
   const {
     filteredMusicians = [],
     filteredWorks = [],
     filteredWritings = [],
-    filteredOccupations = []
+    filteredOccupations = [],
+    filteredPerformances = []
   } = useSearchFilters(searchTerm);
-
+  
   const { totalResults = [], noResults = false } = useSearchResults({
     filteredMusicians,
     filteredWorks,
     filteredWritings,
     filteredOccupations,
+    filteredPerformances,
     searchTerm
   });
-
+  
   // this function finds the proper link to redirect to the requested site
   const handleSelect = useSearchNavigation({
     filteredMusicians,
     filteredWorks,
     filteredWritings,
     filteredOccupations,
+    filteredPerformances,
     setSearchTerm,
     setShowDropdown,
     setSelectedIndex
@@ -65,7 +68,7 @@ const SearchBar = ({
     showDropdown,
     itemRefs
   });
-
+  
   // this hook allows scrolling through dropdown list
   useEffect(() => {
     if (itemRefs.current[selectedIndex]) {
@@ -75,7 +78,7 @@ const SearchBar = ({
       });
     }
   }, [selectedIndex]);
-
+  
   // this hook closes dropdown results if user navigates outside search bar
   useClickOutside(dropdownRef, () => setShowDropdown(false), '.search-container');
 
@@ -94,15 +97,16 @@ const SearchBar = ({
           }}
           onKeyDown={handleKeyDown}
         />
-  
+        
         <button
-          className="px-4 py-2 text-base bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 disabled:opacity-50 disabled:cursor-not-allowed sm:mt-0 mt-2"
+          className="px-4 py-2 text-base bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 
+          isabled:opacity-50 disabled:cursor-not-allowed sm:mt-0 mt-2"
           onClick={handleSearchSubmit}
           disabled={searchTerm.length === 0}
         >
           Search
         </button>
-  
+        
         {showDropdown && (
           <div
             ref={dropdownRef}
@@ -123,13 +127,13 @@ const SearchBar = ({
           </div>
         )}
       </div>
-  
+      
       {noResults && (
         <div className="text-red-600 text-sm mt-2 text-center w-full">
           <p>No matches found for your search. Please try a different name or keyword.</p>
         </div>
       )}
-  
+      
       {errorMessage && (
         <div className="text-red-700 bg-red-50 border border-red-200 rounded px-3 py-2 text-sm mt-2 text-center w-full">
           <p>{errorMessage}</p>

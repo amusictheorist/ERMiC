@@ -8,6 +8,7 @@ const useSearchFilters = (searchTerm) => {
   const [filteredWritings, setFilteredWritings] = useState([]);
   const [filteredWorks, setFilteredWorks] = useState([]);
   const [filteredOccupations, setFilteredOccupations] = useState([]);
+  const [filteredPerformances, setFilteredPerformances] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
@@ -17,6 +18,7 @@ const useSearchFilters = (searchTerm) => {
       setFilteredWorks([]);
       setFilteredWritings([]);
       setFilteredOccupations([]);
+      setFilteredPerformances([]);
       setShowDropdown(false);
       return;
     }
@@ -26,6 +28,7 @@ const useSearchFilters = (searchTerm) => {
       const musicianItems = Array.isArray(data.musicianCollection?.items) ? data.musicianCollection.items : [];
       const workItems = Array.isArray(data.workCollection?.items) ? data.workCollection.items : [];
       const writingItems = Array.isArray(data.writingCollection?.items) ? data.writingCollection.items : [];
+      const performanceItems = Array.isArray(data.performanceAndMediaCollection?.items) ? data.performanceAndMediaCollection.items : [];
       const search = searchTerm.toLowerCase();
       
       // filtering through the musician collection from CMS
@@ -44,6 +47,11 @@ const useSearchFilters = (searchTerm) => {
         (writing.title || '').toLowerCase().includes(search)
       );
       
+      // filtering through through the performances collectin from CMS
+      const performanceResults = performanceItems.filter((performance) =>
+        (performance.title || '').toLowerCase().includes(search)
+      );
+      
       // filtering through the occupations in the CMS
       const occupationResults = Array.from(
         new Set(
@@ -60,11 +68,13 @@ const useSearchFilters = (searchTerm) => {
       setFilteredWorks(workResults);
       setFilteredWritings(writingResults);
       setFilteredOccupations(occupationResults);
+      setFilteredPerformances(performanceResults);
       setShowDropdown(
         musicianResults.length > 0 ||
         workResults.length > 0 ||
         writingResults.length > 0 ||
-        occupationResults.length > 0
+        occupationResults.length > 0 ||
+        performanceResults.length > 0
       );
     } catch (err) {
       console.error('Search filtering failed:', err);
@@ -72,6 +82,7 @@ const useSearchFilters = (searchTerm) => {
       setFilteredWorks([]);
       setFilteredWritings([]);
       setFilteredOccupations([]);
+      setFilteredPerformances([]);
       setShowDropdown(false);
     }
   }, [searchTerm, data, loading, error]);
@@ -81,6 +92,7 @@ const useSearchFilters = (searchTerm) => {
     filteredWorks,
     filteredWritings,
     filteredOccupations,
+    filteredPerformances,
     showDropdown,
     setShowDropdown
   };
