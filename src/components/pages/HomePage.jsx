@@ -1,16 +1,19 @@
 import React from 'react';
 import { useData } from '../DataContext';
 import SearchBar from "../searchBar/SearchBar";
+import { useOutletContext } from 'react-router-dom';
 
 // landing page for the site, where main search functionality is implemented
-const HomePage = ({
-  searchTerm,
-  setSearchTerm,
-  showDropdown,
-  setShowDropdown,
-  selectedIndex,
-  setSelectedIndex
-}) => {
+const HomePage = () => {
+  const {
+    searchTerm,
+    setSearchTerm,
+    showDropdown,
+    setShowDropdown,
+    selectedIndex,
+    setSelectedIndex
+  } = useOutletContext();
+
   const { data, loading, error } = useData();
   
   const counts = data ? {
