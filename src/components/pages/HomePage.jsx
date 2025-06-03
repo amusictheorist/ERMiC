@@ -25,7 +25,7 @@ const HomePage = () => {
   } : { musicians: 0, works: 0, writings: 0, performances: 0 };
 
   return (
-    <div className="w-full max-w-[90%] sm:max-w-3xl mx-auto px-4py6 mt-36 text-center">
+    <div className="w-full max-w-[90%] sm:max-w-3xl mx-auto px-4 py-6 mt-36 text-center">
       <h1 className='font-serif text-xl sm:text-2xl md:text-4xl font-bold leading-tight'>
         Welcome to the European Refugee Musicians in Canada Online Biographical Dictionary
       </h1>
@@ -44,7 +44,7 @@ const HomePage = () => {
 
       {!loading && !error && (
         <div className='font-sans mt-6 text-sm sm:text-base text-gray-600 italic'>
-          Database currently includes {counts.musicians} musicians, {counts.works} works, {counts.writings} writings, {counts.performances} performances and media works, and continues to grow!
+          Database currently includes {counts.musicians} musicians, {counts.works} works, {counts.writings} writings, {counts.performances} performance and media works, and continues to grow!
         </div>
       )}
     </div>

@@ -5,6 +5,7 @@ import useClickOutside from '../../hooks/useClickOutside';
 import useSearchResults from '../../hooks/useSearchResults';
 import useSearchNavigation from '../../hooks/useSearchNavigation';
 import useSearchFilters from '../../hooks/useSearchFilters';
+import { useNavigate } from 'react-router-dom';
 
 // this component handles all searches of the CMS data
 const SearchBar = ({
@@ -48,15 +49,15 @@ const SearchBar = ({
     setShowDropdown,
     setSelectedIndex
   });
+
+  const navigate = useNavigate();
   
   // handles search submissions
   const handleSearchSubmit = () => {
-    if (totalResults.length === 0) {
-      setErrorMessage(`No results to show for "${searchTerm}"`)
-    } else {
-      setErrorMessage('');
-      handleSelect(totalResults[selectedIndex] || totalResults[0]);
-    }
+    if (searchTerm.trim() === '') return;
+    setErrorMessage('');
+    setShowDropdown(false);
+    navigate(`results?search=${encodeURIComponent(searchTerm)}`);
   };
   
   // this function allows navigation through dropdown results with keyboard
