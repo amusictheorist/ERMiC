@@ -31,15 +31,21 @@ const GeneralResultsPage = () => {
   const groupedPerformances = groupByMusician(enrichedPerformances);
 
   return (
-    <div className="px-4 py-6 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Search results for: "{query}"</h1>
+    <div className="px-4 sm:px-6 md:px-8 lg:px-12 py-8 max-w-5xl mx-auto text-left">
+      <h1 className="font-serif text-2xl sm:text-3xl font-bold mb-6 text-center">
+        Search results for: "{query}"
+      </h1>
 
       {matchedMusicians.length > 0 && (
-        <section>
-          <h2 className="text-xl font font-semibold mt-6">Musicians</h2>
-          <ul>
+        <section className="mb-8">
+          <h2 className="font-serif text-xl sm:text-2xl font font-semibold mb-4">Musicians</h2>
+          <ul className="grid gap-4">
             {matchedMusicians.map(m => (
-              <li key={m.slug} onClick={() => navigate(`/musician/${m.slug}`)}>
+              <li
+                key={m.slug}
+                onClick={() => navigate(`/musician/${m.slug}`)}
+                className="cursor-pointer px-4 py-3 bg-slate-100 text-gray-700 rounded transition hover:bg-blue-600 hover:text-white font-serif text-base sm:text-lg"
+              >
                 {m.firstName} {m.surname}
               </li>
             ))}
@@ -48,14 +54,14 @@ const GeneralResultsPage = () => {
       )}
 
       {matchedOccupations.length > 0 && (
-        <section>
-          <h2 className="text-xl font font-semibold mt-6">Occupations</h2>
-          <ul>
+        <section className="mb-8">
+          <h2 className="font-serif text-xl sm:text-2xl font-semibold mb-4">Occupations</h2>
+          <ul className="grid gap-4">
             {matchedOccupations.map(o => (
               <li
                 key={o}
                 onClick={() => navigate(`/results/occupation?occupation=${o}`)}
-                className="hover:underline cursor-pointer"
+                className="cursor-pointer px-4 py-3 bg-slate-100 text-gray-700 rounded transition hover:bg-blue-600 hover:text-white font-serif text-base sm:text-lg"
               >
                 {o}
               </li>
