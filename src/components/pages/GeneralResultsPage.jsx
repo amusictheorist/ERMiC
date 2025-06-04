@@ -32,19 +32,19 @@ const GeneralResultsPage = () => {
 
   return (
     <div className="px-4 sm:px-6 md:px-8 lg:px-12 py-8 max-w-5xl mx-auto text-left">
-      <h1 className="font-serif text-2xl sm:text-3xl font-bold mb-6 text-center">
+      <h1 className="font-serif text-xl sm:text-2xl font-semibold mb-6 text-center">
         Search results for: "{query}"
       </h1>
 
       {matchedMusicians.length > 0 && (
-        <section className="mb-8">
-          <h2 className="font-serif text-xl sm:text-2xl font font-semibold mb-4">Musicians</h2>
-          <ul className="grid gap-4">
+        <section className="mb-6">
+          <h2 className="font-serif text-lg sm:text-xl font-semibold mb-3">Musicians</h2>
+          <ul className="grid gap-2">
             {matchedMusicians.map(m => (
               <li
                 key={m.slug}
                 onClick={() => navigate(`/musician/${m.slug}`)}
-                className="cursor-pointer px-4 py-3 bg-slate-100 text-gray-700 rounded transition hover:bg-blue-600 hover:text-white font-serif text-base sm:text-lg"
+                className="cursor-pointer px-3 py-2 text-gray-800 rounded transition hover:bg-gray-200 font-serif text-sm sm:text-base"
               >
                 {m.firstName} {m.surname}
               </li>
@@ -54,14 +54,14 @@ const GeneralResultsPage = () => {
       )}
 
       {matchedOccupations.length > 0 && (
-        <section className="mb-8">
-          <h2 className="font-serif text-xl sm:text-2xl font-semibold mb-4">Occupations</h2>
-          <ul className="grid gap-4">
+        <section className="mb-6">
+          <h2 className="font-serif text-lg sm:text-xl font-semibold mb-3">Occupations</h2>
+          <ul className="grid gap-2">
             {matchedOccupations.map(o => (
               <li
                 key={o}
                 onClick={() => navigate(`/results/occupation?occupation=${o}`)}
-                className="cursor-pointer px-4 py-3 bg-slate-100 text-gray-700 rounded transition hover:bg-blue-600 hover:text-white font-serif text-base sm:text-lg"
+                className="cursor-pointer px-3 py-2 text-gray-800 rounded transition hover:bg-gray-200 font-serif text-sm sm:text-base"
               >
                 {o}
               </li>

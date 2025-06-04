@@ -58,6 +58,7 @@ const SearchBar = ({
     setErrorMessage('');
     setShowDropdown(false);
     navigate(`results?search=${encodeURIComponent(searchTerm)}`);
+    setSearchTerm('');
   };
   
   // this function allows navigation through dropdown results with keyboard
@@ -67,7 +68,10 @@ const SearchBar = ({
     setSelectedIndex,
     handleSelect,
     showDropdown,
-    itemRefs
+    setShowDropdown,
+    itemRefs,
+    searchTerm,
+    setSearchTerm
   });
   
   // this hook allows scrolling through dropdown list
