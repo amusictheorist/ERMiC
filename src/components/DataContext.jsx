@@ -14,7 +14,7 @@ const accessToken = process.env.REACT_APP_ACCESS_TOKEN;
 // TO DO: put photograph fetch back in query
 const musicianQuery = `
 {
-  musicianCollection(limit: 100) {
+  musicianCollection {
     items {
       slug
       firstName
@@ -26,6 +26,13 @@ const musicianQuery = `
       occupation
       biography {
         json
+      }
+      crossReferencesCollection {
+        items {
+          slug
+          firstName
+          surname
+        }
       }
       author
       bibliography {
@@ -76,7 +83,7 @@ const writingQuery = `
 
 const performanceQuery = `
 {
-  performanceAndMediaCollection {
+  performanceAndMediaCollection(limit: 1000) {
     items {
       musician {
         slug
