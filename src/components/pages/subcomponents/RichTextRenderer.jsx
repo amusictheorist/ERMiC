@@ -1,48 +1,13 @@
 import React from 'react';
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { BLOCKS, INLINES } from '@contentful/rich-text-types';
-import { Link } from 'react-router-dom';
-
-// Helper to normalize and strip diacritics
-const normalize = str =>
-  str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+import { generateTextRenderer, nameMapBuilder, normalize } from '../../../utils/renderHelpers';
 
 const RichTextRenderer = ({ document, footer = null, crossReferences = [] }) => {
   if (!document) return null;
 
-  // Build map of normalized full names to slugs
-  const nameMap = crossReferences.reduce((acc, ref) => {
-    if (ref.slug && ref.firstName && ref.surname) {
-      const full1 = `${ref.firstName} ${ref.surname}`;
-      const full2 = `${ref.surname} ${ref.firstName}`;
-      acc[normalize(full1)] = ref.slug;
-      acc[normalize(full2)] = ref.slug;
-    }
-    return acc;
-  }, {});
-
-  const renderText = (text) => {
-    const parts = text.split(/(\b[\p{L}]+(?:\s[\p{L}]+)+\b)/gu);
-    return parts.map((part, i) => {
-      const normalized = normalize(part.trim());
-      const matchedSlug = nameMap[normalized];
-
-      if (matchedSlug) {
-        console.log(`Matched "${part}" -> slug: ${matchedSlug}`);
-        return (
-          <Link
-            key={i}
-            to={`/musician/${matchedSlug}`}
-            className='text-blue-600 hover:text-blue-800'
-          >
-            {part}
-          </Link>
-        );
-      }
-
-      return part;
-    });
-  };
+  const nameEntries = nameMapBuilder(crossReferences, normalize);
+  const renderText = generateTextRenderer(nameEntries);
 
   const options = {
     renderText,

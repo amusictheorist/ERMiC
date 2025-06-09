@@ -49,12 +49,24 @@ const MusicianPage = () => {
         {musician.firstName} {musician.surname}
       </h1>
 
-      <p className='font-serif text-sm sm:text-base md:text-lg text-gray-700 mb-1'>
-        Born: {musician.birthdate} in {musician.birthPlace}
-      </p>
-      <p className='font-serif text-sm sm:text-base md:text-lg text-gray-700 mb-6'>
-        Died: {musician.deathdate} in {musician.deathPlace}
-      </p>
+      {(musician.birthdate || musician.birthPlace) && (
+        <p className='font-serif text-sm sm:text-base md:text-lg text-gray-700 mb-1'>
+          Born:
+          {musician.birthdate && ` ${musician.birthdate}`}
+          {musician.birthdate && musician.birthPlace && ' in'}
+          {musician.birthPlace && ` ${musician.birthPlace}`}
+        </p>
+      )}
+
+      {(musician.deathdate || musician.deathPlace) && (
+        <p className='font-serif text-sm sm:text-base md:text-lg text-gray-700 mb-6'>
+          Died:
+          {musician.deathdate && ` ${musician.deathdate}`}
+          {musician.deathdate && musician.deathPlace && ' in'}
+          {musician.deathPlace && ` ${musician.deathPlace}`}
+        </p>
+      )}
+
       
       <Portrait
         url={portraitUrl}
