@@ -28,14 +28,14 @@ describe('Navbar component', () => {
   it('renders full logo on homepage', () => {
     renderWithRouter(<Navbar {...defaultProps} />, { route: '/' });
 
-    expect(screen.getByText('European Refugee Musicians in Canada Online Biographical Dictionary')).toBeInTheDocument();
+    expect(screen.getByAltText('European Refugee Musicians in Canada logo')).toBeInTheDocument();
     expect(screen.queryByText('Mocked SearchBar')).not.toBeInTheDocument();
   });
 
   it('renders short logo on internal page and shows SearchBar', () => {
     renderWithRouter(<Navbar {...defaultProps} />, { route: '/browse' });
 
-    expect(screen.getByText('ERMiC')).toBeInTheDocument();
+    expect(screen.getByAltText('ERMiC logo')).toBeInTheDocument();
     expect(screen.getByText('Mocked SearchBar')).toBeInTheDocument();
   });
 

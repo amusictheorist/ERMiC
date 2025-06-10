@@ -28,6 +28,7 @@ const CollapsibleSection = ({ title, isOpen, setIsOpen, children }) => {
       <div
         ref={contentRef}
         id={`collapsible-${title.replace(/\s+/g, '-')}`}
+        data-testid='collapsible-content'
         style={{
           maxHeight: height,
           transition: 'max-height 0.4s ease, opacity 0.4s ease',
