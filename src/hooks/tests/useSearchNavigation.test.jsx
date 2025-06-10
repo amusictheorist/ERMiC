@@ -24,6 +24,7 @@ describe('useSearchNavigation', () => {
         filteredWorks: [],
         filteredWritings: [],
         filteredOccupations: [occupation],
+        filteredPerformances: [],
         setSearchTerm,
         setShowDropdown,
         setSelectedIndex,
@@ -46,6 +47,7 @@ describe('useSearchNavigation', () => {
         filteredWorks: [],
         filteredWritings: [],
         filteredOccupations: [],
+        filteredPerformances: [],
         setSearchTerm,
         setShowDropdown,
         setSelectedIndex,
@@ -68,6 +70,7 @@ describe('useSearchNavigation', () => {
         filteredWorks: [work],
         filteredWritings: [],
         filteredOccupations: [],
+        filteredPerformances: [],
         setSearchTerm,
         setShowDropdown,
         setSelectedIndex,
@@ -90,6 +93,7 @@ describe('useSearchNavigation', () => {
         filteredOccupations: [],
         filteredWorks: [],
         filteredWritings: [writing],
+        filteredPerformances: [],
         setSearchTerm,
         setShowDropdown,
         setSelectedIndex,
@@ -97,6 +101,29 @@ describe('useSearchNavigation', () => {
     );
 
     act(() => result.current(writing));
+
+    expect(mockNavigate).toHaveBeenCalledWith('/musician/anhalt-istvan');
+    expect(setSearchTerm).toHaveBeenCalledWith('');
+    expect(setShowDropdown).toHaveBeenCalledWith(false);
+    expect(setSelectedIndex).toHaveBeenCalledWith(-1);
+  });
+
+  it('navigates to the musician page of performance if it has a musician', () => {
+    const performance = { title: 'About Foci', musician: { slug: 'anhalt-istvan' } };
+    const { result } = renderHook(() =>
+      useSearchNavigation({
+        filteredMusicians: [],
+        filteredOccupations: [],
+        filteredWorks: [],
+        filteredWritings: [],
+        filteredPerformances: [performance],
+        setSearchTerm,
+        setShowDropdown,
+        setSelectedIndex,
+      })
+    );
+
+    act(() => result.current(performance));
 
     expect(mockNavigate).toHaveBeenCalledWith('/musician/anhalt-istvan');
     expect(setSearchTerm).toHaveBeenCalledWith('');
@@ -114,6 +141,7 @@ describe('useSearchNavigation', () => {
         filteredWorks: [],
         filteredWritings: [],
         filteredOccupations: [],
+        filteredPerformances: [],
         setSearchTerm,
         setSelectedIndex,
         setShowDropdown,
@@ -140,6 +168,7 @@ describe('useSearchNavigation', () => {
         filteredWorks: [],
         filteredWritings: [],
         filteredOccupations: [],
+        filteredPerformances: [],
         setSearchTerm,
         setSelectedIndex,
         setShowDropdown,
@@ -166,6 +195,7 @@ describe('useSearchNavigation', () => {
         filteredWorks: [],
         filteredWritings: [],
         filteredOccupations: [],
+        filteredPerformances: [],
         setSearchTerm,
         setSelectedIndex,
         setShowDropdown,
@@ -190,6 +220,7 @@ describe('useSearchNavigation', () => {
         filteredWorks: [work],
         filteredWritings: [],
         filteredOccupations: [],
+        filteredPerformances: [],
         setSearchTerm,
         setSelectedIndex,
         setShowDropdown,
@@ -214,6 +245,7 @@ describe('useSearchNavigation', () => {
         filteredWorks: [],
         filteredWritings: [writing],
         filteredOccupations: [],
+        filteredPerformances: [],
         setSearchTerm,
         setSelectedIndex,
         setShowDropdown,

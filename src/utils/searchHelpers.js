@@ -1,5 +1,5 @@
 export const match = (query) => (text) =>
-  text?.toLowerCase().includes(query.toLowerCase());
+  text ? text.toLowerCase().includes(query.toLowerCase()) : false;
 
 export const groupByMusician = (items) =>
   items.reduce((acc, item) => {

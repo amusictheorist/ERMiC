@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import useDropdownNavigation from "../useDropdownNavigation";
+import { MemoryRouter } from "react-router-dom";
 
 const TestComponent = ({
   initialIndex = 0,
@@ -38,6 +39,8 @@ const TestComponent = ({
   );
 };
 
+const renderWithRouter = (ui) => render(<MemoryRouter>{ui}</MemoryRouter>);
+
 describe('useDropdownNavigation', () => {
   const mockResults = [
     { name: 'Alice' },
@@ -46,7 +49,7 @@ describe('useDropdownNavigation', () => {
   ];
 
   it('navigates down with ArrowDown key', () => {
-    const { getByTestId } = render(
+    const { getByTestId } = renderWithRouter(
       <TestComponent totalResults={mockResults} />
     );
     const container = getByTestId('container');
@@ -54,11 +57,11 @@ describe('useDropdownNavigation', () => {
     fireEvent.keyDown(container, { key: 'ArrowDown' });
     fireEvent.keyDown(container, { key: 'ArrowDown' });
     fireEvent.keyDown(container, { key: 'ArrowDown' });
-    fireEvent.keyDown(container, { key: 'ArrowDown' }); // wrap around
+    fireEvent.keyDown(container, { key: 'ArrowDown' });
   });
   
   it('navigates up with ArrowUp key', () => {
-    const { getByTestId } = render(
+    const { getByTestId } = renderWithRouter(
       <TestComponent totalResults={mockResults} initialIndex={0} />
     );
     const container = getByTestId('container');
@@ -68,7 +71,7 @@ describe('useDropdownNavigation', () => {
 
   it('calls handleSelect on Enter key', () => {
     const onSelect = jest.fn();
-    const { getByTestId } = render(
+    const { getByTestId } = renderWithRouter(
       <TestComponent totalResults={mockResults} initialIndex={1} onSelect={onSelect} />
     );
     const container = getByTestId('container');
@@ -98,7 +101,7 @@ describe('useDropdownNavigation', () => {
       return <button onClick={() => setSelectedIndex(0)}>Change</button>
     };
 
-    const { getByText } = render(<TestWithMockRef />);
+    const { getByText } = renderWithRouter(<TestWithMockRef />);
     fireEvent.click(getByText('Change'));
 
     expect(scrollSpy).toHaveBeenCalled();

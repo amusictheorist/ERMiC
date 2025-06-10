@@ -25,6 +25,11 @@ const mockData = {
       { title: 'The Quest for Musical Truth' },
     ],
   },
+  performanceAndMediaCollection: {
+    items: [
+      {title: 'The Piano Music of Mendelssohn'}
+    ]
+  }
 };
 
 const makeMockReturn = (data, loading = false, error = null) => ({
@@ -46,6 +51,7 @@ describe('useSearchFilters with full data', () => {
     expect(result.current.filteredOccupations).toEqual([]);
     expect(result.current.filteredWorks).toEqual([]);
     expect(result.current.filteredWritings).toEqual([]);
+    expect(result.current.filteredPerformances).toEqual([]);
     expect(result.current.showDropdown).toBe(false);
   });
 
@@ -93,6 +99,7 @@ describe('useSearchFilters with full data', () => {
       expect(result.current.filteredMusicians.length).toBe(2);
       expect(result.current.filteredWorks.length).toBe(1);
       expect(result.current.filteredWritings.length).toBe(2);
+      expect(result.current.filteredPerformances.length).toBe(1);
       expect(result.current.showDropdown).toBe(true);
     });
   });
@@ -119,6 +126,7 @@ describe('useSearchFilters error handling and edge cases', () => {
       expect(result.current.filteredOccupations).toEqual([]);
       expect(result.current.filteredWorks).toEqual([]);
       expect(result.current.filteredWritings).toEqual([]);
+      expect(result.current.filteredPerformances).toEqual([]);
       expect(result.current.showDropdown).toBe(false);
     });
   });
@@ -128,6 +136,7 @@ describe('useSearchFilters error handling and edge cases', () => {
       musicianCollection: {},
       workCollection: null,
       writingCollection: { items: null },
+      performanceAndMediaCollection: { items: null }
     }));
 
     const { result } = renderHook(() => useSearchFilters('a'));
@@ -137,6 +146,7 @@ describe('useSearchFilters error handling and edge cases', () => {
       expect(result.current.filteredOccupations).toEqual([]);
       expect(result.current.filteredWorks).toEqual([]);
       expect(result.current.filteredWritings).toEqual([]);
+      expect(result.current.filteredPerformances).toEqual([]);
       expect(result.current.showDropdown).toBe(false);
     });
   });
@@ -156,6 +166,7 @@ describe('useSearchFilters error handling and edge cases', () => {
       },
       workCollection: { items: [] },
       writingCollection: { items: [] },
+      performanceAndMediaCollection: { items: [] }
     };
     DataContext.useData.mockReturnValueOnce(makeMockReturn(badData));
 
@@ -171,6 +182,7 @@ describe('useSearchFilters error handling and edge cases', () => {
       expect(result.current.filteredOccupations).toEqual([]);
       expect(result.current.filteredWorks).toEqual([]);
       expect(result.current.filteredWritings).toEqual([]);
+      expect(result.current.filteredPerformances).toEqual([]);
       expect(result.current.showDropdown).toBe(false);
     });
   });
@@ -180,6 +192,7 @@ describe('useSearchFilters error handling and edge cases', () => {
       musicianCollection: { items: [] },
       workCollection: { items: [] },
       writingCollection: { items: [] },
+      performanceAndMediaCollection: { items: [] }
     }));
 
     const { result } = renderHook(() => useSearchFilters('a'));
@@ -189,6 +202,7 @@ describe('useSearchFilters error handling and edge cases', () => {
       expect(result.current.filteredOccupations).toEqual([]);
       expect(result.current.filteredWorks).toEqual([]);
       expect(result.current.filteredWritings).toEqual([]);
+      expect(result.current.filteredPerformances).toEqual([]);
       expect(result.current.showDropdown).toBe(false);
     });
   });
@@ -214,6 +228,7 @@ describe('useSearchFilters error handling and edge cases', () => {
       },
       workCollection: { items: [] },
       writingCollection: { items: [] },
+      performanceAndMediaCollection: { items: [] }
     };
 
     rerender({ term: 'john' });
@@ -231,6 +246,7 @@ describe('useSearchFilters error handling and edge cases', () => {
     expect(result.current.filteredOccupations).toEqual([]);
     expect(result.current.filteredWorks).toEqual([]);
     expect(result.current.filteredWritings).toEqual([]);
+    expect(result.current.filteredPerformances).toEqual([]);
     expect(result.current.showDropdown).toBe(false);
   });
 });

@@ -47,7 +47,7 @@ describe('useClickOutside', () => {
     expect(getByTestId('status')).toHaveTextContent('Waiting');
   });
 
-  it('does not call callback if containerSelector mathces the event target', () => {
+  it('does not call callback if containerSelector matches the event target', () => {
     const callback = jest.fn();
     const { getByTestId } = render(
       <div className="search-container">
