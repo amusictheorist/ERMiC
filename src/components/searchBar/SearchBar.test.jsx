@@ -1,5 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
+import { MemoryRouter, useNavigate } from "react-router-dom";
 import "@testing-library/jest-dom";
 import SearchBar from "./SearchBar";
 
@@ -16,6 +17,11 @@ jest.mock("../../hooks/useSearchNavigation", () => ({
 
 import useSearchFilters from "../../hooks/useSearchFilters";
 import useSearchResults from "../../hooks/useSearchResults";
+
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useNavigate: jest.fn(),
+}));
 
 beforeAll(() => {
   window.HTMLElement.prototype.scrollIntoView = jest.fn();
@@ -35,8 +41,11 @@ describe("SearchBar component", () => {
     setSelectedIndex: mockSetSelectedIndex,
   };
 
+  const mockNavigate = jest.fn();
+
   beforeEach(() => {
     jest.clearAllMocks();
+    useNavigate.mockReturnValue(mockNavigate);
   });
 
   test("renders search input and button", () => {
@@ -45,6 +54,7 @@ describe("SearchBar component", () => {
       filteredWorks: [],
       filteredWritings: [],
       filteredOccupations: [],
+      filteredPerformances: []
     });
 
     useSearchResults.mockReturnValue({
@@ -52,7 +62,11 @@ describe("SearchBar component", () => {
       noResults: false,
     });
 
-    render(<SearchBar {...baseProps} />);
+    render(
+      <MemoryRouter>
+        <SearchBar {...baseProps} />
+      </MemoryRouter>
+    );
 
     expect(screen.getByPlaceholderText(/enter name or keyword/i)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /search/i })).toBeInTheDocument();
@@ -69,6 +83,7 @@ describe("SearchBar component", () => {
       filteredWorks: [],
       filteredWritings: [mockResults[1]],
       filteredOccupations: [],
+      filteredPerformances: []
     });
 
     useSearchResults.mockReturnValue({
@@ -76,7 +91,11 @@ describe("SearchBar component", () => {
       noResults: false,
     });
 
-    render(<SearchBar {...baseProps} searchTerm="music" />);
+    render(
+      <MemoryRouter>
+        <SearchBar {...baseProps} searchTerm="music" />
+      </MemoryRouter>
+    );
 
     expect(screen.getByText("Paul Hindemith")).toBeInTheDocument();
     expect(screen.getByText("Music and Time")).toBeInTheDocument();
@@ -88,6 +107,7 @@ describe("SearchBar component", () => {
       filteredWorks: [],
       filteredWritings: [],
       filteredOccupations: [],
+      filteredPerformances: []
     });
 
     useSearchResults.mockReturnValue({
@@ -95,7 +115,11 @@ describe("SearchBar component", () => {
       noResults: false,
     });
 
-    render(<SearchBar {...baseProps} />);
+    render(
+      <MemoryRouter>
+        <SearchBar {...baseProps} />
+      </MemoryRouter>
+    );
 
     fireEvent.change(screen.getByPlaceholderText(/enter name or keyword/i), {
       target: { value: "Ligeti" },
@@ -111,6 +135,7 @@ describe("SearchBar component", () => {
       filteredWorks: [],
       filteredWritings: [],
       filteredOccupations: [],
+      filteredPerformances: []
     });
 
     useSearchResults.mockReturnValue({
@@ -118,7 +143,11 @@ describe("SearchBar component", () => {
       noResults: true,
     });
 
-    render(<SearchBar {...baseProps} />);
+    render(
+      <MemoryRouter>
+        <SearchBar {...baseProps} />
+      </MemoryRouter>
+    );
 
     expect(screen.getByText(/no matches found/i)).toBeInTheDocument();
   });
@@ -129,6 +158,7 @@ describe("SearchBar component", () => {
       filteredWorks: [],
       filteredWritings: [],
       filteredOccupations: [],
+      filteredPerformances: []
     });
 
     useSearchResults.mockReturnValue({
@@ -136,7 +166,11 @@ describe("SearchBar component", () => {
       noResults: false,
     });
 
-    render(<SearchBar {...baseProps} searchTerm="" />);
+    render(
+      <MemoryRouter>
+        <SearchBar {...baseProps} searchTerm="" />
+      </MemoryRouter>
+    );
 
     expect(screen.getByRole("button", { name: /search/i })).toBeDisabled();
   });
@@ -147,6 +181,7 @@ describe("SearchBar component", () => {
       filteredWorks: [],
       filteredWritings: [],
       filteredOccupations: [],
+      filteredPerformances: []
     });
 
     useSearchResults.mockReturnValue({
@@ -154,15 +189,19 @@ describe("SearchBar component", () => {
       noResults: true,
     });
 
-    render(<SearchBar {...baseProps} searchTerm="notfound" />);
+    render(
+      <MemoryRouter>
+        <SearchBar {...baseProps} searchTerm="notfound" />
+      </MemoryRouter>
+    );
 
     const button = screen.getByRole("button", { name: /search/i });
     fireEvent.click(button);
 
-    expect(screen.getByText(/No results to show for "notfound"/i)).toBeInTheDocument();
+    expect(screen.getByText(/No matches found for your search/i)).toBeInTheDocument();
   });
 
-  test("search button selects first result when results exist", () => {
+  test("search button navigates to results page when results exist", () => {
     const mockResults = [{ firstName: "Claude", surname: "Debussy", sys: { id: "1" } }];
 
     useSearchFilters.mockReturnValue({
@@ -170,6 +209,7 @@ describe("SearchBar component", () => {
       filteredWorks: [],
       filteredWritings: [],
       filteredOccupations: [],
+      filteredPerformances: []
     });
 
     useSearchResults.mockReturnValue({
@@ -177,14 +217,20 @@ describe("SearchBar component", () => {
       noResults: false,
     });
 
-    render(<SearchBar
-      {...baseProps}
-      searchTerm="debussy"
-      selectedIndex={0}
-    />);
+    render(
+      <MemoryRouter>
+        <SearchBar
+          {...baseProps}
+          searchTerm="debussy"
+          selectedIndex={0}
+        />
+      </MemoryRouter>
+    );
 
     fireEvent.click(screen.getByRole("button", { name: /search/i }));
 
-    expect(mockHandleSelect).toHaveBeenCalledWith(mockResults[0]);
+    expect(mockNavigate).toHaveBeenCalledWith("results?search=debussy");
+    expect(mockSetShowDropdown).toHaveBeenCalledWith(false);
+    expect(mockSetSearchTerm).toHaveBeenCalledWith("");
   });
 });
