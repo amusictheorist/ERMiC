@@ -40,8 +40,6 @@ const MusicianPage = () => {
     (writing) => writing.musician?.slug === slug
   ) || [];
 
-  console.log('musician:', musician);
-
   // actual rendering block
   return (
     <div className="px-4 py-8 sm:px-8 lg:px-16 xl:px-24 max-w-7xl mx-auto text-center">

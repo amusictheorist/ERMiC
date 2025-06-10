@@ -1,6 +1,12 @@
 import React from "react";
 import { render, screen } from '@testing-library/react';
 import HomePage from './HomePage';
+import { useOutletContext } from "react-router-dom";
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useOutletContext: jest.fn(),
+}));
 
 jest.mock('../searchBar/SearchBar', () => {
   return function MockSearchBar(props) {
@@ -17,11 +23,12 @@ jest.mock('../../components/DataContext', () => ({
     data: {
       musicianCollection: { items: [] },
       workCollection: { items: [] },
-      writingCollection: { items: [] }
+      writingCollection: { items: [] },
+      performanceAndMediaCollection: { items: [] }
     },
     loading: false,
     error: null
-  })
+  }),
 }));
 
 describe('HomePage', () => {
@@ -34,8 +41,12 @@ describe('HomePage', () => {
     setSelectedIndex: jest.fn()
   };
 
+  beforeEach(() => {
+    useOutletContext.mockReturnValue(defaultProps);
+  });
+
   test('renders homepage content and search bar', () => {
-    render(<HomePage {...defaultProps} />);
+    render(<HomePage />);
 
     expect(
       screen.getByText(/Welcome to the European Refugee Musicians in Canada Online Biographical Dictionary/i)

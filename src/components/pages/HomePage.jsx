@@ -30,7 +30,7 @@ const HomePage = () => {
         Welcome to the European Refugee Musicians in Canada Online Biographical Dictionary
       </h1>
       <p className='font-serif text-sm sm:text-base md:text-lg my-4 text-gray-700'>
-        Search by name or keyword and select an entry.
+        Search by name or keyword.
       </p>
 
       <SearchBar

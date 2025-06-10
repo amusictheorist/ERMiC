@@ -36,6 +36,9 @@ describe('Data Provider', () => {
               },
               writingCollection: {
                 items: []
+              },
+              performanceAndMediaCollection: {
+                items: []
               }
             }
           }),
@@ -84,6 +87,9 @@ describe('Data Provider', () => {
                 items: []
               },
               writingCollection: {
+                items: []
+              },
+              performanceAndMediaCollection: {
                 items: []
               }
             },

@@ -10,6 +10,7 @@ export const normalize = (str) =>
     .trim()
     .toLowerCase();
 
+// generate cross-references array
 export const nameMapBuilder = (crossReferences, normalizeFn) =>
   crossReferences.map(ref => {
     const fullName = `${ref.firstName} ${ref.surname}`;
@@ -26,6 +27,7 @@ export const nameMapBuilder = (crossReferences, normalizeFn) =>
     };
   });
 
+// generate cross reference links
 export const generateTextRenderer = (nameEntries) => (text) => {
   let elements = [text];
 
