@@ -33,8 +33,8 @@ const Navbar = ({
           <div className="font-sans hidden sm:flex gap-4 flex-1 justify-end">
             <Link to="/">Home</Link>
             <Link to="/browse">Browse</Link>
-            {/* <Link to="/about">About</Link>
-            <Link to="/contact">Contact</Link> */}
+            <Link to="/about">About</Link>
+            {/* <Link to="/contact">Contact</Link> */}
           </div>
   
           <button
@@ -56,8 +56,8 @@ const Navbar = ({
           <div className="font-sans hidden sm:flex gap-4 flex-shrink-0">
             <Link to="/">Home</Link>
             <Link to="/browse">Browse</Link>
-            {/* <Link to="/about">About</Link>
-            <Link to="/contact">Contact</Link> */}
+            <Link to="/about">About</Link>
+            {/* <Link to="/contact">Contact</Link> */}
           </div>
   
           <div className="flex-1 min-w-0">
@@ -86,7 +86,7 @@ const Navbar = ({
           <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
           <Link to="/browse" onClick={() => setMenuOpen(false)}>Browse</Link>
           <Link to="/about" onClick={() => setMenuOpen(false)}>About</Link>
-          <Link to="/contact" onClick={() => setMenuOpen(false)}>Contact</Link>
+          {/* <Link to="/contact" onClick={() => setMenuOpen(false)}>Contact</Link> */}
         </div>
       )}
     </nav>
