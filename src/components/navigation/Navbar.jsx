@@ -33,8 +33,8 @@ const Navbar = ({
           <div className="font-sans hidden sm:flex gap-4 flex-1 justify-end">
             <Link to="/">Home</Link>
             <Link to="/browse">Browse</Link>
-            <Link to="/about">About</Link>
-            <Link to="/contact">Contact</Link>
+            {/* <Link to="/about">About</Link>
+            <Link to="/contact">Contact</Link> */}
           </div>
   
           <button
