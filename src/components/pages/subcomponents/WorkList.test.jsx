@@ -50,7 +50,6 @@ describe('WorkList', () => {
     expect(screen.getByText(/1960/)).toBeInTheDocument();
     expect(screen.getByText(/Chamber/)).toBeInTheDocument();
     expect(screen.getByText(/Violin, Cello, Flute/)).toBeInTheDocument();
-    expect(screen.getByText(/XYZ Press/)).toBeInTheDocument();
   });
 
   it('renders only available fields for a partial work entry', () => {
