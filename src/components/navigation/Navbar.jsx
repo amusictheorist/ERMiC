@@ -56,8 +56,8 @@ const Navbar = ({
           <div className="font-sans hidden sm:flex gap-4 flex-shrink-0">
             <Link to="/">Home</Link>
             <Link to="/browse">Browse</Link>
-            <Link to="/about">About</Link>
-            <Link to="/contact">Contact</Link>
+            {/* <Link to="/about">About</Link>
+            <Link to="/contact">Contact</Link> */}
           </div>
   
           <div className="flex-1 min-w-0">
