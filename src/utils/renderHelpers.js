@@ -30,52 +30,45 @@ export const nameMapBuilder = (crossReferences, normalizeFn) =>
 // generate cross reference links
 export const generateTextRenderer = (nameEntries) => (text) => {
   let elements = [text];
+  const matchedNames = new Set();
 
   nameEntries.forEach(({ fullName, reversedName, slug }) => {
+    if (matchedNames.has(slug)) return;
+
+    let matched = false;
+
     elements = elements.flatMap(segment => {
       if (typeof segment !== 'string') return [segment];
+      if (matched) return [segment];
 
-      const matches = [];
+      const nameVariants = [fullName, reversedName];
+      for (const nameVariant of nameVariants) {
+        const regex = new RegExp(`\\b${nameVariant}\\b`);
+        const match = regex.exec(segment);
 
-      [fullName, reversedName].forEach(nameVariant => {
-        const regex = new RegExp(`\\b${nameVariant}\\b`, 'g');
-        let match;
-        while ((match = regex.exec(segment)) !== null) {
-          matches.push({
-            index: match.index,
-            length: match[0].length,
-            text: match[0]
-          });
+        if (match) {
+          const { index } = match;
+          const before = segment.slice(0, index);
+          const after = segment.slice(index + nameVariant.length);
+
+          matched = true;
+          matchedNames.add(slug);
+
+          return [
+            before,
+            <Link
+              key={`${slug}-${index}`}
+              to={`/musician/${slug}`}
+              className="text-blue-600 hover:text-blue-800"
+            >
+              {match[0]}
+            </Link>,
+            after
+          ];
         }
-      });
-
-      if (matches.length === 0) return [segment];
-    
-      const parts = [];
-      let lastIndex = 0;
-      matches.forEach(({ index, length, text }, i) => {
-        if (index > lastIndex) {
-          parts.push(segment.slice(lastIndex, index));
-        }
-
-        parts.push(
-          <Link
-            key={`${slug}-${index}-${i}`}
-            to={`/musician/${slug}`}
-            className="text-blue-600 hover:text-blue-800"
-          >
-            {text}
-          </Link>
-        );
-        
-        lastIndex = index + length;
-      });
-
-      if (lastIndex < segment.length) {
-        parts.push(segment.slice(lastIndex));
       }
 
-      return parts;
+      return [segment];
     });
   });
 
