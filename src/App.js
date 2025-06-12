@@ -4,6 +4,7 @@ import Navbar from "./components/navigation/Navbar";
 import Footer from "./components/navigation/Footer";
 import ScrollToTop from './components/navigation/ScrollToTop';
 import { DataProvider } from "./components/DataContext";
+import LoginGate from "./components/LoginGate";
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -20,16 +21,18 @@ const App = () => {
   };
 
   return (
-    <DataProvider>
-      <div className="flex flex-col min-h-screen">
-        <Navbar {...searchState} />
-        <ScrollToTop />
-        <div className="flex-1 pt-16 px-4">
-          <Outlet context={searchState} />
+    <LoginGate>
+      <DataProvider>
+        <div className="flex flex-col min-h-screen">
+          <Navbar {...searchState} />
+          <ScrollToTop />
+          <div className="flex-1 pt-16 px-4">
+            <Outlet context={searchState} />
+          </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
-    </DataProvider>
+      </DataProvider>
+    </LoginGate>
   );
 };
 
