@@ -18,7 +18,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "coverage": "react-scripts test --coverage",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "encrypt": "staticrypt build/index.html -p B3980G1eYIFYB40UeBzfW -o build/index.html",
+    "build:protected": "npm run build && npm run encrypt"
   },
   "eslintConfig": {
     "extends": [
@@ -49,3 +51,4 @@
     "tailwindcss": "^3.4.17"
   }
 }
+
