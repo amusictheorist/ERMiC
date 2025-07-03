@@ -6,9 +6,12 @@ const WritingList = ({ writings }) => {
   return (
     <div className="writing-list">
       {writings.map((writing, i) => {
+        const richTextJson = writing?.publicationInfo?.json;
+        if (!richTextJson) return null;
+
         return (
           <div key={i} className="mb-4">
-            {documentToReactComponents(writing.publicationInfo.json)}
+            {documentToReactComponents(richTextJson)}
           </div>
         );
       })}
