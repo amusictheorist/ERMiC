@@ -6,6 +6,7 @@ import WorkList from "./subcomponents/WorkList";
 import WritingList from "./subcomponents/WritingList";
 import RichTextRenderer from "./subcomponents/RichTextRenderer";
 import CollapsibleSection from './subcomponents/Collapsible';
+import UnderConstruction from './subcomponents/UnderConstruction';
 
 // this component handles and renders a template musican page for every musician in the CMS
 const MusicianPage = () => {
@@ -70,18 +71,25 @@ const MusicianPage = () => {
         url={portraitUrl}
         alt={`${musician.firstName} ${musician.surname}`}
       />
-      <h2 className='font-serif text-3xl font-semibold my-8'>Biography</h2>
-      <RichTextRenderer
-        document={musician.biography?.json}
-        crossReferences={musician.crossReferencesCollection?.items || []}
-        footer={
-          musician.author && (
-            <p className='font-serif mt-4 italic text-right text-gray-600'>
-              - {musician.author}
-            </p>
-          )
-        }
-      />
+
+      {musician.biography?.json ? (
+        <>
+          <h2 className='font-serif text-3xl font-semibold my-8'>Biography</h2>
+          <RichTextRenderer
+            document={musician.biography.json}
+            crossReferences={musician.crossReferencesCollection?.items || []}
+            footer={
+              musician.author && (
+                <p className='font-serif mt-4 italic text-right text-gray-600'>
+                  - {musician.author}
+                </p>
+              )
+            }
+          />
+        </>
+      ) : (
+        <UnderConstruction />
+      )}
 
       {works.length > 0 && (
         <CollapsibleSection
@@ -103,13 +111,15 @@ const MusicianPage = () => {
         </CollapsibleSection>
       )}
       
-      <CollapsibleSection
-        title='Bibliography'
-        isOpen={showBibliography}
-        setIsOpen={setShowBibliography}
-      >
-        <RichTextRenderer document={musician.bibliography?.json} />
-      </CollapsibleSection>
+      {musician.bibliography?.json && (
+        <CollapsibleSection
+          title='Bibliography'
+          isOpen={showBibliography}
+          setIsOpen={setShowBibliography}
+        >
+          <RichTextRenderer document={musician.bibliography?.json} />
+        </CollapsibleSection>
+      )}
     </div>
   );
 };

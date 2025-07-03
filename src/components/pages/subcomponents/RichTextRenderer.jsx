@@ -7,7 +7,8 @@ const RichTextRenderer = ({ document, footer = null, crossReferences = [] }) => 
   if (!document) return null;
 
   const nameEntries = nameMapBuilder(crossReferences, normalize);
-  const renderText = generateTextRenderer(nameEntries);
+  const matchedNames = new Set();
+  const renderText = generateTextRenderer(nameEntries, matchedNames);
 
   const options = {
     renderText,

@@ -15,58 +15,61 @@ export const nameMapBuilder = (crossReferences, normalizeFn) =>
   crossReferences.map(ref => {
     const fullName = `${ref.firstName} ${ref.surname}`;
     const reversedName = `${ref.surname} ${ref.firstName}`;
-    const surname = ref.surname;
     return {
       slug: ref.slug,
-      fullName,
-      reversedName,
-      surname,
-      fullNorm: normalizeFn(fullName),
-      reversedNorm: normalizeFn(reversedName),
-      surnameNorm: normalizeFn(surname)
+      originalNames: [fullName, reversedName],
+      normalizedNames: [normalize(fullName), normalize(reversedName)]
     };
   });
 
 // generate cross reference links
-export const generateTextRenderer = (nameEntries) => (text) => {
+export const generateTextRenderer = (nameEntries, matchedNames) => (text) => {
   let elements = [text];
-  const matchedNames = new Set();
 
-  nameEntries.forEach(({ fullName, reversedName, slug }) => {
+  nameEntries.forEach(({ originalNames, normalizedNames, slug }) => {
     if (matchedNames.has(slug)) return;
 
     let matched = false;
 
     elements = elements.flatMap(segment => {
-      if (typeof segment !== 'string') return [segment];
-      if (matched) return [segment];
+      if (typeof segment !== 'string' || matched) return [segment];
 
-      const nameVariants = [fullName, reversedName];
-      for (const nameVariant of nameVariants) {
-        const regex = new RegExp(`\\b${nameVariant}\\b`);
-        const match = regex.exec(segment);
+      const normalizedSegment = normalize(segment);
 
-        if (match) {
-          const { index } = match;
-          const before = segment.slice(0, index);
-          const after = segment.slice(index + nameVariant.length);
+      for (let i = 0; i < normalizedNames.length; i++) {
+        const normName = normalizedNames[i];
+        const originalName = originalNames[i];
 
-          matched = true;
+        const index = normalizedSegment.indexOf(normName);
+        if (index !== -1) {
+          const regex = new RegExp(originalName.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'i');
+          const match = regex.exec(segment);
+          
+          if (!match) continue;
+          
+          const matchText = match[0];
+          const matchIndex = match.index;
+
+          const before = segment.slice(0, matchIndex);
+          const after = segment.slice(matchIndex + matchText.length);
+
           matchedNames.add(slug);
-
+          matched = true;
+          
           return [
             before,
             <Link
-              key={`${slug}-${index}`}
+              key={`${slug}-${matchIndex}`}
               to={`/musician/${slug}`}
               className="text-blue-600 hover:text-blue-800"
             >
-              {match[0]}
+              {matchText}
             </Link>,
             after
           ];
         }
       }
+      
 
       return [segment];
     });
