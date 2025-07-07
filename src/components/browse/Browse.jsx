@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
 import { useData } from '../DataContext';
+import { groupByBirthYear, groupByCountry, sortMusicians } from '../../utils/browseHelpers';
+import MusicianGroupList from './MusicianGroupList';
+import MusicianCard from './MusicianCard';
 
 const Browse = () => {
   const { data, loading, error } = useData();
@@ -18,66 +20,16 @@ const Browse = () => {
     return <p className='text-center mt-8 text-lg text-gray-700'>No musicians found.</p>;
   }
 
-  const extractBirthYear = (dateString) => {
-    if (typeof dateString !== 'string') return null;
-    const match = dateString.match(/\b(1[7-9]\d{2}|20\d{2})\b/);
-    return match ? match[0] : null;
-  };
+  const sortedMusicians = sortMusicians(musicians, sortOption);
 
-  const sortedMusicians = [...musicians].sort((a, b) => {
-    const getCountry = (place) =>
-      place?.includes(',') ? place.split(',').pop().trim().toLowerCase() : '';
-
-    if (sortOption === 'birthCountry') {
-      return getCountry(a.birthPlace).localeCompare(getCountry(b.birthPlace));
-    } else if (sortOption === 'deathCountry') {
-      return getCountry(a.deathPlace).localeCompare(getCountry(b.deathPlace));
-    } else if (sortOption === 'birthYear') {
-      const yearA = parseInt(extractBirthYear(a.birthdate)) || Infinity;
-      const yearB = parseInt(extractBirthYear(b.birthdate)) || Infinity;
-      return yearA - yearB;
-    } else {
-      const surnameA = a.surname.toLowerCase();
-      const surnameB = b.surname.toLowerCase();
-      const firstNameA = a.firstName?.toLowerCase() || '';
-      const firstNameB = b.firstName?.toLowerCase() || '';
-      if (surnameA < surnameB) return -1;
-      if (surnameA > surnameB) return 1;
-      return firstNameA.localeCompare(firstNameB);
-    }
-  });
-
-  const groupByCountry = (list, placeKey) => {
-    const groups = {};
-    list.forEach((musician) => {
-      const rawPlace = musician[placeKey] || '';
-      const country = rawPlace.includes(',') ? rawPlace.split(',').pop().trim() : null;
-      const group = country || 'Other';
-      if (!groups[group]) groups[group] = [];
-      groups[group].push(musician);
-    });
-    return groups;
-  };
-
-  const groupByBirthYear = (list) => {
-    const groups = {};
-    list.forEach((musician) => {
-      const year = extractBirthYear(musician.birthdate) || 'Unknown';
-      if (!groups[year]) groups[year] = [];
-      groups[year].push(musician);
-    });
-    return groups;
-  }
-
-  const groupedByBirthYear = sortOption === 'birthYear' ? groupByBirthYear(sortedMusicians) : null;
-
-  const groupedByBirthCountry = sortOption === 'birthCountry'
-    ? groupByCountry(sortedMusicians, 'birthPlace')
-    : null;
-
-  const groupedByDeathCountry = sortOption === 'deathCountry'
-    ? groupByCountry(sortedMusicians, 'deathPlace')
-    : null;
+  const grouped =
+    sortOption === 'birthCountry'
+      ? groupByCountry(sortedMusicians, 'birthPlace')
+      : sortOption === 'deathCountry'
+      ? groupByCountry(sortedMusicians, 'deathPlace')
+      : sortOption === 'birthYear'
+      ? groupByBirthYear(sortedMusicians)
+      : null;
 
   return (
     <div className="px-4 sm:px-6 md:px-8 lg:px-12 py-8 max-w-5xl mx-auto text-center">
@@ -90,7 +42,9 @@ const Browse = () => {
       )}
 
       <div className='mb-6 text-left'>
-        <label htmlFor="sort" className='mr-2 font-medium'>Sort by:</label>
+        <label htmlFor="sort" className='mr-2 font-medium'>
+          Sort by:
+        </label>
         <select
           id="sort"
           value={sortOption}
@@ -103,84 +57,16 @@ const Browse = () => {
           <option value="birthYear">Birth Year (Oldest-Youngest)</option>
         </select>
       </div>
-
-      {sortOption === 'birthCountry' && groupedByBirthCountry ? (
-        Object.entries(groupedByBirthCountry)
-          .sort(([a], [b]) => a.localeCompare(b))
-          .map(([country, musList]) => (
-            <div key={country} className="mb-8">
-              <h3 className='text-xl font-semibold mb-4 text-gray-800 text-left'>{country}</h3>
-              <div className="grid gap-4">
-                {musList.map((musician) => (
-                  <Link
-                    key={musician.slug}
-                    to={`/musician/${musician.slug}`}
-                    className='block w-full px-4 py-3 bg-slate-100 text-gray-700 rounded transition hover:bg-blue-600 hover:text-white text-base sm:text-lg'
-                  >
-                    <p className='font-serif text-lg md:text-base'>
-                      {musician.firstName} {musician.surname}
-                    </p>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          ))
-      ) : sortOption === 'deathCountry' && groupedByDeathCountry ? (
-        Object.entries(groupedByDeathCountry)
-          .sort(([a], [b]) => a.localeCompare(b))
-          .map(([country, musList]) => (
-            <div key={country} className="mb-8">
-              <h3 className='text-xl font-semibold mb-4 text-gray-800 text-left'>{country}</h3>
-              <div className="grid gap-4">
-                {musList.map((musician) => (
-                  <Link
-                    key={musician.slug}
-                    to={`/musician/${musician.slug}`}
-                    className='block w-full px-4 py-3 bg-slate-100 text-gray-700 rounded transition hover:bg-blue-600 hover:text-white text-base sm:text-lg'
-                  >
-                    <p className='font-serif text-lg md:text-base'>
-                      {musician.firstName} {musician.surname}
-                    </p>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          ))
-      ) : sortOption === 'birthYear' && groupedByBirthYear ? (
-        Object.entries(groupedByBirthYear)
-          .sort(([a], [b]) =>
-            a === 'Unknown' ? 1 : b === 'Unknown' ? -1 : parseInt(a) - parseInt(b)
-          )
-          .map(([year, musList]) => (
-            <div key={year} className='mb-8'>
-              <h3 className='text-xl font-semibold mb-4 text-gray-800 text-left'>{year}</h3>
-              <div className='grid gap-4'>
-                {musList.map((musician) => (
-                  <Link
-                    key={musician.slug}
-                    to={`/musician/${musician.slug}`}
-                    className='block w-full px-4 py-3 bg-slate-100 text-gray-700 rounded transition hover:bg-blue-600 hover:text-white text-base sm:text-lg'
-                  >
-                    <p className='font-serif text-lg md:text-base'>
-                      {musician.firstName} {musician.surname}
-                    </p>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          ))
+      
+      {grouped ? (
+        <MusicianGroupList
+          groups={grouped}
+          sortOption={sortOption}
+        />
       ) : (
         <div className='grid gap-4'>
           {sortedMusicians.map((musician) => (
-            <Link
-              key={musician.slug}
-              to={`/musician/${musician.slug}`}
-              className='block w-full px-4 py-3 bg-slate-100 text-gray-700 rounded transition hover:bg-blue-600 hover:text-white text-base sm:text-lg'
-            >
-              <p className='font-serif text-lg md:text-base'>
-                {musician.firstName} {musician.surname}
-              </p>
-            </Link>
+            <MusicianCard key={musician.slug} musician={musician} />
           ))}
         </div>
       )}
