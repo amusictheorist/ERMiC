@@ -18,6 +18,12 @@ const Browse = () => {
     return <p className='text-center mt-8 text-lg text-gray-700'>No musicians found.</p>;
   }
 
+  const extractBirthYear = (dateString) => {
+    if (typeof dateString !== 'string') return null;
+    const match = dateString.match(/\b(1[7-9]\d{2}|20\d{2})\b/);
+    return match ? match[0] : null;
+  };
+
   const sortedMusicians = [...musicians].sort((a, b) => {
     const getCountry = (place) =>
       place?.includes(',') ? place.split(',').pop().trim().toLowerCase() : '';
@@ -26,6 +32,10 @@ const Browse = () => {
       return getCountry(a.birthPlace).localeCompare(getCountry(b.birthPlace));
     } else if (sortOption === 'deathCountry') {
       return getCountry(a.deathPlace).localeCompare(getCountry(b.deathPlace));
+    } else if (sortOption === 'birthYear') {
+      const yearA = parseInt(extractBirthYear(a.birthdate)) || Infinity;
+      const yearB = parseInt(extractBirthYear(b.birthdate)) || Infinity;
+      return yearA - yearB;
     } else {
       const surnameA = a.surname.toLowerCase();
       const surnameB = b.surname.toLowerCase();
@@ -48,6 +58,18 @@ const Browse = () => {
     });
     return groups;
   };
+
+  const groupByBirthYear = (list) => {
+    const groups = {};
+    list.forEach((musician) => {
+      const year = extractBirthYear(musician.birthdate) || 'Unknown';
+      if (!groups[year]) groups[year] = [];
+      groups[year].push(musician);
+    });
+    return groups;
+  }
+
+  const groupedByBirthYear = sortOption === 'birthYear' ? groupByBirthYear(sortedMusicians) : null;
 
   const groupedByBirthCountry = sortOption === 'birthCountry'
     ? groupByCountry(sortedMusicians, 'birthPlace')
@@ -75,9 +97,10 @@ const Browse = () => {
           onChange={(e) => setSortOption(e.target.value)}
           className='px-3 py-1 border rounded'
         >
-          <option value="surname">Surname (A–Z)</option>
+          <option value="surname">Surname (A-Z)</option>
           <option value="birthCountry">Country of Birth</option>
           <option value="deathCountry">Country of Death</option>
+          <option value="birthYear">Birth Year (Oldest-Youngest)</option>
         </select>
       </div>
 
@@ -109,6 +132,29 @@ const Browse = () => {
             <div key={country} className="mb-8">
               <h3 className='text-xl font-semibold mb-4 text-gray-800 text-left'>{country}</h3>
               <div className="grid gap-4">
+                {musList.map((musician) => (
+                  <Link
+                    key={musician.slug}
+                    to={`/musician/${musician.slug}`}
+                    className='block w-full px-4 py-3 bg-slate-100 text-gray-700 rounded transition hover:bg-blue-600 hover:text-white text-base sm:text-lg'
+                  >
+                    <p className='font-serif text-lg md:text-base'>
+                      {musician.firstName} {musician.surname}
+                    </p>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ))
+      ) : sortOption === 'birthYear' && groupedByBirthYear ? (
+        Object.entries(groupedByBirthYear)
+          .sort(([a], [b]) =>
+            a === 'Unknown' ? 1 : b === 'Unknown' ? -1 : parseInt(a) - parseInt(b)
+          )
+          .map(([year, musList]) => (
+            <div key={year} className='mb-8'>
+              <h3 className='text-xl font-semibold mb-4 text-gray-800 text-left'>{year}</h3>
+              <div className='grid gap-4'>
                 {musList.map((musician) => (
                   <Link
                     key={musician.slug}
