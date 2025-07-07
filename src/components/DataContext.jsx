@@ -52,6 +52,7 @@ const workQuery = `
       }
       title
       year
+      dateRange
       type
       instrumentation
       publicationInfo {

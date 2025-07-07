@@ -9,7 +9,11 @@ const WorkList = ({ works }) => {
         {works.map((work, index) => (
           <div key={index} className="p-4 rounded bg-white border border-gray-200 shadow-sm">
             <p><strong>Title:</strong> <em>{work.title}</em></p>
-            {work.year && <p><strong>Year:</strong> {work.year}</p>}
+            {(work.year || work.dateRange) && (
+              <p>
+                <strong>{work.year ? 'Year' : 'Years'}:</strong> {work.year || work.dateRange}
+                </p>
+              )}
             {work.type && <p><strong>Type:</strong> {work.type}</p>}
             {work.instrumentation?.length > 0 && (
               <p><strong>Instrumentation:</strong> {work.instrumentation.join(', ')}</p>
