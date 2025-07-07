@@ -42,7 +42,9 @@ export const generateTextRenderer = (nameEntries, matchedNames) => (text) => {
 
         const index = normalizedSegment.indexOf(normName);
         if (index !== -1) {
-          const regex = new RegExp(originalName.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'i');
+          const escaped = originalName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const regex = new RegExp(escaped, 'i');
+
           const match = regex.exec(segment);
           
           if (!match) continue;
