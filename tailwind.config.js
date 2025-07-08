@@ -6,8 +6,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        serif: ['"Libre Baskerville"', 'serif'],
-        sans: ['"Work Sans"', 'sans-serif']
+        serif: ['"Literata"', 'serif'],
+        sans: ['"Inter"', 'sans-serif']
       }
     },
   },
