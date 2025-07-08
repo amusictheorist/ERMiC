@@ -21,7 +21,7 @@ const RichTextRenderer = ({ document, footer = null, crossReferences = [] }) => 
         const processed = generateTextRenderer(nameEntries, matchedNames)(textContent);
 
         return (
-          <p className='font-serif mb-4 text-base text-gray-800'>
+          <p className='font-serif mb-4 text-lg sm:text-xl text-gray-800'>
             {processed}
           </p>
         );

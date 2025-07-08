@@ -27,7 +27,7 @@ const SearchResultsPage = () => {
   // actual render block
   return (
     <div className="px-4 sm:px-6 md:px-8 lg:px-12 py-8 max-w-5xl mx-auto text-center">
-      <h1 className='font-serif text-2xlsm:text-3xl font-bold mb-6'>
+      <h1 className='font-serif text-3xl sm:text-4xl font-bold mb-6'>
         Search results for: "{occupation}"
       </h1>
 
@@ -39,7 +39,7 @@ const SearchResultsPage = () => {
             <li
               key={musician.slug}
               onClick={() => navigate(`/musician/${musician.slug}`)}
-              className='font-serif cursor-pointer px-4 py-3 rounded bg-slate-100 border border-gray-300 transition hover:bg-blue-600 hover:text-white'
+              className='font-serif text-xl sm:text-2xl cursor-pointer px-4 py-3 rounded bg-slate-100 border border-gray-300 transition hover:bg-blue-600 hover:text-white'
             >
               {musician.firstName} {musician.surname}
             </li>

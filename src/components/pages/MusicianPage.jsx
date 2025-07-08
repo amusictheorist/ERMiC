@@ -43,13 +43,13 @@ const MusicianPage = () => {
 
   // actual rendering block
   return (
-    <div className="px-4 py-8 sm:px-8 lg:px-16 xl:px-24 max-w-7xl mx-auto text-center">
-      <h1 className='font-serif text-2xl sm:text-3xl md:text-4xl font-bold mb-4'>
+    <div className="px-4 py-10 sm:px-8 lg:px-16 xl:px-24 max-w-7xl mx-auto text-center">
+      <h1 className='font-serif text-3xl sm:text-4xl md:text-5xl font-bold mb-6'>
         {musician.firstName} {musician.surname}
       </h1>
 
       {(musician.birthdate || musician.birthPlace) && (
-        <p className='font-serif text-sm sm:text-base md:text-lg text-gray-700 mb-1'>
+        <p className='font-serif text-base sm:text-lg md:text-xl text-gray-700 mb-1'>
           Born:
           {musician.birthdate && ` ${musician.birthdate}`}
           {musician.birthdate && musician.birthPlace && ' in'}
@@ -58,14 +58,13 @@ const MusicianPage = () => {
       )}
 
       {(musician.deathdate || musician.deathPlace) && (
-        <p className='font-serif text-sm sm:text-base md:text-lg text-gray-700 mb-6'>
+        <p className='font-serif text-base sm:text-lg md:text-xl text-gray-700 mb-8'>
           Died:
           {musician.deathdate && ` ${musician.deathdate}`}
           {musician.deathdate && musician.deathPlace && ' in'}
           {musician.deathPlace && ` ${musician.deathPlace}`}
         </p>
       )}
-
       
       <Portrait
         url={portraitUrl}
@@ -74,13 +73,13 @@ const MusicianPage = () => {
 
       {musician.biography?.json ? (
         <>
-          <h2 className='font-serif text-3xl font-semibold my-8'>Biography</h2>
+          <h2 className='font-serif text-2xl sm:text-3xl font-semibold my-10'>Biography</h2>
           <RichTextRenderer
             document={musician.biography.json}
             crossReferences={musician.crossReferencesCollection?.items || []}
             footer={
               musician.author && (
-                <p className='font-serif mt-4 italic text-right text-gray-600'>
+                <p className='font-serif mt-4 italic text-right text-gray-600 text-lg sm:text-xl'>
                   - {musician.author}
                 </p>
               )

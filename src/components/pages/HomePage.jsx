@@ -26,10 +26,10 @@ const HomePage = () => {
 
   return (
     <div className="w-full max-w-[90%] sm:max-w-3xl mx-auto px-4 py-6 mt-36 text-center">
-      <h1 className='font-serif text-xl sm:text-2xl md:text-4xl font-bold leading-tight'>
+      <h1 className='font-serif text-2xl sm:text-3xl md:text-5xl font-bold leading-tight'>
         Welcome to the European Refugee Musicians in Canada Online Biographical Dictionary
       </h1>
-      <p className='font-serif text-sm sm:text-base md:text-lg my-4 text-gray-700'>
+      <p className='font-serif text-base sm:text-lg md:text-xl my-4 text-gray-700'>
         Search by name or keyword.
       </p>
 
@@ -43,7 +43,7 @@ const HomePage = () => {
       />
 
       {!loading && !error && (
-        <div className='font-sans mt-6 text-sm sm:text-base text-gray-600 italic'>
+        <div className='font-sans mt-6 text-base sm:text-lg text-gray-600 italic'>
           Database currently includes {counts.musicians} musicians, {counts.works} works, {counts.writings} writings, {counts.performances} performance and media works, and continues to grow!
         </div>
       )}

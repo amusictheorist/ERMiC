@@ -33,15 +33,15 @@ const Browse = () => {
 
   return (
     <div className="px-4 sm:px-6 md:px-8 lg:px-12 py-8 max-w-5xl mx-auto text-center">
-      <h2 className='font-serif text-2xl sm:text-3xl font-bold mb-6'>Browse the Biographies</h2>
+      <h2 className='font-serif text-3xl sm:text-4xl font-bold mb-6'>Browse the Biographies</h2>
 
       {error && (
-        <p className="text-sm text-yellow-800 bg-yellow-100 border border-yellow-300 rounded px-4 py-2 mb-4">
+        <p className="text-base sm:text-lg text-yellow-800 bg-yellow-100 border border-yellow-300 rounded px-4 py-2 mb-4">
           Some data may be missing: {error}
         </p>
       )}
 
-      <div className='mb-6 text-left'>
+      <div className='mb-6 text-left text-base sm:text-lg'>
         <label htmlFor="sort" className='mr-2 font-medium'>
           Sort by:
         </label>

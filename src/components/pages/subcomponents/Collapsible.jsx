@@ -16,7 +16,7 @@ const CollapsibleSection = ({ title, isOpen, setIsOpen, children }) => {
     <div className="border-b border-gray-300 py-4 text-left">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex justify-between items-center text-left text-lg sm:text-xl md:text-2xl font-semibold text-gray-800"
+        className="w-full flex justify-between items-center text-left text-xl sm:text-2xl md:text-3xl font-semibold text-gray-800"
         aria-expanded={isOpen}
         aria-controls={`collapsible-${title.replace(/\s+/g, '-')}`}
       >
@@ -36,7 +36,7 @@ const CollapsibleSection = ({ title, isOpen, setIsOpen, children }) => {
           opacity: isOpen ? 1 : 0
         }}
       >
-        <div className="pt-4 text-sm sm:text-base md:text-lg text-gray-700">
+        <div className="pt-4 text-base sm:text-lg md:text-xl text-gray-700">
           {children}
         </div>
       </div>

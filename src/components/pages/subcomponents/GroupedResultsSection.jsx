@@ -8,16 +8,16 @@ const GroupedResultsSection = ({ title, groupedItems }) => {
 
   return (
     <section className="mb-6">
-      <h2 className="font-serif text-lg sm:text-xl font-semibold mb-3">{title}</h2>
+      <h2 className="font-serif text-xl sm:text-2xl font-semibold mb-3">{title}</h2>
       {Object.values(groupedItems).map(group => (
         <div key={group.musician.slug} className="mb-4">
           <h3
-            className="font-serif text-base sm:text-base font-bold text-gray-900 cursor-pointer hover:underline mb-1"
+            className="font-serif text-base sm:text-lg font-bold text-gray-900 cursor-pointer hover:underline mb-1"
             onClick={() => navigate(`/musician/${group.musician.slug}`)}
           >
             {group.musician.surname}, {group.musician.firstName}
           </h3>
-          <ul className="list-disc pl-5 text-sm sm:text-base text-gray-800 font-serif space-y-1">
+          <ul className="list-disc pl-5 text-base sm:text-lg text-gray-800 font-serif space-y-1">
             {group.items.map(item => (
               <li key={item.title}>{item.title}</li>
             ))}

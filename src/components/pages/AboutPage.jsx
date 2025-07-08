@@ -3,10 +3,10 @@ import React from "react";
 const AboutPage = () => {
   return (
     <div className="px-4 py-8 sm:px-8 lg:px-16 xl:px-24 max-w-7xl mx-auto text-center">
-      <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold mb-6">
+      <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
         About ERMiC
       </h1>
-      <div className="font-serif text-sm sm:text-base md:text-lg text-gray-700 text-left space-y-6 max-w-3xl mx-auto">
+      <div className="font-serif text-base sm:text-lg md:text-xl text-gray-700 text-left space-y-6 max-w-3xl mx-auto leading-relaxed">
         <p>
           The <em>European Refugee Musicians in Canada</em> (ERMiC) online biographical dictionary explores the lives and legacies of musical artists who arrived in Canada between 1937 and 1950 as refugees from Nazi-occupied Europe. Though fewer than 120 musicians were admitted during this period—due to Canada's restrictive immigration policies and widespread antisemitism, as documented in the book <strong>None Is Too Many</strong> by Irving Abella and Harold Troper—those who did arrive made lasting contributions to Canadian cultural life. Many were Jewish musicians fleeing persecution, while others left Europe for political or moral reasons. Despite the formidable barriers they faced, many of these individuals built influential careers in Canada, often extending well into the 21st century.
         </p>
