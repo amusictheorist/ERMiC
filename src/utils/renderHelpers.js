@@ -15,6 +15,7 @@ export const nameMapBuilder = (crossReferences, normalizeFn) =>
   crossReferences.map(ref => {
     const fullName = `${ref.firstName} ${ref.surname}`;
     const reversedName = `${ref.surname} ${ref.firstName}`;
+
     return {
       slug: ref.slug,
       originalNames: [fullName, reversedName],
@@ -30,7 +31,7 @@ export const generateTextRenderer = (nameEntries, matchedNames) => (text) => {
     if (matchedNames.has(slug)) return;
 
     let matched = false;
-
+    
     elements = elements.flatMap(segment => {
       if (typeof segment !== 'string' || matched) return [segment];
 
@@ -48,7 +49,7 @@ export const generateTextRenderer = (nameEntries, matchedNames) => (text) => {
           const match = regex.exec(segment);
           
           if (!match) continue;
-          
+
           const matchText = match[0];
           const matchIndex = match.index;
 
@@ -72,7 +73,6 @@ export const generateTextRenderer = (nameEntries, matchedNames) => (text) => {
         }
       }
       
-
       return [segment];
     });
   });

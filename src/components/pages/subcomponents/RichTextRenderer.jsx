@@ -8,14 +8,24 @@ const RichTextRenderer = ({ document, footer = null, crossReferences = [] }) => 
 
   const nameEntries = nameMapBuilder(crossReferences, normalize);
   const matchedNames = new Set();
-  const renderText = generateTextRenderer(nameEntries, matchedNames);
+  const renderText = null;
 
   const options = {
     renderText,
     renderNode: {
-      [BLOCKS.PARAGRAPH]: (node, children) => (
-        <p className='font-serif mb-4 text-base text-gray-800'>{children}</p>
-      ),
+      [BLOCKS.PARAGRAPH]: (node) => {
+        const textContent = node.content
+          .map(child => (child.nodeType === 'text' ? child.value : ''))
+          .join('');
+        
+        const processed = generateTextRenderer(nameEntries, matchedNames)(textContent);
+
+        return (
+          <p className='font-serif mb-4 text-base text-gray-800'>
+            {processed}
+          </p>
+        );
+      },
       [INLINES.HYPERLINK]: (node, children) => {
         const url = node.data.uri;
         return (
