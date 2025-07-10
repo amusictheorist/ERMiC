@@ -28,8 +28,16 @@ const MusicianPage = () => {
   );
   if (!musician) return <p className='text-center mt-8 text-lg text-gray-700'>Musician not found.</p>;
 
+  const photoEntry = data.photosCollection?.items.find(
+    (item) => item.slug?.trim() === slug?.trim()
+  );
+
+  const crossRefEntry = data.crossReferencesCollection?.items.find(
+    (item) => item.slug?.trim() === slug?.trim()
+  );
+
   // renders a portrait from CMS if available
-  const portraitUrl = musician.photosCollection?.items?.[0]?.url;
+  const portraitUrl = photoEntry?.photosCollection?.items?.[0]?.url;
 
   // renders list of works (compositions) from CMS if available
   const works = data.workCollection?.items?.filter(
@@ -76,7 +84,7 @@ const MusicianPage = () => {
           <h2 className='font-serif text-2xl sm:text-3xl font-semibold my-10'>Biography</h2>
           <RichTextRenderer
             document={musician.biography.json}
-            crossReferences={musician.crossReferencesCollection?.items || []}
+            crossReferences={crossRefEntry?.crossReferencesCollection?.items || []}
             footer={
               musician.author && (
                 <p className='font-serif mt-4 italic text-right text-gray-600 text-lg sm:text-xl'>

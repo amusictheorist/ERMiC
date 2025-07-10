@@ -11,7 +11,6 @@ const accessToken = process.env.REACT_APP_ACCESS_TOKEN;
 */
 
 // limit cannot exceed 100
-// TO DO: put photograph fetch back in query
 const musicianQuery = `
 {
   musicianCollection {
@@ -27,6 +26,20 @@ const musicianQuery = `
       biography {
         json
       }
+      author
+      bibliography {
+        json
+      }
+    }
+  }
+}
+`;
+
+const crossReferencesQuery = `
+{
+  musicianCollection {
+    items {
+      slug
       crossReferencesCollection {
         items {
           slug
@@ -34,9 +47,20 @@ const musicianQuery = `
           surname
         }
       }
-      author
-      bibliography {
-        json
+    }
+  }
+}
+`;
+
+const photoCollectionQuery = `
+{
+  musicianCollection {
+    items {
+      slug
+      photosCollection {
+        items {
+          url
+        }
       }
     }
   }
@@ -138,8 +162,17 @@ export const DataProvider = ({ children }) => {
     // this function combines the split collections into one array
     const fetchData = async () => {
       try {
-        const [musicianData, workData, writingData, performanceData] = await Promise.all([
+        const [
+          musicianData,
+          photoData,
+          crossRefData,
+          workData,
+          writingData,
+          performanceData
+        ] = await Promise.all([
           fetchSection(musicianQuery, 'musicians'),
+          fetchSection(photoCollectionQuery, 'photos'),
+          fetchSection(crossReferencesQuery, 'crossReferences'),
           fetchSection(workQuery, 'works'),
           fetchSection(writingQuery, 'writings'),
           fetchSection(performanceQuery, 'performances')
@@ -147,6 +180,8 @@ export const DataProvider = ({ children }) => {
 
         setData({
           musicianCollection: musicianData.musicianCollection,
+          photosCollection: photoData.musicianCollection,
+          crossReferencesCollection: crossRefData.musicianCollection,
           workCollection: workData.workCollection,
           writingCollection: writingData.writingCollection,
           performanceAndMediaCollection: performanceData.performanceAndMediaCollection
