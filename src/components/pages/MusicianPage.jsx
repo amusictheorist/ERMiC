@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useParams } from "react-router-dom";
 import { useData } from "../DataContext";
+import { Link } from 'react-router-dom';
+import { sortMusicians } from '../../utils/browseHelpers';
 import Portrait from "./subcomponents/Portrait";
 import WorkList from "./subcomponents/WorkList";
 import WritingList from "./subcomponents/WritingList";
@@ -14,6 +16,13 @@ const MusicianPage = () => {
   const { slug } = useParams();
   // fetching data from DataContext
   const { data, loading, error } = useData();
+
+  const allMusicians = data?.musicianCollection?.items || [];
+  const sortedMusicians = sortMusicians(allMusicians, 'surname');
+  const currentIndex = sortedMusicians.findIndex(m => m.slug === slug);
+
+  const prevMusician = currentIndex > 0 ? sortedMusicians[currentIndex - 1] : null;
+  const nextMusician = currentIndex < sortedMusicians.length - 1 ? sortedMusicians[currentIndex + 1] : null;
 
   const [showWorks, setShowWorks] = useState(false);
   const [showWritings, setShowWritings] = useState(false);
@@ -127,6 +136,26 @@ const MusicianPage = () => {
           <RichTextRenderer document={musician.bibliography?.json} />
         </CollapsibleSection>
       )}
+
+      <div className='flex justify-between items-center mt-12'>
+        {prevMusician ? (
+          <Link
+            to={`/musician/${prevMusician.slug}`}
+            className='text-blue-600 hover:underline text-left'
+          >
+            ← {prevMusician.firstName} {prevMusician.surname}
+          </Link>
+        ) : <div />}
+
+        {nextMusician ? (
+          <Link
+            to={`/musician/${nextMusician.slug}`}
+            className='text-blue-600 hover:underline text-right'
+          >
+            {nextMusician.firstName} {nextMusician.surname} →
+          </Link>
+        ) : <div />}
+      </div>
     </div>
   );
 };
