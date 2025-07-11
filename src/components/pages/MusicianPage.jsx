@@ -58,6 +58,8 @@ const MusicianPage = () => {
     (writing) => writing.musician?.slug === slug
   ) || [];
 
+  console.log(musician);
+
   // actual rendering block
   return (
     <div className="px-4 py-10 sm:px-8 lg:px-16 xl:px-24 max-w-7xl mx-auto text-center">
@@ -75,14 +77,21 @@ const MusicianPage = () => {
       )}
 
       {(musician.deathdate || musician.deathPlace) && (
-        <p className='font-serif text-base sm:text-lg md:text-xl text-gray-700 mb-8'>
+        <p className='font-serif text-base sm:text-lg md:text-xl text-gray-700 mb-1'>
           Died:
           {musician.deathdate && ` ${musician.deathdate}`}
           {musician.deathdate && musician.deathPlace && ' in'}
           {musician.deathPlace && ` ${musician.deathPlace}`}
         </p>
       )}
-      
+
+      {musician.occupation?.length > 0 && (
+        <p className='font-serif text-base sm:text-lg md:text-xl text-gray-700 mb-8'>
+          Occupations:
+          {' '}{musician.occupation.join(', ')}
+        </p>
+      )}
+
       <Portrait
         url={portraitUrl}
         alt={`${musician.firstName} ${musician.surname}`}
@@ -90,7 +99,7 @@ const MusicianPage = () => {
 
       {musician.biography?.json ? (
         <>
-          <h2 className='font-serif text-2xl sm:text-3xl font-semibold my-10'>Biography</h2>
+          <h2 className='font-serif text-2xl sm:text-3xl font-semibold my-8'>Biography</h2>
           <RichTextRenderer
             document={musician.biography.json}
             crossReferences={crossRefEntry?.crossReferencesCollection?.items || []}
