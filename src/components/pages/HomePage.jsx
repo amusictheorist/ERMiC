@@ -1,7 +1,8 @@
 import React from 'react';
 import { useData } from '../DataContext';
+import { sortMusicians } from '../../utils/browseHelpers';
 import SearchBar from "../searchBar/SearchBar";
-import { useOutletContext } from 'react-router-dom';
+import { Link, useOutletContext } from 'react-router-dom';
 
 // landing page for the site, where main search functionality is implemented
 const HomePage = () => {
@@ -24,6 +25,10 @@ const HomePage = () => {
     performances: data.performanceAndMediaCollection?.items?.length || 0
   } : { musicians: 0, works: 0, writings: 0, performances: 0 };
 
+  const sortedMusicians = data?.musicianCollection?.items
+    ? sortMusicians(data.musicianCollection.items, 'surname')
+    : [];
+
   return (
     <div className="w-full max-w-[90%] sm:max-w-3xl mx-auto px-4 py-6 mt-36 text-center">
       <h1 className='font-serif text-2xl sm:text-3xl md:text-5xl font-bold leading-tight'>
@@ -41,6 +46,26 @@ const HomePage = () => {
         selectedIndex={selectedIndex}
         setSelectedIndex={setSelectedIndex}
       />
+
+      <div>
+        <p className='font-serif text-base sm:text-lg md:text-xl mt-10 mb-2 text-gray-700'>
+          Or browse the entries below:
+        </p>
+        <div className='mt-2 mx-auto max-h-36 max-w-xs overflow-y-auto rounded p-4 shadow-sm bg-white'>
+          <ul className='space-y-1 text-center'>
+            {sortedMusicians.map(m => (
+              <li key={m.slug}>
+                <Link
+                  to={`/musician/${m.slug}`}
+                  className='text-blue-700 hover:underline'
+                >
+                  {m.firstName} {m.surname}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
 
       {!loading && !error && (
         <div className='font-sans mt-6 text-base sm:text-lg text-gray-600 italic'>
