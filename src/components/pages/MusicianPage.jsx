@@ -9,6 +9,7 @@ import WritingList from "./subcomponents/WritingList";
 import RichTextRenderer from "./subcomponents/RichTextRenderer";
 import CollapsibleSection from './subcomponents/Collapsible';
 import UnderConstruction from './subcomponents/UnderConstruction';
+import PerformanceList from './subcomponents/PerformanceList';
 
 // this component handles and renders a template musican page for every musician in the CMS
 const MusicianPage = () => {
@@ -26,6 +27,7 @@ const MusicianPage = () => {
 
   const [showWorks, setShowWorks] = useState(false);
   const [showWritings, setShowWritings] = useState(false);
+  const [showPerformances, setShowPerformances] = useState(false);
   const [showBibliography, setShowBibliography] = useState(false);
 
   if (loading) return <p className='text-center mt-8 text-lg'>Loading data...</p>;
@@ -58,7 +60,9 @@ const MusicianPage = () => {
     (writing) => writing.musician?.slug === slug
   ) || [];
 
-  console.log(musician);
+  const performances = data.performanceAndMediaCollection?.items?.filter(
+    (performance) => performance.musician?.slug === slug
+  ) || [];
 
   // actual rendering block
   return (
@@ -133,6 +137,16 @@ const MusicianPage = () => {
           setIsOpen={setShowWritings}
         >
           <WritingList writings={writings} />
+        </CollapsibleSection>
+      )}
+
+      {performances.length > 0 && (
+        <CollapsibleSection
+          title='Performances and Media'
+          isOpen={showPerformances}
+          setIsOpen={setShowPerformances}
+        >
+          <PerformanceList performances={performances} />
         </CollapsibleSection>
       )}
       
