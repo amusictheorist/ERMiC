@@ -18,10 +18,12 @@ const MusicianPage = () => {
   // fetching data from DataContext
   const { data, loading, error } = useData();
 
+  // gathering all musicians and sorting into alphabetical order to create navigation links
   const allMusicians = data?.musicianCollection?.items || [];
   const sortedMusicians = sortMusicians(allMusicians, 'surname');
   const currentIndex = sortedMusicians.findIndex(m => m.slug === slug);
 
+  // these are used to create the navigation links
   const prevMusician = currentIndex > 0 ? sortedMusicians[currentIndex - 1] : null;
   const nextMusician = currentIndex < sortedMusicians.length - 1 ? sortedMusicians[currentIndex + 1] : null;
 
@@ -39,16 +41,16 @@ const MusicianPage = () => {
   );
   if (!musician) return <p className='text-center mt-8 text-lg text-gray-700'>Musician not found.</p>;
 
+  // these fetch and render a musician's portrait if available
   const photoEntry = data.photosCollection?.items.find(
     (item) => item.slug?.trim() === slug?.trim()
   );
+  const portraitUrl = photoEntry?.photosCollection?.items?.[0]?.url;
 
+  // this gathers all the cross references to other musician entries to create inner reference links
   const crossRefEntry = data.crossReferencesCollection?.items.find(
     (item) => item.slug?.trim() === slug?.trim()
   );
-
-  // renders a portrait from CMS if available
-  const portraitUrl = photoEntry?.photosCollection?.items?.[0]?.url;
 
   // renders list of works (compositions) from CMS if available
   const works = data.workCollection?.items?.filter(
@@ -60,17 +62,20 @@ const MusicianPage = () => {
     (writing) => writing.musician?.slug === slug
   ) || [];
 
+  //renders list of performances and media works from CMS if available
   const performances = data.performanceAndMediaCollection?.items?.filter(
     (performance) => performance.musician?.slug === slug
   ) || [];
 
   // actual rendering block
   return (
+    // musician heading
     <div className="px-4 py-10 sm:px-8 lg:px-16 xl:px-24 max-w-7xl mx-auto text-center">
       <h1 className='font-serif text-3xl sm:text-4xl md:text-5xl font-bold mb-6'>
         {musician.firstName} {musician.surname}
       </h1>
 
+      {/* general details */}
       {(musician.birthdate || musician.birthPlace) && (
         <p className='font-serif text-base sm:text-lg md:text-xl text-gray-700 mb-1'>
           Born:
@@ -96,11 +101,13 @@ const MusicianPage = () => {
         </p>
       )}
 
+      {/* portrait if available */}
       <Portrait
         url={portraitUrl}
         alt={`${musician.firstName} ${musician.surname}`}
       />
 
+      {/* biography if available */}
       {musician.biography?.json ? (
         <>
           <h2 className='font-serif text-2xl sm:text-3xl font-semibold my-8'>Biography</h2>
@@ -117,9 +124,11 @@ const MusicianPage = () => {
           />
         </>
       ) : (
+          // if a musician does not yet have a biography, "under construction" page is rendered
         <UnderConstruction />
       )}
 
+      {/* lists a musician's works if available */}
       {works.length > 0 && (
         <CollapsibleSection
           title='Works'
@@ -130,6 +139,7 @@ const MusicianPage = () => {
         </CollapsibleSection>
       )}
       
+      {/* lists a musician's writings if available */}
       {writings.length > 0 && (
         <CollapsibleSection
           title='Writings'
@@ -140,6 +150,7 @@ const MusicianPage = () => {
         </CollapsibleSection>
       )}
 
+      {/* lists a musician's performance and media works if available */}
       {performances.length > 0 && (
         <CollapsibleSection
           title='Performances and Media'
@@ -150,6 +161,7 @@ const MusicianPage = () => {
         </CollapsibleSection>
       )}
       
+      {/* lists a bibliography if available */}
       {musician.bibliography?.json && (
         <CollapsibleSection
           title='Bibliography'
@@ -160,6 +172,7 @@ const MusicianPage = () => {
         </CollapsibleSection>
       )}
 
+      {/* navigation links */}
       <div className='flex justify-between items-center mt-12'>
         {prevMusician ? (
           <Link
