@@ -41,6 +41,11 @@ const MusicianPage = () => {
   );
   if (!musician) return <p className='text-center mt-8 text-lg text-gray-700'>Musician not found.</p>;
 
+  const musicianInfo = data.musicianInfoCollection.items.find(
+    (m) => m.slug?.trim() === slug?.trim()
+  );
+  if (!musicianInfo) return <p className='text-center mt-8 text-lg text-gray-700'>Musician not found</p>
+
   // these fetch and render a musician's portrait if available
   const photoEntry = data.photosCollection?.items.find(
     (item) => item.slug?.trim() === slug?.trim()
@@ -108,16 +113,16 @@ const MusicianPage = () => {
       />
 
       {/* biography if available */}
-      {musician.biography?.json ? (
+      {musicianInfo.biography?.json ? (
         <>
           <h2 className='font-serif text-2xl sm:text-3xl font-semibold my-8'>Biography</h2>
           <RichTextRenderer
-            document={musician.biography.json}
+            document={musicianInfo.biography.json}
             crossReferences={crossRefEntry?.crossReferencesCollection?.items || []}
             footer={
-              musician.author && (
+              musicianInfo.author && (
                 <p className='font-serif mt-4 italic text-right text-gray-600 text-lg sm:text-xl'>
-                  - {musician.author}
+                  - {musicianInfo.author}
                 </p>
               )
             }
@@ -162,13 +167,13 @@ const MusicianPage = () => {
       )}
       
       {/* lists a bibliography if available */}
-      {musician.bibliography?.json && (
+      {musicianInfo.bibliography?.json && (
         <CollapsibleSection
           title='Bibliography'
           isOpen={showBibliography}
           setIsOpen={setShowBibliography}
         >
-          <RichTextRenderer document={musician.bibliography?.json} />
+          <RichTextRenderer document={musicianInfo.bibliography?.json} />
         </CollapsibleSection>
       )}
 

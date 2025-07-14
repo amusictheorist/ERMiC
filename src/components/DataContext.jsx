@@ -27,6 +27,28 @@ const musicianDetailsQuery = `
 }
 `;
 
+const musicianInfoQuery = `
+{
+  musicianCollection(limit: 108) {
+    items {
+    slug
+      biography {
+        json
+      }
+      authorCollection {
+        items {
+          names
+          surnames
+        }
+      }
+      bibliography {
+        json
+      }
+    }
+  }
+}
+`;
+
 const crossReferencesQuery = `
 {
   musicianCollection {
@@ -167,6 +189,7 @@ export const DataProvider = ({ children }) => {
       try {
         const [
           musicianDetailsData,
+          musicianInfoData,
           photoData,
           crossRefData,
           workData,
@@ -174,7 +197,8 @@ export const DataProvider = ({ children }) => {
           performanceData,
           authorData
         ] = await Promise.all([
-          fetchSection(musicianDetailsQuery, 'musicianDetailss'),
+          fetchSection(musicianDetailsQuery, 'musicianDetails'),
+          fetchSection(musicianInfoQuery, 'musicianInfo'),
           fetchSection(photoCollectionQuery, 'photos'),
           fetchSection(crossReferencesQuery, 'crossReferences'),
           fetchSection(workQuery, 'works'),
@@ -185,6 +209,7 @@ export const DataProvider = ({ children }) => {
 
         setData({
           musicianDetailsCollection: musicianDetailsData.musicianCollection,
+          musicianInfoCollection: musicianInfoData.musicianCollection,
           photosCollection: photoData.musicianCollection,
           crossReferencesCollection: crossRefData.musicianCollection,
           workCollection: workData.workCollection,
