@@ -25,6 +25,7 @@ const HomePage = () => {
     performances: data.performanceAndMediaCollection?.items?.length || 0
   } : { musicians: 0, works: 0, writings: 0, performances: 0 };
 
+  // sorting musicians into alphabetical order to show browse preview
   const sortedMusicians = data?.musicianCollection?.items
     ? sortMusicians(data.musicianCollection.items, 'surname')
     : [];
@@ -38,6 +39,7 @@ const HomePage = () => {
         Search by name or keyword.
       </p>
 
+      {/* main search functionality */}
       <SearchBar
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
@@ -47,6 +49,7 @@ const HomePage = () => {
         setSelectedIndex={setSelectedIndex}
       />
 
+      {/* browse preview window */}
       <div>
         <p className='font-serif text-base sm:text-lg md:text-xl mt-10 mb-2 text-gray-700'>
           Or browse the entries below:
@@ -67,6 +70,7 @@ const HomePage = () => {
         </div>
       </div>
 
+      {/* updated counts from CMS */}
       {!loading && !error && (
         <div className='font-sans mt-6 text-base sm:text-lg text-gray-600 italic'>
           Database currently includes {counts.musicians} musicians, {counts.works} works, {counts.writings} writings, {counts.performances} performance and media works, and continues to grow!
