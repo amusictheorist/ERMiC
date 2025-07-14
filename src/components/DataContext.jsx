@@ -10,7 +10,7 @@ const accessToken = process.env.REACT_APP_ACCESS_TOKEN;
 /* IMPORTANT: these GraphQL API queries fetch all the structured data from the CMS upon mounting the ERMiC website. Do not change anything about the queries or about the content types in the ERMiC Contentful space without corroborating changes between the two or the site will break. If changes need to be made, visit Contentful's GraphQL documentation here: https://www.contentful.com/developers/docs/references/graphql/. You'll need the spaceID and accessToken from the ERMiC site and authorization from the project managers to obtain them.
 */
 
-const musicianQuery = `
+const musicianDetailsQuery = `
 {
   musicianCollection(limit: 1000) {
     items {
@@ -22,13 +22,6 @@ const musicianQuery = `
       deathdate
       deathPlace
       occupation
-      biography {
-        json
-      }
-      author
-      bibliography {
-        json
-      }
     }
   }
 }
@@ -123,6 +116,17 @@ const performanceQuery = `
 }
 `;
 
+const authorQuery = `
+{
+  biographyAuthorCollection {
+    items {
+      names
+      surnames
+    }
+  }
+}
+`;
+
 // the actual component
 export const DataProvider = ({ children }) => {
   const [data, setData] = useState(null);
@@ -162,28 +166,31 @@ export const DataProvider = ({ children }) => {
     const fetchData = async () => {
       try {
         const [
-          musicianData,
+          musicianDetailsData,
           photoData,
           crossRefData,
           workData,
           writingData,
-          performanceData
+          performanceData,
+          authorData
         ] = await Promise.all([
-          fetchSection(musicianQuery, 'musicians'),
+          fetchSection(musicianDetailsQuery, 'musicianDetailss'),
           fetchSection(photoCollectionQuery, 'photos'),
           fetchSection(crossReferencesQuery, 'crossReferences'),
           fetchSection(workQuery, 'works'),
           fetchSection(writingQuery, 'writings'),
-          fetchSection(performanceQuery, 'performances')
+          fetchSection(performanceQuery, 'performances'),
+          fetchSection(authorQuery, 'authors')
         ]);
 
         setData({
-          musicianCollection: musicianData.musicianCollection,
+          musicianDetailsCollection: musicianDetailsData.musicianCollection,
           photosCollection: photoData.musicianCollection,
           crossReferencesCollection: crossRefData.musicianCollection,
           workCollection: workData.workCollection,
           writingCollection: writingData.writingCollection,
-          performanceAndMediaCollection: performanceData.performanceAndMediaCollection
+          performanceAndMediaCollection: performanceData.performanceAndMediaCollection,
+          biographyAuthorCollection: authorData.biographyAuthorCollection
         });
       } catch (err) {
         console.error('Data fetch failed:', err);

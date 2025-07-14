@@ -17,10 +17,10 @@ const GeneralResultsPage = () => {
 
   const m = match(query);
 
-  const musicianMap = Object.fromEntries(data.musicianCollection.items.map(m => [m.slug, m]));
+  const musicianMap = Object.fromEntries(data.musicianDetailsCollection.items.map(m => [m.slug, m]));
 
-  const matchedMusicians = data.musicianCollection.items.filter(mus => m(mus.firstName) || m(mus.surname));
-  const matchedOccupations = [...new Set(data.musicianCollection.items.flatMap(mus => mus.occupation?.filter(o => m(o)) || []))];
+  const matchedMusicians = data.musicianDetailsCollection.items.filter(mus => m(mus.firstName) || m(mus.surname));
+  const matchedOccupations = [...new Set(data.musicianDetailsCollection.items.flatMap(mus => mus.occupation?.filter(o => m(o)) || []))];
 
   const enrichedWorks = enrichWithMusician(data.workCollection.items.filter(w => m(w.title)), musicianMap);
   const enrichedWritings = enrichWithMusician(data.writingCollection.items.filter(w => m(w.title)), musicianMap);

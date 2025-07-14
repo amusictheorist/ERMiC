@@ -19,7 +19,7 @@ const MusicianPage = () => {
   const { data, loading, error } = useData();
 
   // gathering all musicians and sorting into alphabetical order to create navigation links
-  const allMusicians = data?.musicianCollection?.items || [];
+  const allMusicians = data?.musicianDetailsCollection?.items || [];
   const sortedMusicians = sortMusicians(allMusicians, 'surname');
   const currentIndex = sortedMusicians.findIndex(m => m.slug === slug);
 
@@ -36,7 +36,7 @@ const MusicianPage = () => {
   if (error && !data) return <p className='text-center mt-8 text-lg text-red-600'>Failed to load data. Please Try again later.</p>;
 
   // if a url is broken or or a musician is not yet in the CMS, not found message will be rendered
-  const musician = data.musicianCollection.items.find(
+  const musician = data.musicianDetailsCollection.items.find(
     (m) => m.slug?.trim() === slug?.trim()
   );
   if (!musician) return <p className='text-center mt-8 text-lg text-gray-700'>Musician not found.</p>;

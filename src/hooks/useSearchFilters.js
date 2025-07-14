@@ -25,7 +25,7 @@ const useSearchFilters = (searchTerm) => {
 
     try {
     // guard against missing or malformed collections
-      const musicianItems = Array.isArray(data.musicianCollection?.items) ? data.musicianCollection.items : [];
+      const musicianItems = Array.isArray(data.musicianDetailsCollection?.items) ? data.musicianDetailsCollection.items : [];
       const workItems = Array.isArray(data.workCollection?.items) ? data.workCollection.items : [];
       const writingItems = Array.isArray(data.writingCollection?.items) ? data.writingCollection.items : [];
       const performanceItems = Array.isArray(data.performanceAndMediaCollection?.items) ? data.performanceAndMediaCollection.items : [];
