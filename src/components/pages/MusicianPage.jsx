@@ -10,6 +10,7 @@ import RichTextRenderer from "./subcomponents/RichTextRenderer";
 import CollapsibleSection from './subcomponents/Collapsible';
 import UnderConstruction from './subcomponents/UnderConstruction';
 import PerformanceList from './subcomponents/PerformanceList';
+import { formatAuthorList } from '../../utils/renderHelpers';
 
 // this component handles and renders a template musican page for every musician in the CMS
 const MusicianPage = () => {
@@ -45,6 +46,10 @@ const MusicianPage = () => {
     (m) => m.slug?.trim() === slug?.trim()
   );
   if (!musicianInfo) return <p className='text-center mt-8 text-lg text-gray-700'>Musician not found</p>
+
+  const authorNames = musicianInfo?.authorCollection?.items?.map((author) =>
+    [author.names, author.surnames].filter(Boolean).join(' ')
+  ).filter(Boolean);
 
   // these fetch and render a musician's portrait if available
   const photoEntry = data.photosCollection?.items.find(
@@ -120,9 +125,9 @@ const MusicianPage = () => {
             document={musicianInfo.biography.json}
             crossReferences={crossRefEntry?.crossReferencesCollection?.items || []}
             footer={
-              musicianInfo.author && (
+              authorNames.length > 0 && (
                 <p className='font-serif mt-4 italic text-right text-gray-600 text-lg sm:text-xl'>
-                  - {musicianInfo.author}
+                  - {formatAuthorList(authorNames)}
                 </p>
               )
             }

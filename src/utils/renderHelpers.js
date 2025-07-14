@@ -79,3 +79,10 @@ export const generateTextRenderer = (nameEntries, matchedNames) => (text) => {
 
   return elements;
 };
+
+export const formatAuthorList = (names) => {
+  if (!names || names.length === 0) return '';
+  if (names.length === 1) return names[0];
+  if (names.length === 2) return names.join(' & ');
+  return names.slice(0, -1).join(', ') + ', & ' + names[names.length - 1];
+};
