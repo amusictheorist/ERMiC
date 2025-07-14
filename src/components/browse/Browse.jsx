@@ -20,6 +20,7 @@ const Browse = () => {
     return <p className='text-center mt-8 text-lg text-gray-700'>No musicians found.</p>;
   }
 
+  // this manages musician sorting and options
   const sortedMusicians = sortMusicians(musicians, sortOption);
 
   const grouped =

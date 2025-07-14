@@ -3,6 +3,7 @@ import { BLOCKS, INLINES } from '@contentful/rich-text-types';
 import { generateTextRenderer } from '../../../utils/renderHelpers';
 import { Link } from "react-router-dom";
 
+// this component manages hyperlink and musician cross-reference rendering
 export function renderNodes(nodes, nameEntries, matchedNames) {
   if (!nodes) return null;
   const elements = [];

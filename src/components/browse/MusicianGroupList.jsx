@@ -1,7 +1,8 @@
 import React from "react";
 import MusicianCard from "./MusicianCard";
 
-const MusicianGroupList = ({ groups, label }) => (
+// this manages musician sorting by option in Browse component
+const MusicianGroupList = ({ groups }) => (
   Object.entries(groups)
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([groupKey, musList]) => (

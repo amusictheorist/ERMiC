@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+// this renders a single musician during listing and sorting
 const MusicianCard = ({ musician }) => (
   <Link
     to={`/musician/${musician.slug}`}
