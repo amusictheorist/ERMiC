@@ -7,6 +7,7 @@ const useSearchResults = ({
   filteredWritings,
   filteredOccupations,
   filteredPerformances,
+  filteredAuthors,
   searchTerm
 }) => {
   const [noResults, setNoResults] = useState(false);
@@ -18,9 +19,12 @@ const useSearchResults = ({
     const writings = filteredWritings || [];
     const occupations = filteredOccupations || [];
     const performances = filteredPerformances || [];
+    const authors = filteredAuthors || [];
 
-    return [...musicians, ...occupations, ...works, ...writings, ...performances];
-  }, [filteredMusicians, filteredOccupations, filteredWorks, filteredWritings, filteredPerformances]);
+    return [...musicians, ...occupations, ...works, ...writings, ...performances, ...authors];
+  }, [filteredMusicians, filteredOccupations, filteredWorks, filteredWritings, filteredPerformances, filteredAuthors]);
+
+  // console.log('total results:', totalResults);
 
   useEffect(() => {
     const safeSearch = typeof searchTerm === 'string' ? searchTerm : '';

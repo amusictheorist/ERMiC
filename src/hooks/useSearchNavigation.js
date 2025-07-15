@@ -7,6 +7,7 @@ const useSearchNavigation = ({
   filteredWritings,
   filteredOccupations,
   filteredPerformances,
+  filteredAuthors,
   setSearchTerm,
   setShowDropdown,
   setSelectedIndex
@@ -58,6 +59,12 @@ const useSearchNavigation = ({
         return;
       }
 
+      if (filteredAuthors.includes(item)) {
+        navigate`/search-results?author=${item}`;
+        clearSearchUI();
+        return;
+      }
+
       throw new Error('Item does not match any known category');
     } catch (error) {
       console.error('Navigation error:', error.message);
@@ -70,6 +77,7 @@ const useSearchNavigation = ({
     filteredWritings,
     filteredOccupations,
     filteredPerformances,
+    filteredAuthors,
     navigate,
     setSearchTerm,
     setShowDropdown,

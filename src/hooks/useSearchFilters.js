@@ -9,6 +9,7 @@ const useSearchFilters = (searchTerm) => {
   const [filteredWorks, setFilteredWorks] = useState([]);
   const [filteredOccupations, setFilteredOccupations] = useState([]);
   const [filteredPerformances, setFilteredPerformances] = useState([]);
+  const [filteredAuthors, setFilteredAuthors] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
@@ -19,6 +20,7 @@ const useSearchFilters = (searchTerm) => {
       setFilteredWritings([]);
       setFilteredOccupations([]);
       setFilteredPerformances([]);
+      setFilteredAuthors([]);
       setShowDropdown(false);
       return;
     }
@@ -29,8 +31,9 @@ const useSearchFilters = (searchTerm) => {
       const workItems = Array.isArray(data.workCollection?.items) ? data.workCollection.items : [];
       const writingItems = Array.isArray(data.writingCollection?.items) ? data.writingCollection.items : [];
       const performanceItems = Array.isArray(data.performanceAndMediaCollection?.items) ? data.performanceAndMediaCollection.items : [];
+      const authorItems = Array.isArray(data.biographyAuthorCollection?.items) ? data.biographyAuthorCollection.items : [];
       const search = searchTerm.toLowerCase();
-      
+
       // filtering through the musician collection from CMS
       const musicianResults = musicianItems.filter((musician) => {
         const fullName = `${musician.firstName || ''} ${musician.surname || ''}`;
@@ -47,9 +50,19 @@ const useSearchFilters = (searchTerm) => {
         (writing.title || '').toLowerCase().includes(search)
       );
       
-      // filtering through through the performances collectin from CMS
+      // filtering through through the performances collection from CMS
       const performanceResults = performanceItems.filter((performance) =>
         (performance.title || '').toLowerCase().includes(search)
+      );
+
+      // filtering through the authors collection from CMS
+      const authorResults = authorItems
+        .map((author) => ({
+          ...author,
+          fullName: `${author.names || ''} ${author.surnames || ''}`.trim()
+        }))
+        .filter((author) => 
+          author.fullName.toLowerCase().includes(search)
       );
       
       // filtering through the occupations in the CMS
@@ -69,12 +82,14 @@ const useSearchFilters = (searchTerm) => {
       setFilteredWritings(writingResults);
       setFilteredOccupations(occupationResults);
       setFilteredPerformances(performanceResults);
+      setFilteredAuthors(authorResults);
       setShowDropdown(
         musicianResults.length > 0 ||
         workResults.length > 0 ||
         writingResults.length > 0 ||
         occupationResults.length > 0 ||
-        performanceResults.length > 0
+        performanceResults.length > 0 ||
+        authorResults.length > 0
       );
     } catch (err) {
       console.error('Search filtering failed:', err);
@@ -83,6 +98,7 @@ const useSearchFilters = (searchTerm) => {
       setFilteredWritings([]);
       setFilteredOccupations([]);
       setFilteredPerformances([]);
+      setFilteredAuthors([]);
       setShowDropdown(false);
     }
   }, [searchTerm, data, loading, error]);
@@ -93,6 +109,7 @@ const useSearchFilters = (searchTerm) => {
     filteredWritings,
     filteredOccupations,
     filteredPerformances,
+    filteredAuthors,
     showDropdown,
     setShowDropdown
   };

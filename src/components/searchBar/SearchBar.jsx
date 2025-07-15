@@ -26,7 +26,8 @@ const SearchBar = ({
     filteredWorks = [],
     filteredWritings = [],
     filteredOccupations = [],
-    filteredPerformances = []
+    filteredPerformances = [],
+    filteredAuthors = []
   } = useSearchFilters(searchTerm);
   
   const { totalResults = [], noResults = false } = useSearchResults({
@@ -35,6 +36,7 @@ const SearchBar = ({
     filteredWritings,
     filteredOccupations,
     filteredPerformances,
+    filteredAuthors,
     searchTerm
   });
   
@@ -45,6 +47,7 @@ const SearchBar = ({
     filteredWritings,
     filteredOccupations,
     filteredPerformances,
+    filteredAuthors,
     setSearchTerm,
     setShowDropdown,
     setSelectedIndex
