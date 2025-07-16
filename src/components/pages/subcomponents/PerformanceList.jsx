@@ -13,11 +13,11 @@ const PerformanceList = ({ performances }) => {
           </p>
           {(performance.year || performance.dateRange) && (
             <p className="text-lg">
-              <strong>{performance.year ? 'Year' : 'Years'}:</strong>
-              {performance.year || performance.dateRange}
+              <strong>{performance.year ? 'Year' : 'Years'}: </strong> 
+               {performance.year || performance.dateRange}
             </p>
           )}
-          {performance.type && <p className="text-lg"><strong>Type:</strong>{performance.type}</p>}
+          {performance.type && <p className="text-lg"><strong>Type:</strong> {performance.type}</p>}
           {performance.publicationInfo?.json && (
             <div className="mt-3">
               <p className="text-lg font-semibold"><strong>Publication Info:</strong></p>
