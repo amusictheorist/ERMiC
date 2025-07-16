@@ -95,6 +95,7 @@ const SearchBar = ({
     <div className={`search-container w-full max-w-lg mx-auto ${compact ? 'mt-0 flex items-center gap-2' : 'mt-4'}`}>
       <div className={`relative w-full flex ${compact ? 'flex-row items-center gap-2' : 'flex-col sm:flex-row sm:items-center gap-2'}`}>
         <input
+          name='search-bar'
           className="w-full px-3 py-2 text-base sm:text-lg border border-gray-300 rounded"
           type="text"
           placeholder="Enter name or keyword..."

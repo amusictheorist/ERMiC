@@ -32,27 +32,30 @@ const useSearchFilters = (searchTerm) => {
       const writingItems = Array.isArray(data.writingCollection?.items) ? data.writingCollection.items : [];
       const performanceItems = Array.isArray(data.performanceAndMediaCollection?.items) ? data.performanceAndMediaCollection.items : [];
       const authorItems = Array.isArray(data.biographyAuthorCollection?.items) ? data.biographyAuthorCollection.items : [];
-      const search = searchTerm.toLowerCase();
+      
+      const normalizeText = (str) =>
+        str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+      const search = normalizeText(searchTerm);
 
       // filtering through the musician collection from CMS
       const musicianResults = musicianItems.filter((musician) => {
         const fullName = `${musician.firstName || ''} ${musician.surname || ''}`;
-        return fullName.toLowerCase().includes(search);
+        return normalizeText(fullName).includes(normalizeText(search));
       });
       
       // filtering through the work collection from CMS
       const workResults = workItems.filter((work) =>
-        (work.title || '').toLowerCase().includes(search)
+        normalizeText(work.title || '').includes(normalizeText(search))
       );
       
       // filtering through the writing collection from CMS
       const writingResults = writingItems.filter((writing) =>
-        (writing.title || '').toLowerCase().includes(search)
+        normalizeText(writing.title || '').includes(normalizeText(search))
       );
       
       // filtering through through the performances collection from CMS
       const performanceResults = performanceItems.filter((performance) =>
-        (performance.title || '').toLowerCase().includes(search)
+        normalizeText(performance.title || '').includes(normalizeText(search))
       );
 
       // filtering through the authors collection from CMS
@@ -61,8 +64,8 @@ const useSearchFilters = (searchTerm) => {
           ...author,
           fullName: `${author.names || ''} ${author.surnames || ''}`.trim()
         }))
-        .filter((author) => 
-          author.fullName.toLowerCase().includes(search)
+        .filter((author) =>
+          normalizeText(author.fullName).includes(normalizeText(search))
       );
       
       // filtering through the occupations in the CMS
