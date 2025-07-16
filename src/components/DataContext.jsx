@@ -22,6 +22,15 @@ const musicianDetailsQuery = `
       deathdate
       deathPlace
       occupation
+      worklistExtraInfo {
+        json
+      }
+      writingListExtraInfo {
+        json
+      }
+      performanceListExtraInfo {
+        json
+      }
     }
   }
 }
