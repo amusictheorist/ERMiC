@@ -32,7 +32,7 @@ const HomePage = () => {
     : [];
 
   return (
-    <div className="w-full max-w-[90%] sm:max-w-3xl mx-auto px-4 py-6 mt-36 text-center">
+    <div className="w-full max-w-[90%] sm:max-w-3xl mx-auto px-4 py-6 mt-20 text-center">
       <h1 className='font-serif text-2xl sm:text-3xl md:text-5xl font-bold leading-tight'>
         Welcome to the European Refugee Musicians in Canada Online Biographical Dictionary
       </h1>
