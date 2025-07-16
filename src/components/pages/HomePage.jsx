@@ -55,7 +55,7 @@ const HomePage = () => {
         <p className='font-serif text-base sm:text-lg md:text-xl mt-10 mb-2 text-gray-700'>
           Or browse the entries below:
         </p>
-        <div className='mt-2 mx-auto max-h-36 max-w-xs overflow-y-auto rounded p-4 shadow-sm bg-white'>
+        <div className='mt-2 mx-auto max-h-56 max-w-xs overflow-y-auto rounded p-4 shadow-sm bg-white'>
           <ul className='space-y-1 text-center'>
             {sortedMusicians.map(m => (
               <li key={m.slug}>
