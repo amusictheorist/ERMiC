@@ -23,7 +23,26 @@ export function renderNodes(nodes, nameEntries, matchedNames) {
   nodes.forEach((node, index) => {
     switch (node.nodeType) {
       case 'text':
-        textBuffer += node.value;
+        const markTypes = node.marks?.map((mark) => mark.type) || [];
+        let content = generateTextRenderer(nameEntries, matchedNames)(node.value);
+
+        markTypes.forEach((type) => {
+          if (type === 'bold') {
+            content = <strong>{content}</strong>;
+          } else if (type === 'italic') {
+            content = <em>{content}</em>;
+          } else if (type === 'underline') {
+            content = <u>{content}</u>
+          } else if (type === 'code') {
+            content = <code className="bg-gray-100 px-1 rounded text-sm">{content}</code>;
+          }
+        });
+
+        elements.push(
+          <React.Fragment key={`text-${elements.length}`}>
+            {content}
+          </React.Fragment>
+        );
         break;
       
       case INLINES.HYPERLINK:
