@@ -26,7 +26,7 @@ const useSearchNavigation = ({
       if (!item) throw new Error('No item provided for navigation');
 
       if (filteredOccupations.includes(item)) {
-        navigate(`/search-results?occupation=${item}`);
+        navigate(`/results/occupation?occupation=${item}`);
         clearSearchUI();
         return;
       }
