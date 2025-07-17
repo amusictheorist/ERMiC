@@ -59,8 +59,9 @@ const useSearchNavigation = ({
         return;
       }
 
-      if (filteredAuthors.includes(item)) {
-        navigate`/search-results?author=${item}`;
+      if (filteredAuthors.some(a => a === item)) {
+        const fullName = `${item.names} ${item.surnames}`;
+        navigate(`/results/author?author=${encodeURIComponent(fullName)}`);
         clearSearchUI();
         return;
       }

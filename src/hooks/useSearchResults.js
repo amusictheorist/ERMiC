@@ -24,8 +24,6 @@ const useSearchResults = ({
     return [...musicians, ...occupations, ...works, ...writings, ...performances, ...authors];
   }, [filteredMusicians, filteredOccupations, filteredWorks, filteredWritings, filteredPerformances, filteredAuthors]);
 
-  // console.log('total results:', totalResults);
-
   useEffect(() => {
     const safeSearch = typeof searchTerm === 'string' ? searchTerm : '';
     setNoResults(totalResults.length === 0 && safeSearch.trim().length > 0);

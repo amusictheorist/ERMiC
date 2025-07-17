@@ -41,6 +41,8 @@ const musicianInfoQuery = `
   musicianCollection(limit: 108) {
     items {
     slug
+    firstName
+    surname
       biography {
         json
       }

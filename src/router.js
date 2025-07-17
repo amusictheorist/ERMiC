@@ -6,6 +6,7 @@ import SearchResultsPage from "./components/pages/SearchResultsPage";
 import App from "./App";
 import GeneralResultsPage from "./components/pages/GeneralResultsPage";
 import AboutPage from "./components/pages/AboutPage";
+import AuthorResults from "./components/pages/AuthorResults";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,7 @@ const router = createBrowserRouter([
       { path: 'browse', element: <Browse /> },
       { path: 'musician/:slug', element: <MusicianPage /> },
       { path: 'results/occupation', element: <SearchResultsPage /> },
+      { path: 'results/author', element: <AuthorResults /> },
       { path: 'results', element: <GeneralResultsPage /> },
       { path: 'about', element: <AboutPage /> }
     ]

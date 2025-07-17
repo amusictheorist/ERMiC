@@ -32,6 +32,7 @@ const useSearchFilters = (searchTerm) => {
       const writingItems = Array.isArray(data.writingCollection?.items) ? data.writingCollection.items : [];
       const performanceItems = Array.isArray(data.performanceAndMediaCollection?.items) ? data.performanceAndMediaCollection.items : [];
       const authorItems = Array.isArray(data.biographyAuthorCollection?.items) ? data.biographyAuthorCollection.items : [];
+      // console.log(authorItems);
       
       const normalizeText = (str) =>
         str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
