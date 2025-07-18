@@ -30,49 +30,83 @@ const GeneralResultsPage = () => {
   const groupedWritings = groupByMusician(enrichedWritings);
   const groupedPerformances = groupByMusician(enrichedPerformances);
 
+  const shouldItalicizeItem = (title, item) => {
+    if (title === 'Works' || title === 'Performances and Media') {
+      return true;
+    }
+    if (title === 'Writings') {
+      return item.type === 'Book';
+    }
+    return false;
+  };
+
   return (
     <div className="px-4 sm:px-6 md:px-8 lg:px-12 py-8 max-w-5xl mx-auto text-left">
-      <h1 className="font-serif text-3xl sm:text-4xl font-bold mb-8 text-center">
+      <h1 className="font-serif text-3xl sm:text-4xl font-bold mb-10 text-center underline underline-offset-4 decoration-2">
         Search results for: "{query}"
       </h1>
 
-      {matchedMusicians.length > 0 && (
-        <section className="mb-8">
-          <h2 className="font-serif text-2xl sm:text-3xl font-semibold mb-4">Musicians</h2>
-          <ul className="grid gap-3">
-            {matchedMusicians.map(m => (
-              <li
-                key={m.slug}
-                onClick={() => navigate(`/musician/${m.slug}`)}
-                className="cursor-pointer px-3 py-2 text-gray-800 rounded transition hover:bg-gray-200 font-serif text-xl sm:text-2xl"
-              >
-                {m.firstName} {m.surname}
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
+      <div className="max-h-[80vh] overflow-y-auto pr-2">
+        {matchedMusicians.length > 0 && (
+          <>
+            <section className="mb-6">
+              <h2 className="sticky top-0 z-10 bg-white/80 backdrop-blur-sm font-serif text-2xl sm:text-3xl font-semibold py-2 px-2 border-b border-gray-200">
+                Musicians
+              </h2>
+              <ul className="grid gap-3 mt-3">
+                {matchedMusicians.map(m => (
+                  <li
+                    key={m.slug}
+                    onClick={() => navigate(`/musician/${m.slug}`)}
+                    className="cursor-pointer px-4 py-2 bg-gray-100 rounded-lg transition hover:bg-gray-200 font-serif text-lg sm:text-xl shadow-sm"
+                  >
+                    {m.firstName} {m.surname}
+                  </li>
+                ))}
+              </ul>
+            </section>
+            <hr className="my-6 border-gray-300" />
+          </>
+        )}
 
-      {matchedOccupations.length > 0 && (
-        <section className="mb-8">
-          <h2 className="font-serif text-2xl sm:text-3xl font-semibold mb-4">Occupations</h2>
-          <ul className="grid gap-2">
-            {matchedOccupations.map(o => (
-              <li
-                key={o}
-                onClick={() => navigate(`/results/occupation?occupation=${o}`)}
-                className="cursor-pointer px-3 py-2 text-gray-800 rounded transition hover:bg-gray-200 font-serif text-xl sm:text-2xl"
-              >
-                {o}
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
+        {matchedOccupations.length > 0 && (
+          <>
+            <section className="mb-6">
+              <h2 className="sticky top-0 z-10 bg-white/80 backdrop-blur-sm font-serif text-2xl sm:text-3xl font-semibold py-2 px-2 border-b border-gray-200">
+                Occupations
+              </h2>
+              <ul className="grid gap-3 mt-3">
+                {matchedOccupations.map(o => (
+                  <li
+                    key={o}
+                    onClick={() => navigate(`/results/occupation?occupation=${o}`)}
+                    className="cursor-pointer px-4 py-2 bg-gray-200 rounded-lg transition hover:bg-gray-200 font-serif text-lg sm:text-xl shadow-sm"
+                  >
+                    {o}
+                  </li>
+                ))}
+              </ul>
+            </section>
+            <hr className="my-6 border-gray-300" />
+          </>
+        )}
 
-      <GroupedResultsSection title='Works' groupedItems={groupedWorks} />
-      <GroupedResultsSection title='Writings' groupedItems={groupedWritings} />
-      <GroupedResultsSection title='Performances' groupedItems={groupedPerformances} />
+        <GroupedResultsSection
+          title='Works'
+          groupedItems={groupedWorks}
+          shouldItalicizeItem={(item) => shouldItalicizeItem('Works', item)}
+          />
+        <GroupedResultsSection
+          title='Writings'
+          groupedItems={groupedWritings}
+          shouldItalicizeItem={(item) => shouldItalicizeItem('Writings', item)}
+          />
+        <GroupedResultsSection
+          title='Performances and Media'
+          groupedItems={groupedPerformances}
+          shouldItalicizeItem={(item) => shouldItalicizeItem('Performances and Media', item)}
+        />
+      </div>
     </div>
   );
 };
