@@ -134,10 +134,12 @@ const writingQuery = `
 
 const performanceQuery = `
 {
-  performanceAndMediaCollection(limit: 1000) {
+  performanceAndMediaCollection(limit: 108) {
     items {
-      musician {
-        slug
+      musiciansCollection {
+        items {
+          slug
+        }
       }
       title
       type

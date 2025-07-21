@@ -53,29 +53,33 @@ const MusicianPage = () => {
 
   // these fetch and render a musician's portrait if available
   const photoEntry = data.photosCollection?.items.find(
-    (item) => item.slug?.trim() === slug?.trim()
+    (m) => m.slug?.trim() === slug?.trim()
   );
   const portraitUrl = photoEntry?.photosCollection?.items?.[0]?.url;
   const portraitDescription = photoEntry?.photosCollection?.items?.[0]?.description;
 
   // this gathers all the cross references to other musician entries to create inner reference links
   const crossRefEntry = data.crossReferencesCollection?.items.find(
-    (item) => item.slug?.trim() === slug?.trim()
+    (m) => m.slug?.trim() === slug?.trim()
   );
 
   // renders list of works (compositions) from CMS if available
   const works = data.workCollection?.items?.filter(
-    (work) => work.musician?.slug === slug
+    (w) => w.musician?.slug === slug
   ) || [];
 
   // renders list of writings from CMS if available
   const writings = data.writingCollection?.items?.filter(
-    (writing) => writing.musician?.slug === slug
+    (w) => w.musician?.slug === slug
   ) || [];
 
   //renders list of performances and media works from CMS if available
   const performances = data.performanceAndMediaCollection?.items?.filter(
-    (performance) => performance.musician?.slug === slug
+    (p) =>
+      Array.isArray(p.musiciansCollection?.items) &&
+      p.musiciansCollection.items?.some(
+        (m) => m.slug?.trim() === slug
+      )
   ) || [];
 
   // actual rendering block
