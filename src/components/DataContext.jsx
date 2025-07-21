@@ -85,6 +85,7 @@ const photoCollectionQuery = `
       photosCollection {
         items {
           url
+          description
         }
       }
     }

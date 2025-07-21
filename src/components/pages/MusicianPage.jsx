@@ -56,6 +56,7 @@ const MusicianPage = () => {
     (item) => item.slug?.trim() === slug?.trim()
   );
   const portraitUrl = photoEntry?.photosCollection?.items?.[0]?.url;
+  const portraitDescription = photoEntry?.photosCollection?.items?.[0]?.description;
 
   // this gathers all the cross references to other musician entries to create inner reference links
   const crossRefEntry = data.crossReferencesCollection?.items.find(
@@ -115,6 +116,7 @@ const MusicianPage = () => {
       <Portrait
         url={portraitUrl}
         alt={`${musician.firstName} ${musician.surname}`}
+        description={portraitDescription}
       />
 
       {/* biography if available */}
