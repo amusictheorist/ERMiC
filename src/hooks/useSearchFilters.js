@@ -27,10 +27,10 @@ const useSearchFilters = (searchTerm) => {
 
     try {
     // guard against missing or malformed collections
-      const musicianItems = Array.isArray(data.musicianDetailsCollection?.items) ? data.musicianDetailsCollection.items : [];
-      const workItems = Array.isArray(data.workCollection?.items) ? data.workCollection.items : [];
-      const writingItems = Array.isArray(data.writingCollection?.items) ? data.writingCollection.items : [];
-      const performanceItems = Array.isArray(data.performanceAndMediaCollection?.items) ? data.performanceAndMediaCollection.items : [];
+      const musicianItems = Array.isArray(data?.musicianCollection) ? data.musicianCollection : [];
+      const workItems = Array.isArray(data?.workCollection) ? data.workCollection : [];
+      const writingItems = Array.isArray(data?.writingCollection) ? data.writingCollection : [];
+      const performanceItems = Array.isArray(data?.performanceAndMediaCollection) ? data.performanceAndMediaCollection : [];
       const authorItems = Array.isArray(data.biographyAuthorCollection?.items) ? data.biographyAuthorCollection.items : [];
       // console.log(authorItems);
       

@@ -20,7 +20,7 @@ const MusicianPage = () => {
   const { data, loading, error } = useData();
 
   // gathering all musicians and sorting into alphabetical order to create navigation links
-  const allMusicians = data?.musicianDetailsCollection?.items || [];
+  const allMusicians = data?.musicianCollection || [];
   const sortedMusicians = sortMusicians(allMusicians, 'surname');
   const currentIndex = sortedMusicians.findIndex(m => m.slug === slug);
 
@@ -37,44 +37,48 @@ const MusicianPage = () => {
   if (error && !data) return <p className='text-center mt-8 text-lg text-red-600'>Failed to load data. Please Try again later.</p>;
 
   // if a url is broken or or a musician is not yet in the CMS, not found message will be rendered
-  const musician = data.musicianDetailsCollection.items.find(
-    (m) => m.slug?.trim() === slug?.trim()
-  );
+  const musician = allMusicians.find((m) => m.slug?.trim() === slug?.trim());
   if (!musician) return <p className='text-center mt-8 text-lg text-gray-700'>Musician not found.</p>;
 
-  const musicianInfo = data.musicianInfoCollection.items.find(
-    (m) => m.slug?.trim() === slug?.trim()
-  );
-  if (!musicianInfo) return <p className='text-center mt-8 text-lg text-gray-700'>Musician not found</p>
+  const {
+    firstName,
+    surname,
+    birthdate,
+    birthPlace,
+    deathdate,
+    deathPlace,
+    occupation,
+    biography,
+    bibliography,
+    authorCollection,
+    photosCollection,
+    crossReferencesCollection
+  } = musician;
 
-  const authorNames = musicianInfo?.authorCollection?.items?.map((author) =>
-    [author.names, author.surnames].filter(Boolean).join(' ')
-  ).filter(Boolean);
+  const authorNames = authorCollection?.items
+    ?.map((a) => [a.names, a.surnames].filter(Boolean).join(' '))
+    .filter(Boolean);
 
   // these fetch and render a musician's portrait if available
-  const photoEntry = data.photosCollection?.items.find(
-    (m) => m.slug?.trim() === slug?.trim()
-  );
-  const portraitUrl = photoEntry?.photosCollection?.items?.[0]?.url;
-  const portraitDescription = photoEntry?.photosCollection?.items?.[0]?.description;
+  const portrait = photosCollection?.items?.[0];
+  const portraitUrl = portrait?.url;
+  const portraitDescription = portrait?.description;
 
   // this gathers all the cross references to other musician entries to create inner reference links
-  const crossRefEntry = data.crossReferencesCollection?.items.find(
-    (m) => m.slug?.trim() === slug?.trim()
-  );
+  const crossReferences = crossReferencesCollection?.items || [];
 
   // renders list of works (compositions) from CMS if available
-  const works = data.workCollection?.items?.filter(
-    (w) => w.musician?.slug === slug
+  const works = data?.workCollection?.filter(
+    (w) => w?.musician?.slug === slug
   ) || [];
 
   // renders list of writings from CMS if available
-  const writings = data.writingCollection?.items?.filter(
-    (w) => w.musician?.slug === slug
+  const writings = data?.writingCollection?.filter(
+    (w) => w?.musician?.slug === slug
   ) || [];
-
+  
   //renders list of performances and media works from CMS if available
-  const performances = data.performanceAndMediaCollection?.items?.filter(
+  const performances = data.performanceAndMediaCollection?.filter(
     (p) =>
       Array.isArray(p.musiciansCollection?.items) &&
       p.musiciansCollection.items?.some(
@@ -87,51 +91,47 @@ const MusicianPage = () => {
     // musician heading
     <div className="px-4 py-10 sm:px-8 lg:px-16 xl:px-24 max-w-7xl mx-auto text-center">
       <h1 className='font-serif text-3xl sm:text-4xl md:text-5xl font-bold mb-6'>
-        {musician.firstName} {musician.surname}
+        {firstName} {surname}
       </h1>
 
       {/* general details */}
-      {(musician.birthdate || musician.birthPlace) && (
+      {(birthdate || birthPlace) && (
         <p className='font-serif text-base sm:text-lg md:text-xl text-gray-700 mb-1'>
           Born:
-          {musician.birthdate && ` ${musician.birthdate}`}
-          {musician.birthdate && musician.birthPlace && ' in'}
-          {musician.birthPlace && ` ${musician.birthPlace}`}
+          {birthdate && ` ${birthdate}`}
+          {birthdate && birthPlace && ' in'}
+          {birthPlace && ` ${birthPlace}`}
         </p>
       )}
 
-      {(musician.deathdate || musician.deathPlace) && (
+      {(deathdate || deathPlace) && (
         <p className='font-serif text-base sm:text-lg md:text-xl text-gray-700 mb-1'>
           Died:
-          {musician.deathdate && ` ${musician.deathdate}`}
-          {musician.deathdate && musician.deathPlace && ' in'}
-          {musician.deathPlace && ` ${musician.deathPlace}`}
+          {deathdate && ` ${deathdate}`}
+          {deathdate && deathPlace && ' in'}
+          {deathPlace && ` ${deathPlace}`}
         </p>
       )}
 
-      {musician.occupation?.length > 0 && (
+      {occupation?.length > 0 && (
         <p className='font-serif text-base sm:text-lg md:text-xl text-gray-700 mb-8'>
           Occupations:
-          {' '}{musician.occupation.join(', ')}
+          {' '}{occupation.join(', ')}
         </p>
       )}
 
       {/* portrait if available */}
-      <Portrait
-        url={portraitUrl}
-        alt={`${musician.firstName} ${musician.surname}`}
-        description={portraitDescription}
-      />
+      <Portrait url={portraitUrl} alt={`${firstName} ${surname}`} description={portraitDescription} />
 
       {/* biography if available */}
-      {musicianInfo.biography?.json ? (
+      {biography?.json ? (
         <>
           <h2 className='font-serif text-2xl sm:text-3xl font-semibold my-8'>Biography</h2>
           <RichTextRenderer
-            document={musicianInfo.biography.json}
-            crossReferences={crossRefEntry?.crossReferencesCollection?.items || []}
+            document={biography.json}
+            crossReferences={crossReferences}
             footer={
-              authorNames.length > 0 && (
+              authorNames?.length > 0 && (
                 <p className='font-serif mt-4 italic text-right text-gray-600 text-lg sm:text-xl'>
                   - {formatAuthorList(authorNames)}
                 </p>
@@ -178,13 +178,13 @@ const MusicianPage = () => {
       )}
       
       {/* lists a bibliography if available */}
-      {musicianInfo.bibliography?.json && (
+      {bibliography?.json && (
         <CollapsibleSection
           title='Bibliography'
           isOpen={showBibliography}
           setIsOpen={setShowBibliography}
         >
-          <RichTextRenderer document={musicianInfo.bibliography?.json} />
+          <RichTextRenderer document={bibliography?.json} />
         </CollapsibleSection>
       )}
 

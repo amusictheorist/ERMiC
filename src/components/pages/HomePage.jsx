@@ -19,16 +19,15 @@ const HomePage = () => {
 
   // counts update on the front page the status of the database
   const counts = data ? {
-    musicians: data.musicianDetailsCollection?.items?.length || 0,
-    works: data.workCollection?.items?.length || 0,
-    writings: data.writingCollection?.items?.length || 0,
-    performances: data.performanceAndMediaCollection?.items?.length || 0,
-    authors: data.biographyuthorCollection?.items?.length || 0
+    musicians: data.musicianCollection?.length || 0,
+    works: data.workCollection?.length || 0,
+    writings: data.writingCollection?.length || 0,
+    performances: data.performanceAndMediaCollection?.length || 0
   } : { musicians: 0, works: 0, writings: 0, performances: 0 };
 
   // sorting musicians into alphabetical order to show browse preview
-  const sortedMusicians = data?.musicianDetailsCollection?.items
-    ? sortMusicians(data.musicianDetailsCollection.items, 'surname')
+  const sortedMusicians = data?.musicianCollection
+    ? sortMusicians(data.musicianCollection, 'surname')
     : [];
 
   return (

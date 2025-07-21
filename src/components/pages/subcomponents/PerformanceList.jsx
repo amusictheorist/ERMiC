@@ -2,7 +2,7 @@ import React from "react";
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 
 const PerformanceList = ({ performances }) => {
-  if (!performances || performances.lenfth === 0) return null;
+  if (!performances || performances.length === 0) return null;
 
   return (
     <div className="font-serif flex flex-col gap-6 my-6 text-left">

@@ -10,7 +10,7 @@ const Browse = () => {
 
   if (loading) return <p className='text-center mt-8 text-lg'>Loading data...</p>;
 
-  const musicians = data?.musicianDetailsCollection?.items || [];
+  const musicians = data?.musicianCollection || [];
 
   if (error && musicians.length === 0) {
     return <p className='text-center mt-8 text-lg text-red-600'>Failed to load data. Please try again later.</p>;

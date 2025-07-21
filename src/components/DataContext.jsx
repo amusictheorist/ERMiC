@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { musicianQuery, performanceQuery, workQuery, writingQuery } from "../utils/queries";
 
 // this is what provides data for all the app components
 const DataContext = createContext();
@@ -10,147 +11,101 @@ const accessToken = process.env.REACT_APP_ACCESS_TOKEN;
 /* IMPORTANT: these GraphQL API queries fetch all the structured data from the CMS upon mounting the ERMiC website. Do not change anything about the queries or about the content types in the ERMiC Contentful space without corroborating changes between the two or the site will break. If changes need to be made, visit Contentful's GraphQL documentation here: https://www.contentful.com/developers/docs/references/graphql/. You'll need the spaceID and accessToken from the ERMiC site and authorization from the project managers to obtain them.
 */
 
-const musicianDetailsQuery = `
-{
-  musicianCollection(limit: 1000) {
-    items {
-      slug
-      firstName
-      surname
-      birthdate
-      birthPlace
-      deathdate
-      deathPlace
-      occupation
-      worklistExtraInfo {
-        json
-      }
-      writingListExtraInfo {
-        json
-      }
-      performanceListExtraInfo {
-        json
-      }
-    }
-  }
-}
-`;
+const fetchPaginatedMusicianCollection = async (fetchSection) => {
+  const limit = 30;
+  let skip = 0;
+  let allItems = [];
+  let hasMore = true;
 
-const musicianInfoQuery = `
-{
-  musicianCollection(limit: 108) {
-    items {
-    slug
-    firstName
-    surname
-      biography {
-        json
-      }
-      authorCollection {
-        items {
-          names
-          surnames
-        }
-      }
-      bibliography {
-        json
-      }
-    }
-  }
-}
-`;
+  while (hasMore) {
+    const query = musicianQuery(limit, skip);
+    const data = await fetchSection(query);
+    const items = data?.musicianCollection?.items || [];
 
-const crossReferencesQuery = `
-{
-  musicianCollection {
-    items {
-      slug
-      crossReferencesCollection {
-        items {
-          slug
-          firstName
-          surname
-        }
-      }
-    }
-  }
-}
-`;
+    allItems = [...allItems, ...items];
 
-const photoCollectionQuery = `
-{
-  musicianCollection {
-    items {
-      slug
-      photosCollection {
-        items {
-          url
-          description
-        }
-      }
+    if (items.length < limit) {
+      hasMore = false;
+    } else {
+      skip += limit;
+      await new Promise((res) => setTimeout(res, 150));
     }
   }
-}
-`;
 
-const workQuery = `
-{
-  workCollection(limit: 1000) {
-    items {
-      musician {
-        slug
-      }
-      title
-      year
-      dateRange
-      type
-      instrumentation
-      publicationInfo {
-        json
-      }
-    }
-  }
-}
-`;
+  return allItems;
+};
 
-const writingQuery = `
-{
-  writingCollection(limit: 1000) {
-    items {
-      musician {
-        slug
-      }
-      title
-      type
-      year
-      dateRange
-      publicationInfo {
-        json
-      }
-    }
-  }
-}
-`;
+const fetchPaginatedWorkCollection = async (fetchSection) => {
+  const limit = 50;
+  let skip = 0;
+  let allItems = [];
+  let hasMore = true;
 
-const performanceQuery = `
-{
-  performanceAndMediaCollection(limit: 108) {
-    items {
-      musiciansCollection {
-        items {
-          slug
-        }
-      }
-      title
-      type
-      year
-      publicationInfo {
-        json
-      }
+  while (hasMore) {
+    const query = workQuery(limit, skip);
+    const data = await fetchSection(query);
+    const items = data?.workCollection?.items || [];
+
+    allItems = [...allItems, ...items];
+
+    if (items.length < limit) {
+      hasMore = false;
+    } else {
+      skip += limit;
+      await new Promise((res) => setTimeout(res, 150));
     }
   }
-}
-`;
+
+  return allItems;
+};
+
+const fetchPaginatedWritingCollection = async (fetchSection) => {
+  const limit = 50;
+  let skip = 0;
+  let allItems = [];
+  let hasMore = true;
+
+  while (hasMore) {
+    const query = writingQuery(limit, skip);
+    const data = await fetchSection(query);
+    const items = data?.writingCollection?.items || [];
+
+    allItems = [...allItems, ...items];
+
+    if (items.length < limit) {
+      hasMore = false;
+    } else {
+      skip += limit;
+      await new Promise((res) => setTimeout(res, 150));
+    }
+  }
+
+  return allItems;
+};
+
+const fetchPaginatedPerformanceCollection = async (fetchSection) => {
+  const limit = 50;
+  let skip = 0;
+  let allItems = [];
+  let hasMore = true;
+
+  while (hasMore) {
+    const query = performanceQuery(limit, skip);
+    const data = await fetchSection(query);
+    const items = data?.performanceAndMediaCollection?.items || [];
+
+    allItems = [...allItems, ...items];
+
+    if (items.length < limit) {
+      hasMore = false;
+    } else {
+      skip += limit;
+      await new Promise((res) => setTimeout(res, 150));
+    }
+  }
+
+  return allItems;
+};
 
 const authorQuery = `
 {
@@ -202,33 +157,24 @@ export const DataProvider = ({ children }) => {
     const fetchData = async () => {
       try {
         const [
-          musicianDetailsData,
-          musicianInfoData,
-          photoData,
-          crossRefData,
+          musicianData,
           workData,
           writingData,
           performanceData,
           authorData
         ] = await Promise.all([
-          fetchSection(musicianDetailsQuery, 'musicianDetails'),
-          fetchSection(musicianInfoQuery, 'musicianInfo'),
-          fetchSection(photoCollectionQuery, 'photos'),
-          fetchSection(crossReferencesQuery, 'crossReferences'),
-          fetchSection(workQuery, 'works'),
-          fetchSection(writingQuery, 'writings'),
-          fetchSection(performanceQuery, 'performances'),
+          fetchPaginatedMusicianCollection(fetchSection),
+          fetchPaginatedWorkCollection(fetchSection),
+          fetchPaginatedWritingCollection(fetchSection),
+          fetchPaginatedPerformanceCollection(fetchSection),
           fetchSection(authorQuery, 'authors')
         ]);
 
         setData({
-          musicianDetailsCollection: musicianDetailsData.musicianCollection,
-          musicianInfoCollection: musicianInfoData.musicianCollection,
-          photosCollection: photoData.musicianCollection,
-          crossReferencesCollection: crossRefData.musicianCollection,
-          workCollection: workData.workCollection,
-          writingCollection: writingData.writingCollection,
-          performanceAndMediaCollection: performanceData.performanceAndMediaCollection,
+          musicianCollection: musicianData,
+          workCollection: workData,
+          writingCollection: writingData,
+          performanceAndMediaCollection: performanceData,
           biographyAuthorCollection: authorData.biographyAuthorCollection
         });
       } catch (err) {

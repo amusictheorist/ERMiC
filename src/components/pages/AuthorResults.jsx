@@ -14,7 +14,7 @@ const AuthorResults = () => {
   if (error && !data) return <p className="text-center mt-8 text-lg text-red-600">Failed to load data. Please try again later.</p>;
   if (!author) return <p className="text-center mt-8 text-lg text-gray-700">No author specified.</p>;
 
-  const filteredMusicians = data.musicianInfoCollection.items
+  const filteredMusicians = data.musicianCollection
     .filter(musician => {
       const authors = musician.authorCollection?.items || [];
       return authors.some(a => {

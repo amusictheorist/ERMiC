@@ -16,7 +16,7 @@ const SearchResultsPage = () => {
   if (!occupation) return <p className="text-center mt-8 text-lg text-gray-700">No occupation specified.</p>;
 
   // filters musicians for chosen occupation and sorts them in alphabetical order
-  const filteredMusicians = data.musicianDetailsCollection.items
+  const filteredMusicians = data.musicianCollection
     .filter(musician => musician.occupation?.includes(occupation))
     .sort((a, b) => {
       const nameA = `${a.surname} ${a.firstName}`.toLowerCase();
