@@ -21,10 +21,10 @@ jest.mock('../searchBar/SearchBar', () => {
 jest.mock('../../components/DataContext', () => ({
   useData: () => ({
     data: {
-      musicianCollection: { items: [] },
-      workCollection: { items: [] },
-      writingCollection: { items: [] },
-      performanceAndMediaCollection: { items: [] }
+      musicianCollection: [],
+      workCollection: [],
+      writingCollection: [],
+      performanceAndMediaCollection: []
     },
     loading: false,
     error: null
