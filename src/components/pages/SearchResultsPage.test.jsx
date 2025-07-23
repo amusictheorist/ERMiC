@@ -34,16 +34,16 @@ describe('SearchResultsPage', () => {
     expect(screen.getByText(/Failed to load data/i)).toBeInTheDocument();
   });
   
-  it('shows a message then no occupation is provided', () => {
+  it('shows a message when no occupation is provided', () => {
     useData.mockReturnValue({ data: {}, loading: false, error: null });
     renderWithRouter('/search');
-    expect(screen.getByText(/No occupation specified/i)).toBeInTheDocument();
+    expect(screen.getByText(/No search parameters provided/i)).toBeInTheDocument();
   });
 
   it('shows a message when no musicians match the occupation', () => {
     useData.mockReturnValue({
       data: {
-        musicianCollection: { items: [] }
+        musicianCollection: []
       },
       loading: false,
       error: null
@@ -55,12 +55,10 @@ describe('SearchResultsPage', () => {
   it('displays matching musicians sorted by name', () => {
     useData.mockReturnValue({
       data: {
-        musicianCollection: {
-          items: [
+        musicianCollection: [
             { slug: 'anna', firstName: 'Anna', surname: 'Zweig', occupation: ['Pianist'] },
             { slug: 'bob', firstName: 'Bob', surname: 'Adler', occupation: ['Pianist'] }
           ]
-        }
       },
       loading: false,
       error: null
@@ -77,11 +75,9 @@ describe('SearchResultsPage', () => {
   it('navigates to musician page on click', () => {
     useData.mockReturnValue({
       data: {
-        musicianCollection: {
-          items: [
+        musicianCollection: [
             { slug: 'anna', firstName: 'Anna', surname: 'Zweig', occupation: ['Pianist'] }
           ]
-        }
       },
       loading: false,
       error: null
@@ -90,5 +86,40 @@ describe('SearchResultsPage', () => {
     renderWithRouter();
     fireEvent.click(screen.getByText('Anna Zweig'));
     expect(mockNavigate).toHaveBeenCalledWith('/musician/anna');
+  });
+
+  it('filters musicians by performanceTitle and displays them sorted', () => {
+    useData.mockReturnValue({
+      data: {
+        musicianCollection: [
+          { slug: 'anna', firstName: 'Anna', surname: 'Zweig', occupation: ['Pianist'] },
+          { slug: 'bob', firstName: 'Bob', surname: 'Adler', occupation: ['Violinist'] },
+          { slug: 'carl', firstName: 'Carl', surname: 'Smith', occupation: ['Cellist'] }
+        ],
+        performanceAndMediaCollection: [
+          {
+            title: 'Sonata',
+            musiciansCollection: {
+              items: [
+                { slug: 'bob' },
+                { slug: 'carl' }
+              ]
+            }
+          }
+        ]
+      }, loading: false,
+      error: null
+    });
+
+    renderWithRouter('/search?performance=Sonata');
+
+    expect(screen.getByText(/Performers for: "Sonata"/i)).toBeInTheDocument();
+
+    const listItems = screen.getAllByRole('listitem');
+    expect(listItems).toHaveLength(2);
+    expect(listItems[0]).toHaveTextContent('Bob Adler');
+    expect(listItems[1]).toHaveTextContent('Carl Smith');
+    fireEvent.click(screen.getByText('Bob Adler'));
+    expect(mockNavigate).toHaveBeenCalledWith('/musician/bob');
   });
 });

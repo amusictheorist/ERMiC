@@ -22,7 +22,11 @@ const SearchResultsPage = () => {
   
   if (occupation) {
     filteredMusicians = data.musicianCollection
-      .filter(musician => musician.occupation?.includes(occupation));
+      .filter(musician => musician.occupation?.includes(occupation)).sort((a, b) => {
+        const nameA = `${a.surname} ${a.firstname}`.toLowerCase();
+        const nameB = `${b.surname} ${b.firstname}`.toLowerCase();
+        return nameA.localeCompare(nameB);
+      });
   }
 
   if (performanceTitle) {
