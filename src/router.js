@@ -17,6 +17,7 @@ const router = createBrowserRouter([
       { path: 'browse', element: <Browse /> },
       { path: 'musician/:slug', element: <MusicianPage /> },
       { path: 'results/occupation', element: <SearchResultsPage /> },
+      { path: 'results/performance', element: <SearchResultsPage /> },
       { path: 'results/author', element: <AuthorResults /> },
       { path: 'results', element: <GeneralResultsPage /> },
       { path: 'about', element: <AboutPage /> }

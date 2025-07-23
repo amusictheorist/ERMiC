@@ -53,8 +53,16 @@ const useSearchNavigation = ({
       }
 
       if (filteredPerformances.includes(item)) {
-        if (!item.musician?.slug) throw new Error('Performance missing musician slug');
-        navigate(`/musician/${item.musician.slug}`);
+        const musicians = item.musiciansCollection?.items || [];
+
+        if (musicians.length === 1) {
+          const slug = musicians[0].slug;
+          if (!slug) throw new Error('Musician missing slug');
+          navigate(`/musician/${slug}`);
+        } else {
+          navigate(`/results/performance?performance=${encodeURIComponent(item.title || 'Untitled')}`);
+        }
+
         clearSearchUI();
         return;
       }
