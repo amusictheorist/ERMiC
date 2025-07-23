@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import Browse from './Browse';
 
 jest.mock('../DataContext', () => ({
@@ -29,13 +29,11 @@ describe('Browse component', () => {
       loading: false,
       error: null,
       data: {
-        musicianCollection: {
-          items: [
-            { firstName: 'Andreas', surname: 'Barban', slug: 'barban-andreas' },
-            { firstName: 'Peter', surname: 'Bentley', slug: 'bentley-peter' },
-            { firstName: 'Istvan', surname: 'Anhalt', slug: 'anhalt-istvan' }
-          ]
-        }
+        musicianCollection: [
+          { firstName: 'Andreas', surname: 'Barban', slug: 'barban-andreas' },
+          { firstName: 'Peter', surname: 'Bentley', slug: 'bentley-peter' },
+          { firstName: 'Istvan', surname: 'Anhalt', slug: 'anhalt-istvan' }
+        ]
       }
     });
 
@@ -55,13 +53,11 @@ describe('Browse component', () => {
       loading: false,
       error: null,
       data: {
-        musicianCollection: {
-          items: [
-            { firstName: 'Andreas', surname: 'Barban', slug: 'barban-andreas' },
-            { firstName: 'Peter', surname: 'Barban', slug: 'bentley-peter' },
-            { firstName: 'Istvan', surname: 'Anhalt', slug: 'anhalt-istvan' }
-          ]
-        }
+        musicianCollection: [
+          { firstName: 'Andreas', surname: 'Barban', slug: 'barban-andreas' },
+          { firstName: 'Peter', surname: 'Barban', slug: 'bentley-peter' },
+          { firstName: 'Istvan', surname: 'Anhalt', slug: 'anhalt-istvan' }
+        ]
       }
     });
 
@@ -81,11 +77,9 @@ describe('Browse component', () => {
       loading: false,
       error: 'Some error',
       data: {
-        musicianCollection: {
-          items: [
-            { firstName: 'Anna', surname: 'Smith', slug: 'smith-anna' }
-          ]
-        }
+        musicianCollection: [
+          { firstName: 'Anna', surname: 'Smith', slug: 'smith-anna' }
+        ]
       }
     });
   
@@ -98,12 +92,10 @@ describe('Browse component', () => {
       loading: false,
       error: null,
       data: {
-        musicianCollection: {
-          items: [
-            { firstName: 'Zoe', surname: 'Smith', slug: 'smith-zoe' },
-            { firstName: 'Anna', surname: 'Smith', slug: 'smith-anna' }
-          ]
-        }
+        musicianCollection: [
+          { firstName: 'Zoe', surname: 'Smith', slug: 'smith-zoe' },
+          { firstName: 'Anna', surname: 'Smith', slug: 'smith-anna' }
+        ]
       }
     });
   
@@ -112,5 +104,38 @@ describe('Browse component', () => {
     const items = screen.getAllByRole('link');
     expect(items[0]).toHaveTextContent('Anna Smith');
     expect(items[1]).toHaveTextContent('Zoe Smith');
+  });
+
+  it('renders fallback or empty state if no musicians are found', () => {
+    useData.mockReturnValue({
+      loading: false,
+      error: null,
+      data: { musicianCollection: [] }
+    });
+
+    render(<Browse />, { wrapper: MemoryRouter });
+    expect(screen.getByText(/No Musicians found/i)).toBeInTheDocument();
+  });
+
+  it('updates sort option when dropdown selection changes', () => {
+    useData.mockReturnValue({
+      loading: false,
+      error: null,
+      data: {
+        musicianCollection: [
+          { firstName: 'Peter', surname: 'Bentley', slug: 'bentley-peter', birthCountry: 'Germany' },
+          { firstName: 'Andreas', surname: 'Barban', slug: 'barban-andreas', birthCountry: 'Austria' }
+        ]
+      }
+    });
+
+    render(<Browse />, { wrapper: MemoryRouter });
+
+    const dropdown = screen.getByLabelText(/sort by/i);
+    fireEvent.change(dropdown, { target: { value: 'birthCountry' } });
+
+    const items = screen.getAllByRole('link');
+    expect(items[0]).toHaveTextContent('Andreas Barban');
+    expect(items[1]).toHaveTextContent('Peter Bentley');
   });
 });
