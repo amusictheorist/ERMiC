@@ -26,20 +26,12 @@ describe('Data Provider', () => {
         json: () =>
           Promise.resolve({
             data: {
-              musicianCollection: {
-                items: [
-                  { slug: 'test-musician', firstName: 'Test', surname: 'Musician' }
-                ]
-              },
-              workCollection: {
-                items: []
-              },
-              writingCollection: {
-                items: []
-              },
-              performanceAndMediaCollection: {
-                items: []
-              }
+              musicianCollection: [
+                { slug: 'test-musician', firstName: 'Test', surname: 'Musician' }
+              ],
+              workCollection: [],
+              writingCollection: [],
+              performanceAndMediaCollection: []
             }
           }),
       })
@@ -83,15 +75,9 @@ describe('Data Provider', () => {
                   { slug: 'test-musician', firstName: 'Test', surname: 'Musician' }
                 ]
               },
-              workCollection: {
-                items: []
-              },
-              writingCollection: {
-                items: []
-              },
-              performanceAndMediaCollection: {
-                items: []
-              }
+              workCollection: [],
+              writingCollection: [],
+              performanceAndMediaCollection: []
             },
             errors: [{ message: 'Some GraphQL error' }]
           }),
