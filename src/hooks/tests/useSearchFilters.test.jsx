@@ -7,29 +7,21 @@ jest.mock('../../components/DataContext', () => ({
 }));
 
 const mockData = {
-  musicianCollection: {
-    items: [
-      { firstName: 'Istvan', surname: 'Anhalt', occupation: ['Composer', 'Music Theorist'] },
-      { firstName: 'Andreas', surname: 'Barban', occupation: ['Conductor'] },
-    ],
-  },
-  workCollection: {
-    items: [
-      { title: 'String Quartet No. 1' },
-      { title: 'Symphony No. 1' },
-    ],
-  },
-  writingCollection: {
-    items: [
-      { title: 'About Foci' },
-      { title: 'The Quest for Musical Truth' },
-    ],
-  },
-  performanceAndMediaCollection: {
-    items: [
-      {title: 'The Piano Music of Mendelssohn'}
-    ]
-  }
+  musicianCollection: [
+    { firstName: 'Istvan', surname: 'Anhalt', occupation: ['Composer', 'Music Theorist'] },
+    { firstName: 'Andreas', surname: 'Barban', occupation: ['Conductor'] },
+  ],
+  workCollection: [
+    { title: 'String Quartet No. 1' },
+    { title: 'Symphony No. 1' },
+  ],
+  writingCollection: [
+    { title: 'About Foci' },
+    { title: 'The Quest for Musical Truth' },
+  ],
+  performanceAndMediaCollection: [
+    { title: 'The Piano Music of Mendelssohn' }
+  ]
 };
 
 const makeMockReturn = (data, loading = false, error = null) => ({
@@ -133,10 +125,10 @@ describe('useSearchFilters error handling and edge cases', () => {
 
   it('handles missing collections gracefully', async () => {
     DataContext.useData.mockReturnValueOnce(makeMockReturn({
-      musicianCollection: {},
+      musicianCollection: [],
       workCollection: null,
-      writingCollection: { items: null },
-      performanceAndMediaCollection: { items: null }
+      writingCollection: null,
+      performanceAndMediaCollection: null 
     }));
 
     const { result } = renderHook(() => useSearchFilters('a'));
@@ -153,8 +145,7 @@ describe('useSearchFilters error handling and edge cases', () => {
 
   it('catches errors during filtering and logs them', async () => {
     const badData = {
-      musicianCollection: {
-        items: [
+      musicianCollection: [
           {
             get firstName() {
               throw new Error('Fail');
@@ -163,10 +154,9 @@ describe('useSearchFilters error handling and edge cases', () => {
             occupation: ['Composer'],
           },
         ],
-      },
-      workCollection: { items: [] },
-      writingCollection: { items: [] },
-      performanceAndMediaCollection: { items: [] }
+      workCollection: [],
+      writingCollection: [],
+      performanceAndMediaCollection: []
     };
     DataContext.useData.mockReturnValueOnce(makeMockReturn(badData));
 
@@ -189,10 +179,10 @@ describe('useSearchFilters error handling and edge cases', () => {
 
   it('handles empty arrays in collections', async () => {
     DataContext.useData.mockReturnValueOnce(makeMockReturn({
-      musicianCollection: { items: [] },
-      workCollection: { items: [] },
-      writingCollection: { items: [] },
-      performanceAndMediaCollection: { items: [] }
+      musicianCollection: [],
+      workCollection: [],
+      writingCollection: [],
+      performanceAndMediaCollection: []
     }));
 
     const { result } = renderHook(() => useSearchFilters('a'));
@@ -219,16 +209,14 @@ describe('useSearchFilters error handling and edge cases', () => {
     expect(result.current.filteredMusicians).toHaveLength(0);
 
     currentMockData = {
-      musicianCollection: {
-        items: [
+      musicianCollection: [
           { firstName: 'John', surname: 'Doe' },
           { surname: 'Smith', occupation: ['Pianist'] },
           { firstName: 'Jane' },
         ],
-      },
-      workCollection: { items: [] },
-      writingCollection: { items: [] },
-      performanceAndMediaCollection: { items: [] }
+      workCollection: [],
+      writingCollection: [],
+      performanceAndMediaCollection: []
     };
 
     rerender({ term: 'john' });
