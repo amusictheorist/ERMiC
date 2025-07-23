@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useData } from "../components/DataContext";
+import { match } from "../utils/searchHelpers";
 
  // this custom hook handles the filtered search function
 const useSearchFilters = (searchTerm) => {
@@ -26,38 +27,29 @@ const useSearchFilters = (searchTerm) => {
     }
 
     try {
+      const m = match(searchTerm);
+
     // guard against missing or malformed collections
       const musicianItems = Array.isArray(data?.musicianCollection) ? data.musicianCollection : [];
       const workItems = Array.isArray(data?.workCollection) ? data.workCollection : [];
       const writingItems = Array.isArray(data?.writingCollection) ? data.writingCollection : [];
       const performanceItems = Array.isArray(data?.performanceAndMediaCollection) ? data.performanceAndMediaCollection : [];
       const authorItems = Array.isArray(data.biographyAuthorCollection?.items) ? data.biographyAuthorCollection.items : [];
-      // console.log(authorItems);
-      
-      const normalizeText = (str) =>
-        str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-      const search = normalizeText(searchTerm);
 
       // filtering through the musician collection from CMS
       const musicianResults = musicianItems.filter((musician) => {
         const fullName = `${musician.firstName || ''} ${musician.surname || ''}`;
-        return normalizeText(fullName).includes(normalizeText(search));
+        return m(fullName);
       });
       
       // filtering through the work collection from CMS
-      const workResults = workItems.filter((work) =>
-        normalizeText(work.title || '').includes(normalizeText(search))
-      );
+      const workResults = workItems.filter((work) => m(work.title));
       
       // filtering through the writing collection from CMS
-      const writingResults = writingItems.filter((writing) =>
-        normalizeText(writing.title || '').includes(normalizeText(search))
-      );
+      const writingResults = writingItems.filter((writing) => m(writing.title));
       
       // filtering through through the performances collection from CMS
-      const performanceResults = performanceItems.filter((performance) =>
-        normalizeText(performance.title || '').includes(normalizeText(search))
-      );
+      const performanceResults = performanceItems.filter((performance) => m(performance.title));
 
       // filtering through the authors collection from CMS
       const authorResults = authorItems
@@ -65,17 +57,13 @@ const useSearchFilters = (searchTerm) => {
           ...author,
           fullName: `${author.names || ''} ${author.surnames || ''}`.trim()
         }))
-        .filter((author) =>
-          normalizeText(author.fullName).includes(normalizeText(search))
-      );
+        .filter((author) => m(author.fullName));
       
       // filtering through the occupations in the CMS
       const occupationResults = Array.from(
         new Set(
           musicianItems.flatMap((musician) =>
-            (musician.occupation || []).filter((occ) =>
-              occ.toLowerCase().includes(search)
-            )
+            (musician.occupation || []).filter((occ) => m(occ))
           )
         )
       );

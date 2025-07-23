@@ -1,5 +1,10 @@
-export const match = (query) => (text) =>
-  text ? text.toLowerCase().includes(query.toLowerCase()) : false;
+export const normalizeText = (str) =>
+  str?.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase() || '';
+
+export const match = (query) => {
+  const normalizedQuery = normalizeText(query);
+  return (text) => normalizeText(text).includes(normalizedQuery);
+};
 
 export const groupByMusician = (items) =>
   items.reduce((acc, item) => {

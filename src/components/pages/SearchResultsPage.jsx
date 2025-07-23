@@ -10,25 +10,39 @@ const SearchResultsPage = () => {
 
   const searchParams = new URLSearchParams(location.search);
   const occupation = searchParams.get('occupation');
+  const performanceTitle = searchParams.get('performance');
 
   if (loading) return <p className="text-center mt-8 text-lg">Loading data...</p>;
   if (error && !data) return <p className="text-center mt-8 text-lg text-red-600">Failed to load data. Please try again later.</p>;
-  if (!occupation) return <p className="text-center mt-8 text-lg text-gray-700">No occupation specified.</p>;
+  if (!occupation && !performanceTitle) return <p className="text-center mt-8 text-lg text-gray-700">No search parameters provided.</p>;
 
-  // filters musicians for chosen occupation and sorts them in alphabetical order
-  const filteredMusicians = data.musicianCollection
-    .filter(musician => musician.occupation?.includes(occupation))
-    .sort((a, b) => {
-      const nameA = `${a.surname} ${a.firstName}`.toLowerCase();
-      const nameB = `${b.surname} ${b.firstName}`.toLowerCase();
-      return nameA.localeCompare(nameB);
-    });
   
+  // filters musicians for chosen occupation and sorts them in alphabetical order
+  let filteredMusicians = [];
+  
+  if (occupation) {
+    filteredMusicians = data.musicianCollection
+      .filter(musician => musician.occupation?.includes(occupation));
+  }
+
+  if (performanceTitle) {
+    const performanceItem = data.performanceAndMediaCollection.find(
+      p => p.title === performanceTitle
+    );
+    const slugs = performanceItem?.musiciansCollection?.items?.map(m => m.slug) || [];
+
+    filteredMusicians = data.musicianCollection.filter(m =>
+      slugs.includes(m.slug)
+    );
+  }
+    
   // actual render block
   return (
     <div className="px-4 sm:px-6 md:px-8 lg:px-12 py-8 max-w-5xl mx-auto text-center">
       <h2 className='font-serif text-3xl sm:text-4xl font-bold mb-6'>
-        Search results for: "{occupation}"
+        {occupation
+          ? `Search results for: "${occupation}"`
+          : `Performers for: "${performanceTitle}"`}
       </h2>
 
       {filteredMusicians.length === 0 ? (
