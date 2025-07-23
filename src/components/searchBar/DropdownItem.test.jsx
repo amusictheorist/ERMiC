@@ -1,4 +1,4 @@
-import React, { createRef } from "react";
+import React from "react";
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import DropdownItem from "./DropdownItem";
@@ -24,7 +24,21 @@ describe('DropdownItem', () => {
     expect(screen.getByText('Istvan Anhalt')).toBeInTheDocument();
   });
 
-  test('renders firstName with undefined surname gracefully', () => {
+  test('renders fullName when provided', () => {
+    const item = { fullName: 'John Doe' };
+    render(
+      <DropdownItem
+        item={item}
+        index={0}
+        selectedIndex={-1}
+        onClick={onClickMock}
+        itemRef={null}
+      />
+    );
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
+  });
+
+  test('renders firstName with undefined surname gracefully as Untitled', () => {
     const item = { firstName: 'Istvan' };
     render(
       <DropdownItem
@@ -35,7 +49,7 @@ describe('DropdownItem', () => {
         itemRef={null}
       />
     );
-    expect(screen.getByText('Istvan undefined')).toBeInTheDocument();
+    expect(screen.getByText('Untitled')).toBeInTheDocument();
   });
 
   test('renders string item directly if item is a string', () => {
@@ -50,6 +64,7 @@ describe('DropdownItem', () => {
       />
     );
     expect(screen.getByText('Plain string')).toBeInTheDocument();
+    expect(screen.getByText('occupation')).toBeInTheDocument(); // string items show 'occupation'
   });
 
   test('applies "selected" class if selectedIndex matches index', () => {
@@ -67,7 +82,7 @@ describe('DropdownItem', () => {
     expect(li).toHaveClass('selected');
   });
 
-  test('calls onClick with item when cicked', () => {
+  test('calls onClick with item when clicked', () => {
     const item = { firstName: 'Click', surname: 'Test' };
     render(
       <DropdownItem
@@ -81,5 +96,35 @@ describe('DropdownItem', () => {
     fireEvent.click(screen.getByText('Click Test'));
     expect(onClickMock).toHaveBeenCalledTimes(1);
     expect(onClickMock).toHaveBeenCalledWith(item);
+  });
+
+  test('renders writing item type correctly', () => {
+    const item = { title: 'Writing Title', type: 'Article', musician: {} };
+    render(
+      <DropdownItem
+        item={item}
+        index={0}
+        selectedIndex={-1}
+        onClick={onClickMock}
+        itemRef={null}
+      />
+    );
+    expect(screen.getByText('Writing Title')).toBeInTheDocument();
+    expect(screen.getByText('writing')).toBeInTheDocument();
+  });
+
+  test('renders performance and/or media item type correctly', () => {
+    const item = { title: 'Performance Title', publicationInfo: 'Info' };
+    render(
+      <DropdownItem
+        item={item}
+        index={0}
+        selectedIndex={-1}
+        onClick={onClickMock}
+        itemRef={null}
+      />
+    );
+    expect(screen.getByText('Performance Title')).toBeInTheDocument();
+    expect(screen.getByText('performance and/or media')).toBeInTheDocument();
   });
 });
