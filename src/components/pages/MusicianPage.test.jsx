@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter, useParams } from 'react-router-dom';
 import MusicianPage from './MusicianPage';
 
@@ -15,7 +15,13 @@ jest.mock('../DataContext', () => ({
 jest.mock('./subcomponents/Portrait', () => () => <div>Mocked Portrait</div>);
 jest.mock('./subcomponents/Worklist', () => () => <div>Mocked WorkList</div>);
 jest.mock('./subcomponents/WritingList', () => () => <div>Mocked WritingList</div>);
-jest.mock('./subcomponents/RichTextRenderer', () => () => <div>Mocked RichTextRenderer</div>);
+jest.mock('./subcomponents/RichTextRenderer', () => (props) => (
+  <div>
+    Mocked RichTextRenderer
+    {props.footer}
+  </div>
+));
+jest.mock('./subcomponents/PerformanceList', () => () => <div>Mocked PerformanceList</div>);
 
 import { useData } from "../DataContext";
 
@@ -39,9 +45,9 @@ describe('MusicianPage', () => {
       loading: false,
       error: null,
       data: {
-        musicianCollection: { items: [] },
-        workCollection: { items: [] },
-        writingCollection: { items: [] }
+        musicianCollection: [],
+        workCollection: [],
+        writingCollection: []
       }
     });
     
@@ -54,28 +60,22 @@ describe('MusicianPage', () => {
       loading: false,
       error: null,
       data: {
-        musicianCollection: {
-          items: [
-            {
-              slug: 'sample-musician',
-              firstName: 'Sample',
-              surname: 'Musician',
-              birthdate: '1900',
-              birthPlace: 'Vienna',
-              deathdate: '1980',
-              deathPlace: 'Toronto',
-              biography: { json: {} },
-              bibliography: { json: {} },
-              photosCollection: { items: [{ url: 'portrait.jpg' }] }
-            }
-          ]
-        },
-        workCollection: {
-          items: [{ musician: { slug: 'sample-musician' } }]
-        },
-        writingCollection: {
-          items: [{ musician: { slug: 'sample-musician' } }]
-        }
+        musicianCollection: [
+          {
+            slug: 'sample-musician',
+            firstName: 'Sample',
+            surname: 'Musician',
+            birthdate: '1900',
+            birthPlace: 'Vienna',
+            deathdate: '1980',
+            deathPlace: 'Toronto',
+            biography: { json: {} },
+            bibliography: { json: {} },
+            photosCollection: { items: [{ url: 'portrait.jpg' }] }
+          }
+        ],
+        workCollection: [{ musician: { slug: 'sample-musician' } }],
+        writingCollection: [{ musician: { slug: 'sample-musician' } }]
       }
     });
     
@@ -88,5 +88,87 @@ describe('MusicianPage', () => {
     expect(screen.getByText(/Mocked Portrait/)).toBeInTheDocument();
     expect(screen.getByText(/Mocked WorkList/)).toBeInTheDocument();
     expect(screen.getByText(/Mocked WritingList/)).toBeInTheDocument();
+  });
+
+  it('renders formatted author list when authorCollection is provided', () => {
+  useData.mockReturnValue({
+    loading: false,
+    error: null,
+    data: {
+      musicianCollection: [
+        {
+          slug: 'sample-musician',
+          firstName: 'Sample',
+          surname: 'Musician',
+          biography: {
+            json: {
+              nodeType: 'document',
+              content: [
+                {
+                  nodeType: 'paragraph',
+                  content: [
+                    {
+                      nodeType: 'text',
+                      value: 'This is a test biography.',
+                      marks: [],
+                      data: {},
+                    },
+                  ],
+                  data: {},
+                },
+              ],
+            }
+          },
+          authorCollection: {
+            items: [
+              { names: 'Jane', surnames: 'Doe' },
+              { names: 'John', surnames: 'Smith' }
+            ]
+          },
+          photosCollection: { items: [] }
+        }
+      ],
+      workCollection: [],
+      writingCollection: [],
+      performanceAndMediaCollection: [],
+    }
+  });
+
+  render(<MusicianPage />, { wrapper: MemoryRouter });
+
+  expect(screen.getByText(/Jane Doe & John Smith/)).toBeInTheDocument();
+});
+
+  
+  it('renders performances section when performance data is present', () => {
+    useData.mockReturnValue({
+      loading: false,
+      error: null,
+      data: {
+        musicianCollection: [
+          {
+            slug: 'sample-musician',
+            firstName: 'Sample',
+            surname: 'Musician',
+            biography: { json: {} },
+            photosCollection: { items: [] }
+          }
+        ],
+        performanceAndMediaCollection: [
+          {
+            title: 'Concert 1',
+            musiciansCollection: {
+              items: [{ slug: 'sample-musician' }]
+            }
+          }
+        ],
+        workCollection: [],
+        writingCollection: []
+      }
+    });
+
+    render(<MusicianPage />, { wrapper: MemoryRouter });
+
+    expect(screen.getByText(/Mocked PerformanceList/i)).toBeInTheDocument();
   });
 });
