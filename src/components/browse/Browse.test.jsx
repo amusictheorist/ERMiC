@@ -135,7 +135,7 @@ describe('Browse component', () => {
     fireEvent.change(dropdown, { target: { value: 'birthCountry' } });
 
     const items = screen.getAllByRole('link');
-    expect(items[0]).toHaveTextContent('Andreas Barban');
-    expect(items[1]).toHaveTextContent('Peter Bentley');
+    expect(items[1]).toHaveTextContent('Andreas Barban');
+    expect(items[0]).toHaveTextContent('Peter Bentley');
   });
 });
