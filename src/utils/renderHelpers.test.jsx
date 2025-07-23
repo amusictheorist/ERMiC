@@ -16,34 +16,24 @@ describe('normalize', () => {
 });
 
 describe('nameMapBuilder', () => {
-  const normalizeFn = (str) => str.toLowerCase();
-
   it('builds normalized name map entries', () => {
     const input = [
       { firstName: 'Anna', surname: 'Smith', slug: 'Smith-Anna' },
       { firstName: 'Bob', surname: 'Jones', slug: 'Jones-Bob' },
     ];
 
-    const result = nameMapBuilder(input, normalizeFn);
+    const result = nameMapBuilder(input, normalize);
 
     expect(result).toEqual([
       {
         slug: 'Smith-Anna',
-        fullName: 'Anna Smith',
-        reversedName: 'Smith Anna',
-        surname: 'Smith',
-        fullNorm: 'anna smith',
-        reversedNorm: 'smith anna',
-        surnameNorm: 'smith'
+        originalNames: ['Anna Smith', 'Smith Anna'],
+        normalizedNames: ['anna smith', 'smith anna']
       },
       {
         slug: 'Jones-Bob',
-        fullName: 'Bob Jones',
-        reversedName: 'Jones Bob',
-        surname: 'Jones',
-        fullNorm: 'bob jones',
-        reversedNorm: 'jones bob',
-        surnameNorm: 'jones'
+        originalNames: ['Bob Jones', 'Jones Bob'],
+        normalizedNames: ['bob jones', 'jones bob']
       }
     ]);
   });
@@ -51,11 +41,13 @@ describe('nameMapBuilder', () => {
 
 describe('generateTextRenderer', () => {
   const nameEntries = [
-    { fullName: 'Anna Smith', reversedName: 'smith Anna', slug: 'Smith-Anna' },
-    { fullName: 'Bob Jones', reversedName: 'Jones Bob', slug: 'Jones-Bob' },
+    { originalNames: ['Anna Smith', 'Smith Anna'], normalizedNames: ['anna smith', 'smith anna'], slug: 'Smith-Anna' },
+    { originalNames: ['Bob Jones', 'Jones Bob'], normalizedNames: ['bob jones', 'jones bob'], slug: 'Jones-Bob' },
   ];
 
-  const renderText = generateTextRenderer(nameEntries);
+  const matchedNames = new Set();
+
+  const renderText = generateTextRenderer(nameEntries, matchedNames);
 
   it('returns original text if no matches', () => {
     const text = 'No matching names here.';
@@ -78,13 +70,10 @@ describe('generateTextRenderer', () => {
     const { container } = render(<MemoryRouter>{renderText(text)}</MemoryRouter>);
 
     const links = container.querySelectorAll('a');
-    expect(links).toHaveLength(2);
+    expect(links).toHaveLength(1);
 
-    expect(links[0].textContent).toBe('Anna Smith');
-    expect(links[0].getAttribute('href')).toBe('/musician/Smith-Anna');
-
-    expect(links[1].textContent).toBe('Bob Jones');
-    expect(links[1].getAttribute('href')).toBe('/musician/Jones-Bob');
+    expect(links[0].textContent).toBe('Bob Jones');
+    expect(links[0].getAttribute('href')).toBe('/musician/Jones-Bob');
   });
 
   it('does not link partial matches', () => {
