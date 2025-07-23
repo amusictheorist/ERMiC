@@ -25,6 +25,7 @@ describe('useSearchNavigation', () => {
         filteredWritings: [],
         filteredOccupations: [occupation],
         filteredPerformances: [],
+        filteredAuthors: [],
         setSearchTerm,
         setShowDropdown,
         setSelectedIndex,
@@ -33,7 +34,7 @@ describe('useSearchNavigation', () => {
 
     act(() => result.current(occupation));
 
-    expect(mockNavigate).toHaveBeenCalledWith('/search-results?occupation=Composer');
+    expect(mockNavigate).toHaveBeenCalledWith('/results/occupation?occupation=Composer');
     expect(setSearchTerm).toHaveBeenCalledWith('');
     expect(setShowDropdown).toHaveBeenCalledWith(false);
     expect(setSelectedIndex).toHaveBeenCalledWith(-1);
@@ -48,6 +49,7 @@ describe('useSearchNavigation', () => {
         filteredWritings: [],
         filteredOccupations: [],
         filteredPerformances: [],
+        filteredAuthors: [],
         setSearchTerm,
         setShowDropdown,
         setSelectedIndex,
@@ -71,6 +73,7 @@ describe('useSearchNavigation', () => {
         filteredWritings: [],
         filteredOccupations: [],
         filteredPerformances: [],
+        filteredAuthors: [],
         setSearchTerm,
         setShowDropdown,
         setSelectedIndex,
@@ -94,6 +97,7 @@ describe('useSearchNavigation', () => {
         filteredWorks: [],
         filteredWritings: [writing],
         filteredPerformances: [],
+        filteredAuthors: [],
         setSearchTerm,
         setShowDropdown,
         setSelectedIndex,
@@ -109,7 +113,13 @@ describe('useSearchNavigation', () => {
   });
 
   it('navigates to the musician page of performance if it has a musician', () => {
-    const performance = { title: 'About Foci', musician: { slug: 'anhalt-istvan' } };
+    const performance = {
+      title: 'About Foci',
+      musiciansCollection: {
+        items: [{ slug: 'anhalt-istvan' }]
+      }
+    };
+
     const { result } = renderHook(() =>
       useSearchNavigation({
         filteredMusicians: [],
@@ -117,6 +127,7 @@ describe('useSearchNavigation', () => {
         filteredWorks: [],
         filteredWritings: [],
         filteredPerformances: [performance],
+        filteredAuthors: [],
         setSearchTerm,
         setShowDropdown,
         setSelectedIndex,
@@ -142,6 +153,7 @@ describe('useSearchNavigation', () => {
         filteredWritings: [],
         filteredOccupations: [],
         filteredPerformances: [],
+        filteredAuthors: [],
         setSearchTerm,
         setSelectedIndex,
         setShowDropdown,
@@ -169,6 +181,7 @@ describe('useSearchNavigation', () => {
         filteredWritings: [],
         filteredOccupations: [],
         filteredPerformances: [],
+        filteredAuthors: [],
         setSearchTerm,
         setSelectedIndex,
         setShowDropdown,
@@ -196,6 +209,7 @@ describe('useSearchNavigation', () => {
         filteredWritings: [],
         filteredOccupations: [],
         filteredPerformances: [],
+        filteredAuthors: [],
         setSearchTerm,
         setSelectedIndex,
         setShowDropdown,
@@ -221,6 +235,7 @@ describe('useSearchNavigation', () => {
         filteredWritings: [],
         filteredOccupations: [],
         filteredPerformances: [],
+        filteredAuthors: [],
         setSearchTerm,
         setSelectedIndex,
         setShowDropdown,
@@ -246,6 +261,7 @@ describe('useSearchNavigation', () => {
         filteredWritings: [writing],
         filteredOccupations: [],
         filteredPerformances: [],
+        filteredAuthors: [],
         setSearchTerm,
         setSelectedIndex,
         setShowDropdown,
@@ -258,5 +274,82 @@ describe('useSearchNavigation', () => {
     expect(consoleErrorSpy).toHaveBeenCalledWith('Navigation error:', 'Writing missing musician slug');
 
     consoleErrorSpy.mockRestore();
+  });
+
+  it('navigates to performance results if performance has multiple musicians', () => {
+    const performance = {
+      title: 'Group Performance',
+      musiciansCollection: {
+        items: [{ slug: 'mus1' }, { slug: 'mus2' }]
+      }
+    };
+
+    const { result } = renderHook(() =>
+      useSearchNavigation({
+        filteredMusicians: [],
+        filteredWorks: [],
+        filteredWritings: [],
+        filteredOccupations: [],
+        filteredPerformances: [performance],
+        filteredAuthors: [],
+        setSearchTerm,
+        setShowDropdown,
+        setSelectedIndex
+      })
+    );
+
+    act(() => result.current(performance));
+
+    expect(mockNavigate).toHaveBeenCalledWith('/results/performance?performance=Group%20Performance');
+  });
+
+  it('navigates to performance results if performance has no musicians', () => {
+    const performance = {
+      title: 'Solo Show',
+      musiciansCollection: { items: [] }
+    };
+
+    const { result } = renderHook(() =>
+      useSearchNavigation({
+        filteredMusicians: [],
+        filteredWorks: [],
+        filteredWritings: [],
+        filteredOccupations: [],
+        filteredPerformances: [performance],
+        filteredAuthors: [],
+        setSearchTerm,
+        setShowDropdown,
+        setSelectedIndex
+      })
+    );
+
+    act(() => result.current(performance));
+
+    expect(mockNavigate).toHaveBeenCalledWith('/results/performance?performance=Solo%20Show');
+  });
+
+  it('navigates to author results page if item is in filtereAuthors', () => {
+    const author = { names: 'Jane', surnames: 'Doe' };
+
+    const { result } = renderHook(() =>
+      useSearchNavigation({
+        filteredMusicians: [],
+        filteredWorks: [],
+        filteredWritings: [],
+        filteredOccupations: [],
+        filteredPerformances: [],
+        filteredAuthors: [author],
+        setSearchTerm,
+        setShowDropdown,
+        setSelectedIndex
+      })
+    );
+
+    act(() => result.current(author));
+
+    expect(mockNavigate).toHaveBeenCalledWith('/results/author?author=Jane%20Doe');
+    expect(setSearchTerm).toHaveBeenCalledWith('');
+    expect(setShowDropdown).toHaveBeenCalledWith(false);
+    expect(setSelectedIndex).toHaveBeenCalledWith(-1);
   });
 });
