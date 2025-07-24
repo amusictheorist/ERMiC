@@ -2,15 +2,13 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { musicianQuery, performanceQuery, workQuery, writingQuery } from "../utils/queries";
 
 // this is what provides data for all the app components
-const DataContext = createContext();
+export const DataContext = createContext();
 
 // these are the secrets from Contentful CMS
 const spaceID = process.env.REACT_APP_SPACE_ID;
 const accessToken = process.env.REACT_APP_ACCESS_TOKEN;
 
-/* IMPORTANT: these GraphQL API queries fetch all the structured data from the CMS upon mounting the ERMiC website. Do not change anything about the queries or about the content types in the ERMiC Contentful space without corroborating changes between the two or the site will break. If changes need to be made, visit Contentful's GraphQL documentation here: https://www.contentful.com/developers/docs/references/graphql/. You'll need the spaceID and accessToken from the ERMiC site and authorization from the project managers to obtain them.
-*/
-
+// using the queries to fetch data from CMS, paginating to avoid exceeding payload limits
 const fetchPaginatedMusicianCollection = async (fetchSection) => {
   const limit = 30;
   let skip = 0;
