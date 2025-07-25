@@ -48,6 +48,9 @@ const MusicianPage = () => {
     deathdate,
     deathPlace,
     occupation,
+    worklistExtraInfo,
+    writingListExtraInfo,
+    performanceListExtraInfo,
     biography,
     bibliography,
     authorCollection,
@@ -140,11 +143,19 @@ const MusicianPage = () => {
           />
         </>
       ) : (
-          // if a musician does not yet have a biography, "under construction" page is rendered
+        // if a musician does not yet have a biography, "under construction" page is rendered
         <UnderConstruction />
       )}
 
       {/* lists a musician's works if available */}
+      {/* Render Extra Info (always above collapsible) */}
+      {worklistExtraInfo?.json && (
+        <div className="mb-4 text-left">
+          <RichTextRenderer document={worklistExtraInfo.json} />
+        </div>
+      )}
+
+      {/* Only render collapsible if there are actual works */}
       {works.length > 0 && (
         <CollapsibleSection
           title='Works'
@@ -154,8 +165,14 @@ const MusicianPage = () => {
           <WorkList works={works} />
         </CollapsibleSection>
       )}
-      
+
       {/* lists a musician's writings if available */}
+      {writingListExtraInfo?.json && (
+        <div className="mb-4 text-left">
+          <RichTextRenderer document={writingListExtraInfo.json} />
+        </div>
+      )}
+
       {writings.length > 0 && (
         <CollapsibleSection
           title='Writings'
@@ -167,6 +184,12 @@ const MusicianPage = () => {
       )}
 
       {/* lists a musician's performance and media works if available */}
+      {performanceListExtraInfo?.json && (
+        <div className="mb-4 text-left">
+          <RichTextRenderer document={performanceListExtraInfo.json} />
+        </div>
+      )}
+
       {performances.length > 0 && (
         <CollapsibleSection
           title='Performances and Media'
