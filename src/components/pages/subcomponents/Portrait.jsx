@@ -32,7 +32,7 @@ const Portrait = ({ url, alt, description }) => {
         src={url}
         alt={alt || 'Portrait'}
         className="w-full max-w-xs sm:max-w-sm md:max-w-md max-h-80 rounded-lg object-contain shadow-md"
-        loading="lazt"
+        loading="lazy"
         onMouseEnter={() => !isTouchDevice && setHover(true)}
         onMouseLeave={() => !isTouchDevice && setHover(false)}
         onMouseMove={(e) => !isTouchDevice && handleMouseMove(e)}
