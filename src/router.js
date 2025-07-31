@@ -7,6 +7,7 @@ import App from "./App";
 import GeneralResultsPage from "./components/pages/GeneralResultsPage";
 import AboutPage from "./components/pages/AboutPage";
 import AuthorResults from "./components/pages/AuthorResults";
+import ContactPage from "./components/pages/ContactPage";
 
 const router = createBrowserRouter([
   {
@@ -20,7 +21,8 @@ const router = createBrowserRouter([
       { path: 'results/performance', element: <SearchResultsPage /> },
       { path: 'results/author', element: <AuthorResults /> },
       { path: 'results', element: <GeneralResultsPage /> },
-      { path: 'about', element: <AboutPage /> }
+      { path: 'about', element: <AboutPage /> },
+      {path: 'contact', element: <ContactPage />}
     ]
   }
 ], {
