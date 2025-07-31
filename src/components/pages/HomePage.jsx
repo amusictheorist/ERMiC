@@ -3,6 +3,7 @@ import { useData } from '../DataContext';
 import { sortMusicians } from '../../utils/browseHelpers';
 import SearchBar from "../searchBar/SearchBar";
 import { Link, useOutletContext } from 'react-router-dom';
+import sshrcFipFullColorEng from '../../assets/sshrcFipFullColorEng.jpg';
 
 // landing page for the site, where main search functionality is implemented
 const HomePage = () => {
@@ -31,8 +32,8 @@ const HomePage = () => {
     : [];
 
   return (
-    <div className="w-full max-w-[90%] sm:max-w-3xl mx-auto px-4 py-6 mt-20 text-center">
-      <h1 className='font-serif text-2xl sm:text-3xl md:text-5xl font-bold leading-tight'>
+    <div className="w-full max-w-[90%] sm:max-w-3xl mx-auto px-4 py-6 mt-8 text-center">
+      <h1 className='font-serif text-xl sm:text-2xl md:text-4xl font-bold leading-tight'>
         Welcome to the European Refugee Musicians in Canada Online Biographical Dictionary
       </h1>
       <p className='font-serif text-base sm:text-lg md:text-xl my-4 text-gray-700'>
@@ -54,7 +55,7 @@ const HomePage = () => {
         <p className='font-serif text-base sm:text-lg md:text-xl mt-10 mb-2 text-gray-700'>
           Or browse the entries below:
         </p>
-        <div className='mt-2 mx-auto max-h-56 max-w-xs overflow-y-auto rounded p-4 shadow-sm bg-white'>
+        <div className='mt-2 mx-auto max-h-64 max-w-xs overflow-y-auto rounded p-4 shadow-sm bg-white'>
           <ul className='space-y-1 text-center'>
             {sortedMusicians.map(m => (
               <li key={m.slug}>
@@ -72,10 +73,23 @@ const HomePage = () => {
 
       {/* updated counts from CMS */}
       {!loading && !error && (
-        <div className='font-sans mt-6 text-base sm:text-lg text-gray-600 italic'>
-          Database currently includes {counts.musicians} musicians, {counts.works} works, {counts.writings} writings, {counts.performances} performance and media works, and continues to grow!
+        <div className='font-sans mt-12 text-base sm:text-lg text-gray-600 italic'>
+          Database currently includes {counts.musicians} musicians, {counts.works} works, {counts.writings} writings, {counts.performances} performance and media works, and continues to grow! Visit the <Link to="/about" className='text-blue-600'>About</Link> page to learn more about site navigation and search features.
         </div>
       )}
+
+      {/* SSHRC acknowledgement */}
+      <div className="mt-12 bg-gray-100 rounded-lg px-6 py-4 shadow-sm text-sm text-gray-700 text-center max-w-xl mx-auto">
+        <img
+          src={sshrcFipFullColorEng}
+          alt="SSHRC logo"
+          className="mx-auto h-16 object-contain"
+        />
+        <p className="mb-4">
+          <span className="font-semibold">European Refugee Musicians in Canada</span> draws on research supported by the Social Sciences and Humanities Research Council.
+        </p>
+      </div>
+
     </div>
   );
 };

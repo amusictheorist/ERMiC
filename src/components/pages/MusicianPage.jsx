@@ -66,6 +66,7 @@ const MusicianPage = () => {
   const portrait = photosCollection?.items?.[0];
   const portraitUrl = portrait?.url;
   const portraitDescription = portrait?.description;
+  const portraitTitle = portrait?.title;
 
   // this gathers all the cross references to other musician entries to create inner reference links
   const crossReferences = crossReferencesCollection?.items || [];
@@ -124,7 +125,7 @@ const MusicianPage = () => {
       )}
 
       {/* portrait if available */}
-      <Portrait url={portraitUrl} alt={`${firstName} ${surname}`} description={portraitDescription} />
+      <Portrait url={portraitUrl} alt={`${firstName} ${surname}`} description={portraitDescription} title={portraitTitle} />
 
       {/* biography if available */}
       {biography?.json ? (

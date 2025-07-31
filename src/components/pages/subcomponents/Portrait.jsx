@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import useClickOutside from "../../../hooks/useClickOutside";
 
-const Portrait = ({ url, alt, description }) => {
+const Portrait = ({ url, alt, description, title }) => {
   const [hover, setHover] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [touchVisible, setTouchVisible] = useState(false);
@@ -41,7 +41,7 @@ const Portrait = ({ url, alt, description }) => {
 
       {!isTouchDevice && hover && description && (
         <div
-          className='absolute bg-gray-300 text-sm px-3 py-1 rounded shadow pointer-events-none transition-opacity duration-150'
+          className='whitespace-pre-line absolute bg-gray-300 text-sm text-left px-3 py-1 rounded shadow pointer-events-none transition-opacity duration-150'
           style={{
             top: mousePos.y + 15,
             left: mousePos.x + 15,
@@ -54,8 +54,21 @@ const Portrait = ({ url, alt, description }) => {
       )}
 
       {isTouchDevice && touchVisible && description && (
-        <div className="mt-2 bg-gray-300 text-sm p-2 rouded shadow text-center w-64">
+        <div className="whitespace-pre-line mt-2 bg-gray-300 text-sm p-2 rouded shadow text-left w-64">
           {description}
+        </div>
+      )}
+      {title && (
+        <div className='mt-2 text-sm'>
+          source: {' '}
+          <a
+            href={title}
+            target='_blank'
+            rel='noopener noreferrer'
+            className='text-blue-600 underline break-all'
+          >
+            {title}
+          </a>
         </div>
       )}
     </div>
