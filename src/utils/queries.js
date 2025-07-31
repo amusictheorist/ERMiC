@@ -33,6 +33,7 @@ export const musicianQuery = (limit, skip) =>`
       }
       photosCollection {
         items {
+          title
           url
           description
         }
