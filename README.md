@@ -1,71 +1,66 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 # ERMiC
+
+> Public, read-only reference. Please don’t fork or submit PRs.
+
+A small React app scaffolded with Create React App and styled with Tailwind CSS. This repository is public **for visibility only**—We are not seeking contributors or forks at this point.
+
+---
+
+## Status
+
+- **Read-only / no contributions**  
+  Browse the code if it’s useful, but please **don’t open issues, don’t submit pull requests, and don’t fork**. Thanks!
+
+---
+
+## Tech Stack
+
+- React (Create React App)
+- Tailwind CSS
+- Jest (tests)
+
+---
+
+## Upcoming Launch
+
+The app connect to **Contentful for content storage and management.
+A public-facing site will be launching soon-once live, a link will be added here so you can explore the deployted version.
+
+---
+
+## Getting Started (local view only)
+
+If you want to run it locally just to take a look:
+
+```bash
+# Node.js LTS recommended
+npm install
+npm start
+```
+- App will open at http://localhost:3000
+- Hot reload is enabled
+
+---
+
+## Project Structure (high level)
+
+```arduino
+/
+├─ public/          # static assets
+├─ src/             # app source
+├─ tailwind.config.js
+├─ package.json
+└─ README.md
+```
+---
+
+## License
+
+**All rights reserved.**
+No copying, distribution, or modification is permitted. This repo is published publicly only so people can view it.
+
+---
+
+## Contact
+
+If you have a question, fell free to reach out privately. Please refrain from opening issues or PRs.
