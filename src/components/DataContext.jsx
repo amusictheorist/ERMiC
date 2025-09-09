@@ -26,7 +26,7 @@ const fetchPaginatedMusicianCollection = async (fetchSection) => {
       hasMore = false;
     } else {
       skip += limit;
-      await new Promise((res) => setTimeout(res, 150));
+      await new Promise((res) => setTimeout(res, 50));
     }
   }
 
@@ -50,7 +50,7 @@ const fetchPaginatedWorkCollection = async (fetchSection) => {
       hasMore = false;
     } else {
       skip += limit;
-      await new Promise((res) => setTimeout(res, 150));
+      await new Promise((res) => setTimeout(res, 50));
     }
   }
 
@@ -74,7 +74,7 @@ const fetchPaginatedWritingCollection = async (fetchSection) => {
       hasMore = false;
     } else {
       skip += limit;
-      await new Promise((res) => setTimeout(res, 150));
+      await new Promise((res) => setTimeout(res, 50));
     }
   }
 
@@ -98,7 +98,7 @@ const fetchPaginatedPerformanceCollection = async (fetchSection) => {
       hasMore = false;
     } else {
       skip += limit;
-      await new Promise((res) => setTimeout(res, 150));
+      await new Promise((res) => setTimeout(res, 50));
     }
   }
 
