@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useData } from '../DataContext';
-import { groupByBirthYear, groupByCountry, sortMusicians } from '../../utils/browseHelpers';
+import { groupByBirthYear, groupByBirthCountry, sortMusicians, groupByDeathCountry, splitCanadianGroups } from '../../utils/browseHelpers';
 import MusicianGroupList from './MusicianGroupList';
 import MusicianCard from './MusicianCard';
 
@@ -11,41 +11,48 @@ const Browse = () => {
   if (loading) return <p className='text-center mt-8 text-lg'>Loading data...</p>;
 
   const musicians = data?.musicianCollection || [];
+  if (error && musicians.length === 0) return <p className='text-center mt-8 text-lg text-red-600'>Failed to load data.</p>;
+  if (musicians.length === 0) return <p className='text-center mt-8 text-lg text-gray-700'>No musicians found.</p>;
 
-  if (error && musicians.length === 0) {
-    return <p className='text-center mt-8 text-lg text-red-600'>Failed to load data. Please try again later.</p>;
-  }
-
-  if (musicians.length === 0) {
-    return <p className='text-center mt-8 text-lg text-gray-700'>No musicians found.</p>;
-  }
-
-  // this manages musician sorting and options
   const sortedMusicians = sortMusicians(musicians, sortOption);
 
-  const grouped =
+  let grouped =
     sortOption === 'birthCountry'
-      ? groupByCountry(sortedMusicians, 'birthPlace')
+      ? groupByBirthCountry(sortedMusicians)
       : sortOption === 'deathCountry'
-      ? groupByCountry(sortedMusicians, 'deathPlace')
+      ? groupByDeathCountry(sortedMusicians)
       : sortOption === 'birthYear'
       ? groupByBirthYear(sortedMusicians)
       : null;
+
+  let finalGroups = grouped;
+
+  if (sortOption === 'deathCountry' && grouped) {
+    const { inCanada, others } = splitCanadianGroups(grouped);
+    finalGroups = {};
+
+    if (Object.keys(inCanada).length > 0) {
+      finalGroups['In Canada'] = inCanada;
+    }
+
+    Object.entries(others)
+      .filter(([key]) => key !== 'Still Living')
+      .sort(([a], [b]) => a.localeCompare(b))
+      .forEach(([key, value]) => {
+        finalGroups[key] = value;
+      });
+
+    if (grouped['Still Living']) {
+      finalGroups['Still Living'] = grouped['Still Living'];
+    }
+  }
 
   return (
     <div className="px-4 sm:px-6 md:px-8 lg:px-12 py-8 max-w-5xl mx-auto text-center">
       <h2 className='font-serif text-3xl sm:text-4xl font-bold mb-6'>Browse the Biographies</h2>
 
-      {error && (
-        <p className="text-base sm:text-lg text-yellow-800 bg-yellow-100 border border-yellow-300 rounded px-4 py-2 mb-4">
-          Some data may be missing: {error}
-        </p>
-      )}
-
       <div className='mb-6 text-left text-base sm:text-lg'>
-        <label htmlFor="sort" className='mr-2 font-medium'>
-          Sort by:
-        </label>
+        <label htmlFor="sort" className='mr-2 font-medium'>Sort by:</label>
         <select
           id="sort"
           value={sortOption}
@@ -53,17 +60,14 @@ const Browse = () => {
           className='px-3 py-1 border rounded'
         >
           <option value="surname">Surname (A-Z)</option>
-          <option value="birthCountry">Country of Birth</option>
-          <option value="deathCountry">Country of Death</option>
+          <option value="birthCountry">Place of Birth</option>
+          <option value="deathCountry">Place of Death</option>
           <option value="birthYear">Birth Year (Oldest-Youngest)</option>
         </select>
       </div>
-      
-      {grouped ? (
-        <MusicianGroupList
-          groups={grouped}
-          sortOption={sortOption}
-        />
+
+      {finalGroups ? (
+        <MusicianGroupList groups={finalGroups} />
       ) : (
         <div className='grid gap-4'>
           {sortedMusicians.map((musician) => (

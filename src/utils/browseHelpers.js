@@ -1,19 +1,57 @@
-export const extractBirthYear = (dateString) => {
+const extractBirthYear = (dateString) => {
   if (typeof dateString !== 'string') return null;
   const match = dateString.match(/\b(1[7-9]\d{2}|20\d{2})\b/);
   return match ? match[0] : null;
 };
 
-export const groupByCountry = (list, placeKey) => {
+export const groupByBirthCountry = (list) => {
   const groups = {};
   list.forEach((musician) => {
-    const rawPlace = musician[placeKey] || '';
-    const country = rawPlace.includes(',') ? rawPlace.split(',').pop().trim() : null;
-    const group = country || 'Other';
-    if (!groups[group]) groups[group] = [];
-    groups[group].push(musician);
+    const birthPlace = musician.birthPlace || 'Other';
+    const birthCountry = birthPlace.includes(',') ? birthPlace.split(',').pop().trim() : birthPlace;
+    const birthGroup = birthCountry || 'Other';
+    if (!groups[birthGroup]) groups[birthGroup] = [];
+    groups[birthGroup].push(musician);
   });
   return groups;
+};
+
+export const groupByDeathCountry = (list) => {
+  const groups = {};
+  list.forEach((musician) => {
+    const deathPlace = musician.deathPlace || 'Other';
+
+    if (!deathPlace || deathPlace.toLowerCase() === 'n/a') {
+      if (!groups['Still Living']) groups['Still Living'] = [];
+      groups['Still Living'].push(musician);
+      return;
+    }
+
+    const deathCountry = deathPlace.includes(',')
+      ? deathPlace.split(',').pop().trim()
+      : deathPlace;
+
+    const deathGroup = deathCountry || 'Other';
+    if (!groups[deathGroup]) groups[deathGroup] = [];
+    groups[deathGroup].push(musician);
+  });
+  return groups;
+};
+
+export const splitCanadianGroups = (groups) => {
+  const provinces = ['ON','QC','BC','MB','NL','NS','AB','SK','NB','PE','YT','NT','NU', 'Canada'];
+  const inCanada = {};
+  const others = {};
+
+  Object.entries(groups).forEach(([key, value]) => {
+    if (provinces.includes(key)) {
+      inCanada[key] = value;
+    } else {
+      others[key] = value;
+    }
+  });
+
+  return { inCanada, others };
 };
 
 export const groupByBirthYear = (list) => {
@@ -28,15 +66,16 @@ export const groupByBirthYear = (list) => {
 
 export const sortMusicians = (musicians, sortOption) => {
   return [...musicians].sort((a, b) => {
-    const getCountry = (place) =>
-      place?.includes(',') ? place.split(',').pop().trim().toLowerCase() : '';
-
     if (sortOption === 'birthCountry') {
-      return getCountry(a.birthPlace).localeCompare(getCountry(b.birthPlace));
+      const placeA = a.birthPlace?.split(',').pop().trim() || 'Other';
+      const placeB = b.birthPlace?.split(',').pop().trim() || 'Other';
+      return placeA.localeCompare(placeB);
     }
 
     if (sortOption === 'deathCountry') {
-      return getCountry(a.deathPlace).localeCompare(getCountry(b.deathPlace));
+      const placeA = a.deathPlace?.split(',').pop().trim() || 'Other';
+      const placeB = b.deathPlace?.split(',').pop().trim() || 'Other';
+      return placeA.localeCompare(placeB);
     }
 
     if (sortOption === 'birthYear') {
