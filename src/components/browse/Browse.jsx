@@ -3,6 +3,7 @@ import { useData } from '../DataContext';
 import { groupByBirthYear, groupByBirthCountry, sortMusicians, groupByDeathCountry, splitCanadianGroups } from '../../utils/browseHelpers';
 import MusicianGroupList from './MusicianGroupList';
 import MusicianCard from './MusicianCard';
+import SortDropdown from './SortDropdown';
 
 const Browse = () => {
   const { data, loading, error } = useData();
@@ -53,17 +54,7 @@ const Browse = () => {
 
       <div className='mb-6 text-left text-base sm:text-lg'>
         <label htmlFor="sort" className='mr-2 font-medium'>Sort by:</label>
-        <select
-          id="sort"
-          value={sortOption}
-          onChange={(e) => setSortOption(e.target.value)}
-          className='px-3 py-1 border rounded'
-        >
-          <option value="surname">Surname (A-Z)</option>
-          <option value="birthCountry">Place of Birth</option>
-          <option value="deathCountry">Place of Death</option>
-          <option value="birthYear">Birth Year (Oldest-Youngest)</option>
-        </select>
+        <SortDropdown sortOption={sortOption} setSortOption={setSortOption} />
       </div>
 
       {finalGroups ? (
