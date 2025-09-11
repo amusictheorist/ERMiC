@@ -26,7 +26,7 @@ const SortDropdown = ({ sortOption, setSortOption }) => {
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="inline-flex justify-between w-64 px-4 py-2 bg-white border border-gray-300 rounded shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        className="inline-flex justify-between w-72 px-4 py-2 bg-white border border-gray-300 rounded shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
       >
         {selectedLabel}
         <svg

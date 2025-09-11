@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import useClickOutside from "../../../hooks/useClickOutside";
 
-const Portrait = ({ url, alt, description, title }) => {
+const Portrait = ({ url, description, title }) => {
   const [hover, setHover] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [touchVisible, setTouchVisible] = useState(false);
@@ -30,8 +30,8 @@ const Portrait = ({ url, alt, description, title }) => {
     >
       <img
         src={url}
-        alt={alt || 'Portrait'}
-        className="w-full max-w-xs sm:max-w-sm md:max-w-md max-h-80 rounded-lg object-contain shadow-md"
+        alt={description}
+        className="w-full max-w-xs sm:max-w-sm md:max-w-md max-h-80 object-contain rounded-xl shadow-lg shadow-gray-300/50"
         loading="lazy"
         onMouseEnter={() => !isTouchDevice && setHover(true)}
         onMouseLeave={() => !isTouchDevice && setHover(false)}
@@ -41,20 +41,23 @@ const Portrait = ({ url, alt, description, title }) => {
 
       {!isTouchDevice && hover && description && (
         <div
-          className='whitespace-pre-line absolute bg-gray-300 text-sm text-left px-3 py-1 rounded shadow pointer-events-none transition-opacity duration-150'
-          style={{
-            top: mousePos.y + 15,
-            left: mousePos.x + 15,
-            opacity: 1,
-            zIndex: 10
-          }}
+        className='whitespace-pre-line absolute bg-gray-300 text-sm text-left px-3 py-1 rounded shadow pointer-events-none transition-opacity duration-150'
+        style={{
+          top: mousePos.y + 15,
+          left: mousePos.x + 15,
+          opacity: 1,
+          zIndex: 10
+        }}
         >
           {description}
         </div>
       )}
 
       {isTouchDevice && touchVisible && description && (
-        <div className="whitespace-pre-line mt-2 bg-gray-300 text-sm p-2 rouded shadow text-left w-64">
+        <div
+          onClick={() => setTouchVisible(false)}
+          className="whitespace-pre-line mt-2 bg-gray-300 text-sm p-2 rouded shadow text-left w-64"
+        >
           {description}
         </div>
       )}

@@ -125,7 +125,7 @@ const MusicianPage = () => {
       )}
 
       {/* portrait if available */}
-      <Portrait url={portraitUrl} alt={`${firstName} ${surname}`} description={portraitDescription} title={portraitTitle} />
+      <Portrait url={portraitUrl} alt={portraitDescription} description={portraitDescription} title={portraitTitle} />
 
       {/* biography if available */}
       {biography?.json ? (
