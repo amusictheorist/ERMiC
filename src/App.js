@@ -4,7 +4,6 @@ import Navbar from "./components/navigation/Navbar";
 import Footer from "./components/navigation/Footer";
 import ScrollToTop from './components/navigation/ScrollToTop';
 import { DataProvider } from "./components/DataContext";
-import LoginGate from "./components/LoginGate";
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -21,7 +20,6 @@ const App = () => {
   };
 
   return (
-    <LoginGate>
       <DataProvider>
         <div className="flex flex-col min-h-screen">
           <Navbar {...searchState} />
@@ -32,7 +30,6 @@ const App = () => {
           <Footer />
         </div>
       </DataProvider>
-    </LoginGate>
   );
 };
 

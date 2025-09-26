@@ -61,7 +61,7 @@ const Portrait = ({ url, description, title }) => {
           {description}
         </div>
       )}
-      {title && (
+      {/* {title && (
         <div className='mt-2 text-sm'>
           source: {' '}
           <a
@@ -73,7 +73,7 @@ const Portrait = ({ url, description, title }) => {
             {title}
           </a>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
